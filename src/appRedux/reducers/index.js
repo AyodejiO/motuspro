@@ -1,0 +1,26 @@
+/*jshint esversion: 6 */
+
+import {combineReducers} from "redux";
+import {routerReducer} from "react-router-redux";
+import Auth from "./Auth";
+import Clients from "./Clients";
+import Common from "./Common";
+import Orders from "./Orders";
+import Profile from "./Profile";
+import Settings from "./Settings";
+import Users from "./Users";
+import Vendors from "./Vendors";
+
+const reducers = combineReducers({
+  routing: routerReducer,
+  auth: Auth,
+  clientData: Clients,
+  commonData: Common,
+  orderData: Orders,
+  profileData: Profile,
+  settings: Settings,
+  userData: Users,
+  vendorData: Vendors,
+});
+
+export default reducers;
