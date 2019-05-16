@@ -2,7 +2,7 @@
   "name": "Motuspro",
   "version": "1.5.0",
   "private": true,
-  "homepage": "https://motuspro.cuitcode.com/",
+  "homepage": "https://motus.pro/",
   "buildpacks": [
     {
       "url": "https://github.com/heroku/heroku-buildpack-nodejs"
@@ -72,6 +72,7 @@
     "start2": "react-app-rewired start",
     "build": "react-app-rewired build",
     "heroku-postbuild": "echo This runs afterwards.",
+    "postinstall": "echo This runs afterwards.",
     "test": "react-app-rewired --env=jsdom"
   },
   "devDependencies": {
