@@ -68,9 +68,9 @@
     "victory": "^0.27.2"
   },
   "scripts": {
-    "start": "node server.js",
-    "start2": "react-app-rewired start",
-    "build2": "react-app-rewired build",
+    "startx": "node server.js",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "heroku-postbuild": "echo Aha!",
     "postinstall": "echo This runs afterwards.",
     "test": "react-app-rewired --env=jsdom"
