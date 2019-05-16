@@ -71,7 +71,7 @@
     "start": "node server.js",
     "start2": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "heroku-postbuild": "echo This runs afterwards.",
+    "heroku-postbuild": "yarn build",
     "postinstall": "echo This runs afterwards.",
     "test": "react-app-rewired --env=jsdom"
   },
