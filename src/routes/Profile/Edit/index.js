@@ -2,17 +2,21 @@
 
 import React, {Component} from "react";
 import {Col, Row} from "antd";
-import {Avatar} from "antd";
-import placeholder from "assets/images/placeholder.jpg";
+// import {Avatar} from "antd";
+// import placeholder from "assets/images/placeholder.jpg";
 import {connect} from "react-redux";
-import Widget from "components/Widget";
 
 import IntlMessages from "../../../util/IntlMessages";
 import Auxiliary from "../../../util/Auxiliary";
-import {getUserProfile} from "appRedux/actions/Profile";
-import {Button, Form, Input} from "antd";
+import {Button} from "antd";
 
-const FormItem = Form.Item;
+import ChangePassword from "./ChangePassword";
+import EditAvatar from "./EditAvatar";
+import EditPersonalDetails from "./EditPersonalDetails";
+import SweetAlert from "react-bootstrap-sweetalert";
+import {userSignOut} from "appRedux/actions/Auth";
+import {changeAvatar} from "appRedux/actions/Auth";
+import {getUserProfile} from "appRedux/actions/Profile";
 
 class EditProfile extends Component {
 
@@ -31,31 +35,7 @@ class EditProfile extends Component {
   );
 
   render() {
-    const {getFieldDecorator} = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: {span: 24},
-        sm: {span: 24},
-      },
-      wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 24},
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 20,
-        },
-        sm: {
-          span:24,
-          offset: 20,
-        },
-      },
-    };
-
-    const {authUser} = this.props;
+    const {authUser, passwdChanged} = this.props;
     return (
       <Auxiliary>
         <div className="gx-profile-banner">
@@ -63,15 +43,19 @@ class EditProfile extends Component {
             <div className="gx-profile-banner-top">
               <div className="gx-profile-banner-top-left">
                 <div className="gx-profile-banner-avatar">
-                  <Avatar className="gx-size-90" alt="..." src={authUser.avatar || placeholder}/>
+                  <EditAvatar upload={this.props.changeAvatar} />
+                  {/* <Upload name="logo" action="/upload.do" listType="picture">
+                    <Avatar className="gx-size-90" alt="..." src={authUser.avatar || placeholder}/>
+                  </Upload> */}
                 </div>
                 <div className="gx-profile-banner-avatar-info">
-                  <h2 className="gx-mb-2 gx-mb-sm-3 gx-fs-xxl gx-font-weight-light">{authUser.name}</h2>
+                  <h2 className="gx-mb-1 gx-mb-sm-2 gx-fs-xxl gx-font-weight-light">{authUser.name}</h2>
+                  <p className="gx-mb-0 gx-fs-lg gx-text-secondary">{authUser.email}</p>
                 </div>
               </div>
             </div>
             <div className="gx-profile-banner-bottom"> 
-              <span className="gx-link gx-profile-setting"> 
+              <span className="gx-link gx-profile-setting" onClick={this.goBack}> 
                 <i className="icon icon-close-circle gx-fs-lg gx-mr-2 gx-mr-sm-3 gx-d-inline-flex gx-vertical-align-middle"/>
                 <span className="gx-d-inline-flex gx-vertical-align-middle gx-ml-1 gx-ml-sm-0">Cancel</span>
               </span>
@@ -79,99 +63,18 @@ class EditProfile extends Component {
           </div>
         </div>
         <div className="gx-profile-content">
+        <SweetAlert show={passwdChanged} success title="Password Changed"
+                    onConfirm={this.props.userSignOut}>
+          <span>You will be logged out.</span>
+        </SweetAlert>
           <Row>
-            <Col xl={12} lg={14} md={14} sm={24} xs={24}>
-              <Widget title="Edit Personal Details " styleName="gx-card-profile-sm">
-                <Form layout="vertical" className="gx-mt-4" onSubmit={this.handleChangePassword}>
-                  <div>
-                    <FormItem
-                      {...formItemLayout}
-                      label={(
-                        <span>
-                        Name&nbsp;
-                      </span>
-                      )}
-                    >
-                      {getFieldDecorator('name', {
-                        rules: [{required: true, message: 'Please input your name!', whitespace: true}],
-                      })(
-                        <Input/>
-                      )}
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label={(
-                        <span>
-                        Phone&nbsp;
-                      </span>
-                      )}
-                    >
-                      {getFieldDecorator('phone', {
-                        rules: [{required: true, message: 'Please input your phone number!', whitespace: true}],
-                      })(
-                        <Input/>
-                      )}
-                    </FormItem>
-                    <FormItem {...tailFormItemLayout}>
-                      <Button type="primary" htmlType="submit">Submit</Button>
-                    </FormItem>
-                  </div>
-                </Form>
-              </Widget>
-            </Col>
-
+            {!authUser.account_verified_at? null : 
+              (<Col xl={12} lg={14} md={14} sm={24} xs={24}>
+                <EditPersonalDetails />
+              </Col>)
+            }
             <Col xl={12} lg={10} md={10} sm={24} xs={24}>
-              <Widget title="Change Password" styleName="gx-card-profile-sm">
-              <Form layout="vertical" className="gx-mt-4" onSubmit={this.handleChangePassword}>
-                  <div>
-                    <FormItem
-                      {...formItemLayout}
-                      label={(
-                        <span>
-                        Old Password&nbsp;
-                      </span>
-                      )}
-                    >
-                      {getFieldDecorator('old_password', {
-                        rules: [{required: true, message: 'Please input your old password!', whitespace: true}],
-                      })(
-                        <Input type="password"/>
-                      )}
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label={(
-                        <span>
-                        New Password&nbsp;
-                      </span>
-                      )}
-                    >
-                      {getFieldDecorator('new_password', {
-                        rules: [{required: true, message: 'Please input a new password!', whitespace: true}],
-                      })(
-                        <Input type="password"/>
-                      )}
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label={(
-                        <span>
-                        Confirm Password&nbsp;
-                      </span>
-                      )}
-                    >
-                      {getFieldDecorator('confirm_password', {
-                        rules: [{required: true, message: 'Please confirm your new password!', whitespace: true}],
-                      })(
-                        <Input type="password"/>
-                      )}
-                    </FormItem>
-                    <FormItem {...tailFormItemLayout}>
-                      <Button type="primary" htmlType="submit">Submit</Button>
-                    </FormItem>
-                  </div>
-                </Form>
-              </Widget>
+              <ChangePassword />
             </Col>
           </Row>
         </div>
@@ -179,14 +82,13 @@ class EditProfile extends Component {
     );
   }
 }
-const EditProfileForm = Form.create()(EditProfile);
 
 const mapStateToProps = ({auth, profileData}) => {
-  const {authUser} = auth;
+  const {authUser, passwdChanged} = auth;
   const {profile} = profileData;
-  return {authUser, profile};
+  return {authUser, passwdChanged, profile};
 };
 
-export default connect(mapStateToProps, {getUserProfile})(EditProfileForm);
+export default connect(mapStateToProps, {changeAvatar, getUserProfile, userSignOut})(EditProfile);
 
 

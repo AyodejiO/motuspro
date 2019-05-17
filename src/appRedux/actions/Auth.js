@@ -5,10 +5,12 @@ import {
   FETCH_START,
   FETCH_SUCCESS,
   INIT_URL,
+  SHOW_MESSAGE,
   SIGNOUT_USER_SUCCESS,
   USER_DATA,
   USER_TOKEN_SET,
-  USER_EXPIRATION_SET
+  USER_EXPIRATION_SET,
+  USER_PASSWORD_CHANGED
 } from "../../constants/ActionTypes";
 import axios from 'util/Api';
 
@@ -44,7 +46,7 @@ export const userSignUp = ({email, password, name}) => {
       dispatch({type: FETCH_ERROR, payload: error.message});
       console.log("Error****:", error.message);
     });
-  }
+  };
 };
 
 export const userSignIn = ({email, password}) => {
@@ -116,6 +118,76 @@ export const getUser = () => {
   };
 };
 
+export const changeAvatar = ({file, onSuccess}) => {
+  return (dispatch) => {
+    console.log(file);
+    dispatch({type: FETCH_START});
+    axios.post('auth/me/avatar', {
+      headers: {
+        'Content-Type': 'image/png',
+      },
+      avatar: file
+    }).then(({data}) => {
+      if (data.result) {
+        localStorage.removeItem("token");
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SIGNOUT_USER_SUCCESS});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.error});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
+export const changePasswd = ({old_password, new_password, confirm_password}) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post('auth/me/password', {
+        old_password: old_password,
+        new_password: new_password,
+        confirm_password: confirm_password
+      }
+    ).then(({data}) => {
+      if (data.message) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: USER_PASSWORD_CHANGED, payload: true});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.error});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.response.data});
+      dispatch({type: SHOW_MESSAGE, payload: error.response.data.message});
+      console.log("Error****:", error);
+    });
+  };
+};
+
+export const editDetails = ({old_password, new_password, confirm_password}) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post('auth/me/password', {
+        old_password: old_password,
+        new_password: new_password,
+        confirm_password: confirm_password
+      }
+    ).then(({data}) => {
+      if (data.result) {
+        localStorage.removeItem("token");
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SIGNOUT_USER_SUCCESS});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.error});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
 export const userSignOut = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -124,6 +196,7 @@ export const userSignOut = () => {
       localStorage.removeItem("token");
       dispatch({type: FETCH_SUCCESS});
       dispatch({type: SIGNOUT_USER_SUCCESS});
+      dispatch({type: USER_PASSWORD_CHANGED, payload: false});
     }).catch(function (error) {
       localStorage.removeItem("token");
       dispatch({type: FETCH_SUCCESS});

@@ -3,7 +3,7 @@
 import React, {Component} from "react";
 import {Col, Row} from "antd";
 import {connect} from "react-redux";
-import About from "components/profile/About/index";
+import Client from "components/profile/Client/index";
 import Contact from "components/profile/Contact/index";
 
 import {friendList} from '../data';
@@ -26,7 +26,7 @@ class MainProfile extends Component {
         <div className="gx-profile-content">
           <Row>
             <Col xl={16} lg={14} md={14} sm={24} xs={24}>
-              <About/>
+              <Client/>
             </Col>
 
             <Col xl={8} lg={10} md={10} sm={24} xs={24}>

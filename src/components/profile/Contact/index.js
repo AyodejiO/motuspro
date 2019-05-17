@@ -1,17 +1,11 @@
 import React from "react";
 import Moment from 'react-moment';
-import {Link} from "react-router-dom";
 import Widget from "components/Widget";
 
-const CreateNew = (
-  <Link to="/profile/edit">
-    <i className="icon icon-setting gx-text-grey"/>
-  </Link>
-);
 
 const Contact = ({user}) => {
   return (
-    <Widget title="Contact" styleName="gx-card-profile-sm" extra={CreateNew}>
+    <Widget title="Contact" styleName="gx-card-profile-sm">
       <div className="gx-media gx-align-items-center gx-flex-nowrap gx-pro-contact-list">
         <div className="gx-mr-3">
           <i className={`icon icon-email gx-fs-xxl gx-text-grey`}/>

@@ -1,10 +1,15 @@
 /*jshint esversion: 6 */
 
-import {INIT_URL, SIGNOUT_USER_SUCCESS, USER_DATA, USER_TOKEN_SET, USER_EXPIRATION_SET} from "../../constants/ActionTypes";
+import {
+  INIT_URL, 
+  SIGNOUT_USER_SUCCESS, 
+  USER_DATA, 
+  USER_TOKEN_SET, USER_EXPIRATION_SET, USER_PASSWORD_CHANGED} from "../../constants/ActionTypes";
 
 const INIT_STATE = {
   token: JSON.parse(localStorage.getItem('token')),
   initURL: '',
+  passwdChanged: false,
   authUser: JSON.parse(localStorage.getItem('user')),
   expires_in: JSON.parse(localStorage.getItem('expires_in')),
 };
@@ -47,7 +52,14 @@ export default (state = INIT_STATE, action) => {
       };
     }
 
+    case USER_PASSWORD_CHANGED: {
+      return {
+        ...state,
+        passwdChanged: action.payload,
+      };
+    }
+
     default:
       return state;
   }
-}
+};

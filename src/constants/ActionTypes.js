@@ -32,6 +32,7 @@ export const INIT_URL = 'INIT_URL';
 export const USER_DATA = 'user_data';
 export const USER_TOKEN_SET = 'user_token_set';
 export const USER_EXPIRATION_SET = 'user_expiration_set';
+export const USER_PASSWORD_CHANGED = 'user_password_changed';
 
 //Client Constants
 export const CREATE_CLIENT = 'CREATE_CLIENT';

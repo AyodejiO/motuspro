@@ -59,6 +59,7 @@
     "redux-thunk": "^2.3.0",
     "rheostat": "^3.0.1",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^8.11.1",
     "url-search-params": "^1.1.0",
     "victory": "^0.27.2"
   },

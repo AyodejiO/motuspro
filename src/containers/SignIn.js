@@ -3,7 +3,7 @@
 import React from "react";
 import {Button, Form, Input} from "antd";
 import {connect} from "react-redux";
-// import {Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import {userSignIn} from "../appRedux/actions/Auth";
 import IntlMessages from "util/IntlMessages";
@@ -68,25 +68,12 @@ class SignIn extends React.Component {
                     <Input type="password" placeholder="Password"/>
                   )}
                 </FormItem>
-                {/* <FormItem>
-                  {getFieldDecorator('remember', {
-                    valuePropName: 'checked',
-                  })(
-                    <Checkbox><IntlMessages id="appModule.iAccept"/></Checkbox>
-                  )}
-                  <span className="gx-signup-form-forgot gx-link"><IntlMessages
-                    id="appModule.termAndCondition"/></span>
-                </FormItem> */}
-                <FormItem>
+                <FormItem className="gx-mb-1">
                   <Button type="primary" className="gx-mb-0" htmlType="submit">
                     <IntlMessages id="app.userAuth.signIn"/>
                   </Button>
-                  {/* <span><IntlMessages id="app.userAuth.or"/></span> <Link to="/signup"><IntlMessages
-                  id="app.userAuth.signUp"/></Link> */}
                 </FormItem>
-                {/* <span
-                  className="gx-text-light gx-fs-sm"> demo user email: 'demo@example.com' and password: 'demo#123'
-                </span> */}
+                <Link className="gx-login-form-forgot gx-text-blue" to="/custom-views/user-auth/forgot-password">Forgot password?</Link>
               </Form>
             </div>
             <InfoView/>

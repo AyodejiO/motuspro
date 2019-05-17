@@ -80,7 +80,7 @@ class SidebarContent extends Component {
               theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
               mode="inline">
 
-              {authUser ? routes[authUser.role].map((route) => this.sidebarlink(route, navStyle)): null} 
+              {authUser && authUser.account_verified_at ? routes[authUser.role].map((route) => this.sidebarlink(route, navStyle)): null} 
 
             </Menu>
           </CustomScrollbars>
