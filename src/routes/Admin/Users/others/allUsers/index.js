@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 
 // eslint-disable-next-line
+import Moment from 'react-moment';
 import {Button, Card, Icon, Table} from "antd";
 
 import IntlMessages from "../../../../../util/IntlMessages";
@@ -14,7 +15,7 @@ const columns = [{
   title: 'Name',
   dataIndex: 'name',
   key: 'name',
-  width: 250,
+  width: 200,
   render: text => <span className="gx-link">{text}</span>,
 }, {
   title: 'Email',
@@ -30,7 +31,18 @@ const columns = [{
   title: 'Type',
   dataIndex: 'role',
   key: 'role',
+  width: 60,
+}, {
+  title: 'Activation Date',
+  dataIndex: 'account_verified_at',
+  key: 'account_verified_at',
   width: 100,
+  render: (text) => {
+    if(text) {
+      return (<Moment format="DD/MM/YYYY">{text}</Moment>);
+    }
+    // ({text? (<Moment>{text}</Moment>) : null})
+  },
 }, {
   title: 'Action',
   key: 'action',

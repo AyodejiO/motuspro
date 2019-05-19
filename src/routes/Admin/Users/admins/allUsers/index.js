@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 
 // eslint-disable-next-line
+import Moment from 'react-moment';
 import {Button, Card, Icon, Table} from "antd";
 
 import IntlMessages from "../../../../../util/IntlMessages";
@@ -27,10 +28,16 @@ const columns = [{
   key: 'phone',
   width: 150,
 }, {
-  title: 'Type',
-  dataIndex: 'role',
-  key: 'role',
+  title: 'Activation Date',
+  dataIndex: 'account_verified_at',
+  key: 'account_verified_at',
   width: 100,
+  render: (text) => {
+    if(text) {
+      return (<Moment format="DD/MM/YYYY">{text}</Moment>);
+    }
+    // ({text? (<Moment>{text}</Moment>) : null})
+  },
 }, {
   title: 'Action',
   key: 'action',
@@ -111,10 +118,10 @@ class Users extends Component {
 }
 
 const mapStateToProps = ({auth, userData, commonData}) => {
-  const {token} = auth;
+  const {token, authUser} = auth;
   const {listSuccess, allUsers} = userData;
   const {loading} = commonData;
-  return {token, listSuccess, loading, allUsers};
+  return {token, listSuccess, loading, authUser, allUsers};
 };
 
 export default connect(mapStateToProps, {getAdminUsers})(Users);

@@ -5,7 +5,7 @@
   "homepage": "https://motus.pro/",
   "engines": {
     "node": "10.15.3",
-    "yarn": "1.15.2"
+    "yarn": "1.16.0"
   },
   "dependencies": {
     "@amcharts/amcharts3-react": "^3.1.0",
@@ -23,6 +23,7 @@
     "less-vars-to-js": "^1.2.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.25",
     "npm": "^6.9.0",
     "nprogress": "^0.2.0",
     "path": "^0.12.7",
@@ -68,7 +69,6 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "heroku-postbuild": "react-app-rewired build",
-    "postinstall": "react-app-rewired build",
     "test": "react-app-rewired --env=jsdom"
   },
   "devDependencies": {
@@ -76,7 +76,7 @@
     "babel-plugin-import": "^1.8.0",
     "customize-cra": "^0.2.10",
     "react-app-rewired": "^2.0.2",
-    "yarn": "^1.7.0"
+    "yarn": "^1.16.0"
   },
   "browserslist": [
     ">0.2%",

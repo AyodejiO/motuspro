@@ -3,6 +3,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Avatar, Popover} from "antd";
+import {Link} from "react-router-dom";
 import {userSignOut} from "appRedux/actions/Auth";
 import placeholder from "../../assets/images/placeholder.jpg";
 
@@ -12,8 +13,7 @@ class UserProfile extends Component {
     const {authUser} = this.props;
     const userMenuOptions = (
       <ul className="gx-user-popover">
-        <li>My Account</li>
-        <li>Connections</li>
+        <li><Link to="/profile"> My Account </Link></li>
         <li onClick={() => this.props.userSignOut()}>Logout
         </li>
       </ul>

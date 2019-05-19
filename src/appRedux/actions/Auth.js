@@ -120,21 +120,26 @@ export const getUser = () => {
 
 export const changeAvatar = ({file, onSuccess}) => {
   return (dispatch) => {
-    console.log(file);
+    let data = new FormData();
     dispatch({type: FETCH_START});
-    axios.post('auth/me/avatar', {
-      headers: {
-        'Content-Type': 'image/png',
-      },
-      avatar: file
-    }).then(({data}) => {
-      if (data.result) {
-        localStorage.removeItem("token");
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: SIGNOUT_USER_SUCCESS});
-      } else {
-        dispatch({type: FETCH_ERROR, payload: data.error});
-      }
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' }
+    };
+    data.append('avatar', file, file.name);
+    axios.post('auth/me/avatar', data, config)
+    .then(({data}) => {
+      var user = JSON.parse(localStorage.getItem('user'));
+      user.avatar = data.image;
+      dispatch({type: USER_DATA, payload: user});
+      // console.log(data);
+      onSuccess();
+      // if (data.result) {
+      //   localStorage.removeItem("token");
+      //   dispatch({type: FETCH_SUCCESS});
+      //   dispatch({type: SIGNOUT_USER_SUCCESS});
+      // } else {
+      //   dispatch({type: FETCH_ERROR, payload: data.error});
+      // }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
       console.log("Error****:", error.message);

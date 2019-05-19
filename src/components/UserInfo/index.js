@@ -1,15 +1,17 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Avatar, Popover} from "antd";
+import {Link} from "react-router-dom";
 import {userSignOut} from "appRedux/actions/Auth";
+import placeholder from "assets/images/placeholder.jpg";
 
 class UserInfo extends Component {
 
   render() {
+    const {authUser} = this.props;
     const userMenuOptions = (
       <ul className="gx-user-popover">
-        <li>My Account</li>
-        <li>Connections</li>
+        <li><Link to="/profile"> My Account </Link></li>
         <li onClick={() => this.props.userSignOut()}>Logout
         </li>
       </ul>
@@ -18,7 +20,7 @@ class UserInfo extends Component {
     return (
       <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={userMenuOptions}
                trigger="click">
-        <Avatar src='https://via.placeholder.com/150x150'
+        <Avatar src={authUser.avatar || placeholder}
                 className="gx-avatar gx-pointer" alt=""/>
       </Popover>
     )
@@ -26,4 +28,9 @@ class UserInfo extends Component {
   }
 }
 
-export default connect(null, {userSignOut})(UserInfo);
+const mapStateToProps = ({auth}) => {
+  const {authUser} = auth;
+  return {authUser}
+};
+
+export default connect(mapStateToProps, {userSignOut})(UserInfo);
