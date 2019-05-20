@@ -10,7 +10,7 @@ const INIT_STATE = {
   token: JSON.parse(localStorage.getItem('token')),
   initURL: '',
   passwdChanged: false,
-  authUser: JSON.parse(localStorage.getItem('user'))  || {},
+  authUser: JSON.parse(localStorage.getItem('user'))  || null,
   // authUser: {},
   expires_in: JSON.parse(localStorage.getItem('expires_in')),
 };

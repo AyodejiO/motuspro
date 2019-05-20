@@ -180,7 +180,8 @@ export const editDetails = ({old_password, new_password, confirm_password}) => {
       }
     ).then(({data}) => {
       if (data.result) {
-        localStorage.removeItem("token");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SIGNOUT_USER_SUCCESS});
       } else {
@@ -199,6 +200,7 @@ export const userSignOut = () => {
     axios.post('auth/logout')
     .then(() => {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       dispatch({type: FETCH_SUCCESS});
       dispatch({type: SIGNOUT_USER_SUCCESS});
       dispatch({type: USER_PASSWORD_CHANGED, payload: false});

@@ -92,11 +92,13 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
     if (nextProps.token) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
     }
     if (nextProps.token && !nextProps.authUser) {
-      this.props.getUser()
+      console.log("nextProps.token")
+      this.props.getUser();
 
     }
   }
