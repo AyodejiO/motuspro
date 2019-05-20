@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import NextApp from './NextApp';
-import registerServiceWorker from './registerServiceWorker';
+import register from './registerServiceWorker';
 // Add this import:
 import {AppContainer} from 'react-hot-loader';
 
@@ -20,7 +20,7 @@ const render = Component => {
 };
 
 // Do this once
-registerServiceWorker();
+register();
 
 // Render once
 render(NextApp);
