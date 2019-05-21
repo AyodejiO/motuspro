@@ -101,10 +101,10 @@ export const getUser = () => {
     dispatch({type: FETCH_START});
     axios.get('auth/me',
     ).then(({data}) => {
-      // console.log("userSignIn: ", data);
       if (data) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: USER_DATA, payload: data});
+        localStorage.setItem("user", JSON.stringify(data));
       } else {
         dispatch({type: FETCH_ERROR, payload: data.error});
       }
@@ -129,6 +129,7 @@ export const changeAvatar = ({file, onSuccess}) => {
     axios.post('auth/me/avatar', data, config)
     .then(({data}) => {
       var user = JSON.parse(localStorage.getItem('user'));
+      // console.log("user", user);
       user.avatar = data.image;
       dispatch({type: USER_DATA, payload: user});
       // console.log(data);
@@ -200,6 +201,7 @@ export const userSignOut = () => {
     axios.post('auth/logout')
     .then(() => {
       localStorage.removeItem("token");
+      localStorage.removeItem("expires_in");
       localStorage.removeItem("user");
       dispatch({type: FETCH_SUCCESS});
       dispatch({type: SIGNOUT_USER_SUCCESS});
