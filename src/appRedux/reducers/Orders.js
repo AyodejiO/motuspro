@@ -1,16 +1,23 @@
 /*jshint esversion: 6 */
 
-import {CREATE_ORDER_SUCCESS, LIST_ORDER_SUCCESS, ALL_ORDERS_DATA} from "../../constants/ActionTypes";
+import {CREATE_ORDER_SUCCESS, LIST_ORDER_SUCCESS, ALL_ORDERS_DATA, NEW_ORDER_ID} from "../../constants/ActionTypes";
 
 const INIT_STATE = {
   createSuccess: false,
   listSuccess: false,
-  allOrders: []
+  allOrders: [],
+  newOrder: ''
 };
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
 
+    case ALL_ORDERS_DATA: {
+      return {
+        ...state,
+        allOrders: action.payload
+      }
+    }
     case CREATE_ORDER_SUCCESS: {
       return {
         ...state,
@@ -25,10 +32,10 @@ export default (state = INIT_STATE, action) => {
       }
     }
 
-    case ALL_ORDERS_DATA: {
+    case NEW_ORDER_ID: {
       return {
         ...state,
-        allOrders: action.payload
+        newOrder: action.payload
       }
     }
 

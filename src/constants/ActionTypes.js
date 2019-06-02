@@ -47,10 +47,11 @@ export const LIST_VENDOR_SUCCESS = 'LIST_VENDOR_SUCCESS';
 export const ALL_VENDORS_DATA = 'ALL_VENDORS_DATA';
 
 //Order Constants
+export const ALL_ORDERS_DATA = 'ALL_ORDERS_DATA';
 export const CREATE_ORDER = 'CREATE_ORDER';
 export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
 export const LIST_ORDER_SUCCESS = 'LIST_ORDER_SUCCESS';
-export const ALL_ORDERS_DATA = 'ALL_ORDERS_DATA';
+export const NEW_ORDER_ID = 'NEW_ORDER_ID';
 
 //Profile Constants
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';

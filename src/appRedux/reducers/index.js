@@ -16,7 +16,7 @@ const reducers = combineReducers({
   auth: Auth,
   clientData: Clients,
   commonData: Common,
-  orderData: Orders,
+  ordersData: Orders,
   profileData: Profile,
   settings: Settings,
   userData: Users,

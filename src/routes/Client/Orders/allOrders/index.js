@@ -1,36 +1,69 @@
 /*jshint esversion: 6 */
 
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+// import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 
+import {NewOrderForm} from "../newOrder";
 // eslint-disable-next-line
-import {Button, Card, Icon, Table} from "antd";
+import Moment from 'react-moment';
+import {Button, Card, Icon, Table, Tag, notification} from "antd";
 
 // import NewOrder from "../newOrder";
 import IntlMessages from "../../../../util/IntlMessages";
 
 import {getOrders} from "../../../../appRedux/actions/Orders";
+import {addOrder} from "../../../../appRedux/actions/Orders";
+import {addOrderForm} from "../../../../appRedux/actions/Orders";
 
 const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
+  title: 'Reference',
+  dataIndex: 'client_ref',
+  key: 'client_ref',
   width: 200,
-  render: text => <span className="gx-link">{text}</span>,
+  render: text => <Link to={`orders/${text}`}><span className="gx-link">{text}</span></Link>,
 }, {
-  title: 'Tin Number',
-  dataIndex: 'tin',
-  key: 'tin',
-  width: 250,
+  title: 'Description',
+  dataIndex: 'order_desc',
+  key: 'order_desc',
+  width: 400,
 }, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
+  title: 'Order Items',
+  dataIndex: 'items',
+  key: 'items',
+  // className: "gx-text-center",
+  width: 150
+},{
+  title: 'Status',
+  dataIndex: 'status',
+  key: 'status',
+  width: 150,
+  render: (text, record) => {  
+    switch(text) {
+      case 'inactive':
+        return (<Tag color="#ff6601">{text}</Tag>)
+      case 'active':
+          return (<Tag color="#003366">{text}</Tag>)
+      default:
+        return (<span>{text}</span>);
+        // break
+    }
+  },
+},{
+  title: 'Created',
+  dataIndex: 'created_at',
+  key: 'created_at',
+  width: 150,
+  render: (text) => {
+    if(text) {
+      return (<Moment format="DD/MM/YYYY">{text}</Moment>);
+    }
+    // ({text? (<Moment>{text}</Moment>) : null})
+  },
 }, {
   title: 'Action',
   key: 'action',
-  width: 200,
   render: (text, record) => (
     <span>
       <span className="gx-link ant-dropdown-link">
@@ -50,6 +83,7 @@ class AllOrders extends Component {
     pagination,
     size: 'middle',
     showHeader,
+    visible: false,
     rowSelection: {},
     scroll,
   };
@@ -59,25 +93,25 @@ class AllOrders extends Component {
     this.props.getOrders();
   }
 
-  handleSizeChange = (e) => {
-    this.setState({size: e.target.value});
+  showModal = () => {
+    this.setState({ visible: true });
   };
 
-  handleShowForm = (e) => {
-    this.setState({
-      visible: true,
-    });
+  handleCancel = () => {
+    this.setState({ visible: false });
   };
-  handleOk = () => {
-    this.setState({
-      confirmLoading: true,
+
+  handleCreate = () => {
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+      if (!err) {
+        this.props.addOrder(values);
+        return;
+      }
+      // console.log('Received values of form: ', values);
+      // form.resetFields();
+      // this.setState({ visible: false });
     });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
   };
   handleCancel = () => {
     console.log('Clicked cancel button');
@@ -86,31 +120,52 @@ class AllOrders extends Component {
     });
   };
 
-  CreateNew = (
-    <Link to="/orders/new">
-      <Button type="primary" size="default" icon="add" onClick={this.handleShowForm}>
-        <IntlMessages id="sidebar.orders.new"/>
-      </Button>
-    </Link>
+  openNotification = (type, ref) => {
+    notification[type]({
+      message: `Order ${ref} created`,
+      description: 'You can now add items to order.'
+    });
+  };
+
+  CreateNew = loading => (
+    <Button type="primary" disabled={loading} size="default" icon="add" onClick={this.showModal}>
+      <IntlMessages id="sidebar.orders.new"/>
+    </Button>
   );
 
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
   render() {
-    const {loading, allOrders} = this.props
+    const {createSuccess, loading, allOrders, newOrder} = this.props
+    if(createSuccess) {
+      this.openNotification('success', newOrder);
+      this.props.addOrderForm();
+      return ( <Redirect to={`/orders/${newOrder}`}/> );
+    }
     return (
       <div>
-        <Card className="gx-card" title="Orders" extra={this.CreateNew}>
+        <Card className="gx-card" title="Orders" extra={this.CreateNew(loading)}>
           <Table className="gx-table-responsive" {...this.state} loading={loading} rowKey="id" columns={columns} dataSource={allOrders}/>
         </Card>
+        <NewOrderForm
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
+          confirmLoading={loading}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({auth, orderData, commonData}) => {
+const mapStateToProps = ({auth, ordersData, commonData}) => {
   const {token} = auth;
-  const {listSuccess, allOrders} = orderData;
+  const {listSuccess, createSuccess, allOrders, newOrder} = ordersData;
   const {loading} = commonData;
-  return {token, listSuccess, loading, allOrders};
+  return {token, listSuccess, loading, allOrders, createSuccess, newOrder};
 };
 
-export default connect(mapStateToProps, {getOrders})(AllOrders);
+export default connect(mapStateToProps, {addOrder, addOrderForm, getOrders})(AllOrders);

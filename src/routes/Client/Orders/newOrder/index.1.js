@@ -1,45 +1,90 @@
 /*jshint esversion: 6 */
+
+import "./index.less";
 import React, {Component} from "react";
 import {connect} from "react-redux";
 
 import {Redirect} from "react-router-dom";
-import {Button, Card, Form, Icon, Input, Tooltip, Steps, Spin, notification} from "antd";
+import {Button, Card, Form, Icon, Input, Tooltip, Spin, Row, Col, notification} from "antd";
 
-import IntlMessages from "../../../util/IntlMessages";
-import {addClient} from "../../../appRedux/actions/Clients";
+import IntlMessages from "../../../../util/IntlMessages";
+import {addOrder, addOrderForm} from "../../../../appRedux/actions/Orders";
+
+import './index.less';
 
 const FormItem = Form.Item;
+const {TextArea} = Input;
 
-const Step = Steps.Step;
-
-class NewClient extends Component {
+class NewOrder extends Component {
     state = {
+      reference: '',
+      items: [
+        {description: '', size: '', quantity: '', category: ''}
+      ],
       confirmDirty: false,
       autoCompleteResult: [],
+    };
+
+    componentDidMount() {
+      // const {items} = this.state;
+      // this.props.form.setFieldsValue({
+      //   client_ref: "client_ref",
+      //   order_desc: "order_desc"
+      //   // items: [{description: "", size: "", quantity: "", category: ""}]
+      // })
+    }
+
+    add = () => {
+      const {form} = this.props;
+      // can use data-binding to get
+      const items = form.getFieldValue('items');
+      const nextItems = items.concat({description: '', size: '', quantity: '', category: ''});
+      // can use data-binding to set
+      // important! notify form to detect changes
+      form.setFieldsValue({
+        items: nextItems,
+      });
+    };
+
+    remove = (i) => {
+      const {form} = this.props;
+      // can use data-binding to get
+      const items = form.getFieldValue('items');
+      // We need at least one passenger
+      if (items.length === 1) {
+        return;
+      }
+  
+      // can use data-binding to set
+      form.setFieldsValue({
+        items: items.filter(item => item !== i),
+      });
     };
 
     handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) { 
-          this.props.addClient(values);
+          console.log(values);
+          // this.props.addOrder(values);
         }
       });
-    }
+    };
+
     handleConfirmBlur = (e) => {
       const value = e.target.value;
       this.setState({confirmDirty: this.state.confirmDirty || !!value});
-    }
+    };
 
     openNotification = (type) => {
       notification[type]({
-        message: 'Client Created',
-        description: 'Client and User account created successfully.'
+        message: 'Order Created',
+        description: 'Order and User account created successfully.'
       });
     };
 
     goBack = () => {
-      this.props.history.goBack()
+      this.props.history.goBack();
     };
 
     GoBack = (
@@ -49,20 +94,35 @@ class NewClient extends Component {
     );
   
     render() {
-      const {getFieldDecorator} = this.props.form;
+      const {getFieldDecorator, getFieldProps, getFieldValue} = this.props.form;
+      getFieldDecorator('items', {initialValue: [{description: "", size: "", quantity: "", category: ""}]});
+      const items = getFieldValue('items');
+      console.log(items)
+      // const {items} = this.state;
       const {createSuccess, loading} = this.props;
       if (createSuccess) {
-          this.openNotification('success')
-          return ( <Redirect to={'/clients'}/> );
+          this.openNotification('success');
+          this.props.addOrderForm();
+          return ( <Redirect to={'/orders'}/> );
       }
       const formItemLayout = {
         labelCol: {
           xs: {span: 24},
-          sm: {span: 5},
+          sm: {span: 6},
         },
         wrapperCol: {
           xs: {span: 24},
-          sm: {span: 14},
+          sm: {span: 17},
+        },
+      };
+      const formItemLayout2 = {
+        labelCol: {
+          xs: {span: 0},
+          sm: {span: 0},
+        },
+        wrapperCol: {
+          xs: {span: 24},
+          sm: {span: 24},
         },
       };
       const tailFormItemLayout = {
@@ -80,37 +140,22 @@ class NewClient extends Component {
       
       return (
         <Spin spinning={loading}>
-          <Card className="gx-card" title="New Client" extra={this.GoBack}>
-            <br />
+          <Card className="gx-card" title="New Order" extra={this.GoBack}>
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
-              <Steps>
-                <Step title="Company Details" icon={<Icon type="bank" />} />
-              </Steps>
-              <br />
-              <div className="steps-content">
+              <div>
                 <FormItem
                   {...formItemLayout}
                   label={(
                     <span>
-                    Name&nbsp;
-                      <Tooltip title="What do you refer to this client as?">
+                    Reference No.&nbsp;
+                      <Tooltip title="Use organization reference number. Must be unique?">
                       <Icon type="question-circle-o"/>
                     </Tooltip>
                   </span>
                   )}
                 >
-                  {getFieldDecorator('client_name', {
-                    rules: [{required: true, message: 'Please input the Client name!', whitespace: true}],
-                  })(
-                    <Input/>
-                  )}
-                </FormItem>
-                <FormItem
-                  {...formItemLayout}
-                  label="Address"
-                >
-                  {getFieldDecorator('address', {
-                    rules: [{required: true, message: 'Please input the Client name!', whitespace: true}],
+                  {getFieldDecorator('client_ref', {
+                    rules: [{required: true, message: 'Please input a reference number!', whitespace: true}],
                   })(
                     <Input/>
                   )}
@@ -119,68 +164,108 @@ class NewClient extends Component {
                   {...formItemLayout}
                   label={(
                     <span>
-                    TIN&nbsp;
-                      <Tooltip title="Client Tax Identification Number">
-                      <Icon type="question-circle-o"/>
-                    </Tooltip>
-                  </span>
-                  )}
-                >
-                  {getFieldDecorator('tin', {
-                    rules: [{required: true, message: 'Please input the Tax ID!', whitespace: true}],
-                  })(
-                    <Input/>
-                  )}
-                </FormItem>
-              </div>
-              <Steps>
-                <Step title="User Details" icon={<Icon type="user" />} />
-              </Steps>
-              <br />
-              <div className="steps-content">
-                <FormItem
-                  {...formItemLayout}
-                  label={(
-                    <span>
-                      Name&nbsp;
+                      Description&nbsp;
                       <Tooltip title="What is the name of the primary user?">
                       <Icon type="question-circle-o"/>
                     </Tooltip>
                   </span>
                   )}
                 >
-                  {getFieldDecorator('admin_name', {
+                  {getFieldDecorator('order_desc', {
                     rules: [{required: true, message: 'You must enter a User!', whitespace: true}],
                   })(
-                    <Input/>
+                    <TextArea rows={4} columns={2}/>
                   )}
                 </FormItem>
-                <FormItem
-                  {...formItemLayout}
-                  label="E-mail"
-                >
-                  {getFieldDecorator('admin_email', {
-                    rules: [{
-                      type: 'email', message: 'The input is not valid E-mail!',
-                    }, {
-                      required: true, message: 'Please input user E-mail!',
-                    }],
-                  })(
-                    <Input id="email1"/>
-                  )}
-                </FormItem>
-                <FormItem
-                  {...formItemLayout}
-                  label="Phone Number"
-                >
-                  {getFieldDecorator('admin_phone', {
-                    rules: [{required: true, message: 'Please input user phone number!'}],
-                  })(
-                    <Input style={{width: '100%'}}/>
-                  )}
-                </FormItem>
+                <legend><h3>Items</h3></legend>
+               { items.map((item, index) => 
+                    (
+                      <div className="pdynamic" key={index}>
+                        <Row className="border">
+                          <Col lg={12} md={12} sm={24} xs={24}>
+                            <FormItem
+                              {...formItemLayout2}
+                              required={false}
+                            >
+                              {getFieldDecorator(`items[${index}].category`, {
+                                rules: [{
+                                  required: true,
+                                  whitespace: true,
+                                  message: "Please input passenger's name or delete this field.",
+                                }],
+                              })(
+                                <Input placeholder="Category"/>
+                              )}                       
+                            </FormItem>
+                          </Col>
+                          <Col lg={12} md={12} sm={24} xs={24}>
+                            <FormItem
+                              {...formItemLayout2}
+                              required={false}
+                            >
+                              {getFieldDecorator(`size-${index}`, {
+                                rules: [{
+                                  required: true,
+                                  whitespace: true,
+                                  message: "Please input passenger's name or delete this field.",
+                                }],
+                              })(
+                                <Input placeholder="Size"/>
+                              )}                       
+                            </FormItem>
+                          </Col>
+                          <Col lg={12} md={12} sm={24} xs={24}>
+                            <FormItem
+                              {...formItemLayout2}
+                              required={false}
+                            >
+                              {getFieldDecorator(`quantity-${index}`, {
+                                validateTrigger: ['onChange', 'onBlur'],
+                                rules: [{
+                                  required: true,
+                                  whitespace: true,
+                                  message: "Please input passenger's name or delete this field.",
+                                }],
+                              })(
+                                <Input placeholder="Quantity"/>
+                              )}                       
+                            </FormItem>
+                          </Col>
+                          <Col lg={12} md={12} sm={24} xs={24}>
+                            <FormItem
+                              {...formItemLayout2}
+                              required={false}
+                            >
+                              {getFieldDecorator(`description-${index}`, {
+                                validateTrigger: ['onChange', 'onBlur'],
+                                rules: [{
+                                  required: true,
+                                  whitespace: true,
+                                  message: "Please input passenger's name or delete this field.",
+                                }],
+                              })(
+                                <Input placeholder="Description"/>
+                              )}                       
+                            </FormItem>
+                          </Col>
+                          <Col lg={24} md={24} sm={24} xs={24}>
+                            {items.length > 1 ? (<FormItem {...formItemLayout}>
+                              <Button type="dashed" onClick={this.add} style={{width: '40%'}}>
+                                <Icon type="minus-circle-o"/> Remove Item
+                              </Button>
+                            </FormItem>) : null}
+                          </Col>
+                        </Row>
+                      </div>
+                  )
+               )}
               </div>
               <br />
+              <FormItem {...formItemLayout}>
+                <Button type="dashed" onClick={this.add} style={{width: '40%'}}>
+                  <Icon type="plus"/> Add Item
+                </Button>
+              </FormItem>
               <FormItem {...tailFormItemLayout}>
                 <Button type="primary" htmlType="submit">Submit</Button>
               </FormItem>
@@ -189,17 +274,16 @@ class NewClient extends Component {
         </Spin>
       );
     }
-  
   }
   
-const RegistrationForm = Form.create()(NewClient);
-// export default RegistrationForm;
+const NewOrderForm = Form.create()(NewOrder);
+// export default NewOrderForm;
 
-const mapStateToProps = ({auth, clientData, commonData}) => {
+const mapStateToProps = ({auth, orderData, commonData}) => {
   const {token} = auth;
-  const {createSuccess} = clientData;
+  const {createSuccess} = orderData;
   const {loading} = commonData;
   return {token, createSuccess, loading};
 };
 
-export default connect(mapStateToProps, {addClient})(RegistrationForm);
+export default connect(mapStateToProps, {addOrder, addOrderForm})(NewOrderForm);

@@ -8,7 +8,8 @@ import {
   INIT_URL,
   CREATE_ORDER_SUCCESS,
   LIST_ORDER_SUCCESS,
-  ALL_ORDERS_DATA
+  ALL_ORDERS_DATA,
+  NEW_ORDER_ID
 } from "../../constants/ActionTypes";
 import axios from 'util/Api';
 
@@ -22,7 +23,7 @@ export const setInitUrl = (url) => {
 export const getOrders = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.get('orders', 
+    axios.get('user/orders', 
     ).then(({data}) => {
       if (data.data) {
         dispatch({type: FETCH_SUCCESS});
@@ -61,20 +62,23 @@ export const getAdminOrders = () => {
 };
 
 export const addOrderForm = () => {
-  return (dispatch) => {
-    dispatch({type: CREATE_ORDER_SUCCESS, payload: false});
+  return {
+    type: CREATE_ORDER_SUCCESS,
+    payload: false
   };
 };
 
-export const addOrder = ({order_name, admin_name, admin_email, admin_phone}) => {
+export const addOrder = ({client_ref, order_desc}) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.post('admin/orders', {
-        order_name, admin_name, admin_email, admin_phone
+    axios.post('user/orders', {
+        client_ref, order_desc
       }
     ).then(({data}) => {
+      console.log(data);
       if (data) {
         dispatch({type: FETCH_SUCCESS});
+        dispatch({type: NEW_ORDER_ID, payload: data.ref});
         dispatch({type: CREATE_ORDER_SUCCESS, payload: true});
       } else {
         console.log("payload: data.error", data.error);
