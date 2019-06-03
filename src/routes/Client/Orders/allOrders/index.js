@@ -22,7 +22,7 @@ const columns = [{
   dataIndex: 'client_ref',
   key: 'client_ref',
   width: 200,
-  render: text => <Link to={`orders/${text}`}><span className="gx-link">{text}</span></Link>,
+  render: text => <Link to={`orders/${text}`}><span className="gx-link gx-text-info">{text}</span></Link>,
 }, {
   title: 'Description',
   dataIndex: 'order_desc',
