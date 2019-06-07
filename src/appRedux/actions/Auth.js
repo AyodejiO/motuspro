@@ -121,6 +121,7 @@ export const getUser = () => {
 export const changeAvatar = ({file, onSuccess}) => {
   return (dispatch) => {
     let data = new FormData();
+    // console.log(file);
     dispatch({type: FETCH_START});
     const config = {
       headers: { 'content-type': 'multipart/form-data' }

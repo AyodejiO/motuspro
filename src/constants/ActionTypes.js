@@ -54,6 +54,18 @@ export const SINGLE_ORDER_DATA = 'SINGLE_ORDER_DATA';
 export const LIST_ORDERS_SUCCESS = 'LIST_ORDERS_SUCCESS';
 export const NEW_ORDER_ID = 'NEW_ORDER_ID';
 
+//Items Constants
+export const ALL_ITEMS_DATA = 'ALL_ITEMS_DATA';
+export const CREATE_ITEM = 'CREATE_ITEM';
+export const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS';
+export const SINGLE_ITEM_DATA = 'SINGLE_ITEM_DATA';
+export const LIST_ITEMS_SUCCESS = 'LIST_ITEMS_SUCCESS';
+export const NEW_ITEM = 'NEW_ITEM';
+export const FETCH_ITEM_START = 'fetch_item_start';
+export const FETCH_ITEM_STATUS = 'fetch_item_status';
+export const FETCH_ITEM_SUCCESS = 'fetch_item_success';
+export const FETCH_ITEM_ERROR = 'fetch_item_error';
+
 //Profile Constants
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
 export const LIST_PROFILE_SUCCESS = 'LIST_PROFILE_SUCCESS';
@@ -67,3 +79,11 @@ export const CREATE_USER = 'CREATE_USER';
 export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
 export const LIST_USER_SUCCESS = 'LIST_USER_SUCCESS';
 export const ALL_USERS_DATA = 'ALL_USERS_DATA';
+
+//Categories Constants
+export const ALL_CATS_DATA = 'ALL_CATS_DATA';
+export const CREATE_CAT = 'CREATE_CAT';
+export const CREATE_CAT_SUCCESS = 'CREATE_CAT_SUCCESS';
+export const SINGLE_CAT_DATA = 'SINGLE_CAT_DATA';
+export const LIST_CATS_SUCCESS = 'LIST_CATS_SUCCESS';
+export const NEW_CAT_ID = 'NEW_CAT_ID';

@@ -1,11 +1,13 @@
 /*jshint esversion: 6 */
 import React, {Component} from "react";
-import {Button, Card, Empty, Icon, Switch, Tabs} from "antd";
+import {Card, Empty, Icon, Switch, Tabs, Tag, notification} from "antd";
 import {connect} from "react-redux";
 import {Items} from './Items';
+import {NewItemForm} from "./NewItem";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
-import {addOrder} from "../../../../appRedux/actions/Orders";
-import {addOrderForm} from "../../../../appRedux/actions/Orders";
+import {getCats} from "../../../../appRedux/actions/Cats";
+import {addItem} from "../../../../appRedux/actions/Items";
+import {addItemForm} from "../../../../appRedux/actions/Items";
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
@@ -13,6 +15,7 @@ class SingleOrder extends Component {
     state = {
       key: 'tab1',
       noTitleKey: 'app',
+      visible: false,
     };
 
     onTabChange = (key, type) => {
@@ -24,33 +27,88 @@ class SingleOrder extends Component {
       const {ref} = this.props.match.params;
       // console.log(slug);
       this.props.getSingleOrder(ref);
+      this.props.getCats();
     }
 
-    extra = (
-      <>
-        {/* <Button key="1" type="primary">
-          Primary
-        </Button> */}
-        <Switch checked={false} onChange={this.onChange} />
-      </>
-    );
+    saveFormRef = formRef => {
+      this.formRef = formRef;
+    };
+
+    handleCancel = () => {
+      this.setState({ visible: false });
+    };
+  
+    handleCreate = () => {
+      const form = this.formRef.props.form;
+
+      form.validateFields((err, values) => {
+        if (!err) {
+          // console.log('Received values of form: ', values);
+          const {order} = this.props;
+          this.props.addItem(order.client_ref, values);
+          return;
+        }
+      });
+    };
+    handleCancel = () => {
+      console.log('Clicked cancel button');
+      this.setState({
+        visible: false,
+      });
+    };
+
+    status = (status) => {
+      switch(status) {
+        case 'inactive':
+          return (<Tag color="#ff6601">{status}</Tag>)
+        case 'active':
+            return (<Tag color="#003366">{status}</Tag>)
+        default:
+          return (<span>{status}</span>);
+          // break
+      }
+    }
+
+    extra = () => {
+      const {order} = this.props;
+      if(!order) {return null};
+      return (
+        <Switch checked={order.status === 'active'} disabled={order.status === 'ended'} checkedChildren="Active" unCheckedChildren={order.status} onChange={this.activate} />
+      )      
+    }
+
+    showModal = () => {
+      this.setState({ visible: true });
+    };
+
+    openNotification = (type) => {
+      notification[type]({
+        message: `Item added`,
+        description: 'Activate this order when you\'re done.'
+      });
+    };
   
     render() {
       const {ref} = this.props.match.params;
-      const {order, loading} = this.props;
-      console.log(order);
+      const {cats, createSuccess, order, items, loading, itemLoading} = this.props;
+      if(createSuccess) {
+        this.openNotification('success');
+        this.setState({ visible: false });
+        this.props.addItemForm();
+      }
+      // console.log(order);
       return (
         <Card 
           className="gx-card" 
           loading={loading}
-          extra={this.extra}
+          extra={this.extra()}
+          title={`Order ${ref}`}
         >
           <Meta
-            title={`Order ${ref}`}
             description={order? order.order_desc : ''}
           />
           {order? 
-            (<Tabs defaultActiveKey="1" className="gx-mt-5">
+            (<Tabs defaultActiveKey="1" tabPosition="top" className="gx-mt-5">
               <TabPane
                 tab={
                   <span>
@@ -60,7 +118,7 @@ class SingleOrder extends Component {
                 }
                 key="1"
               >
-                <Items items={order.items} />
+                <Items items={items} visible={items.length < 5} callback={this.showModal} />
               </TabPane>
               <TabPane
                 tab={
@@ -83,16 +141,26 @@ class SingleOrder extends Component {
                 } 
               />)
           }
+          <NewItemForm
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.state.visible && items.length < 5}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+            confirmLoading={itemLoading}
+            cats={cats}
+          />
         </Card>
       );
     }
   }
 
-const mapStateToProps = ({auth, ordersData, commonData}) => {
+const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => {
   const {token} = auth;
-  const {listSuccess, order} = ordersData;
+  const {cats} = catData;
+  const {order} = ordersData;
+  const {createSuccess, items, itemLoading} = itemsData;
   const {loading} = commonData;
-  return {token, listSuccess, loading, order};
+  return {cats, createSuccess, token, items, itemLoading, loading, order};
 };
   
-export default connect(mapStateToProps, {addOrder, addOrderForm, getSingleOrder})(SingleOrder);
+export default connect(mapStateToProps, {addItem, addItemForm, getCats, getSingleOrder})(SingleOrder);

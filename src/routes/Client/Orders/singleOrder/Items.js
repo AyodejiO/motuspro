@@ -1,5 +1,6 @@
 import React from "react";
-import { Icon, Table } from 'antd';
+import { Button, Icon, Table } from 'antd';
+import IntlMessages from "../../../../util/IntlMessages";
 
 const columns = [{
   title: 'Description',
@@ -33,6 +34,18 @@ const columns = [{
   ),
 }];
 
-export const Items = ({items}) => (
-  <Table dataSource={items} columns={columns} />
+const createNew = (callback, visible) => {
+  if(visible) return (
+  <Button type="primary" size="default" icon="add" className="g-float-right" onClick={callback}>
+    <IntlMessages id="sidebar.items.new"/>
+  </Button>);
+
+  return null;
+}
+
+export const Items = ({items, callback, visible}) => (
+  <div>
+    {createNew(callback, visible)}
+    <Table dataSource={items} columns={columns} />
+  </div>
 );
