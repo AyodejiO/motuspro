@@ -4,7 +4,7 @@
 @dark-theme-text-color: #E0E0E0;
 @dark-theme-heading-color: lighten(@dark-theme-text-color, 5%);
 @dark-theme-sidebar-dark-bg: darken(@dark-theme-primary-color, 2%);
-@dark-theme-component-background: #1c1c1c;
+@dark-theme-component-background: #ffffff;
 @dark-theme-sidebar-dark-text-color: #a1a1a1;
 @dark-theme-sidebar-dark-bg-darken: lighten(@dark-theme-sidebar-dark-bg, 6%);
 @dark-theme-sidebar-dark-hover-color: @dark-theme-component-background;
@@ -24,6 +24,10 @@ body.dark-theme {
 
 .ant-input-number {
   width: 100% !important;
+}
+
+.ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+  background-color: lighten(@link-color, 50%) !important;
 }
 
 .dark-theme {
@@ -1918,7 +1922,7 @@ body.dark-theme {
 
     &-menu-item:hover,
     &-menu-submenu-title:hover {
-      background-color: lighten(@dark-theme-component-background, 2%);
+      background-color: #dddddd !important;
     }
 
     &-menu-item .ant-dropdown-menu-submenu-arrow:after,

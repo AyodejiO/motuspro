@@ -105,7 +105,7 @@ export const getSingleOrder = (ref, admin=false) => {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: LIST_ORDERS_SUCCESS});
         dispatch({type: SINGLE_ORDER_DATA, payload: data.data});
-        dispatch({type: ALL_ITEMS_DATA, payload: data.items});
+        dispatch({type: ALL_ITEMS_DATA, payload: data.data.items});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_ERROR, payload: "Network Error"});

@@ -7,8 +7,8 @@ import {connect} from "react-redux";
 
 import {NewOrderForm} from "../newOrder";
 // eslint-disable-next-line
-import Moment from 'react-moment';
-import {Button, Card, Icon, Table, Tag, notification} from "antd";
+// import Moment from 'react-moment';
+import {Button, Card, Dropdown, Icon, Menu, Table, Tag, notification} from "antd";
 
 // import NewOrder from "../newOrder";
 import IntlMessages from "../../../../util/IntlMessages";
@@ -21,7 +21,7 @@ const columns = [{
   title: 'Reference',
   dataIndex: 'client_ref',
   key: 'client_ref',
-  width: 200,
+  width: 150,
   render: text => <Link to={`orders/${text}`}><span className="gx-link gx-text-info">{text}</span></Link>,
 }, {
   title: 'Description',
@@ -29,16 +29,16 @@ const columns = [{
   key: 'order_desc',
   width: 400,
 }, {
-  title: 'Order Items',
-  dataIndex: 'items',
-  key: 'items',
+  title: 'Items',
+  dataIndex: 'items_count',
+  key: 'items_count',
   // className: "gx-text-center",
-  width: 150
+  width: 100
 },{
   title: 'Status',
   dataIndex: 'status',
   key: 'status',
-  width: 150,
+  width: 130,
   render: (text, record) => {  
     switch(text) {
       case 'inactive':
@@ -50,26 +50,40 @@ const columns = [{
         // break
     }
   },
-},{
-  title: 'Created',
-  dataIndex: 'created_at',
-  key: 'created_at',
-  width: 150,
-  render: (text) => {
-    if(text) {
-      return (<Moment format="DD/MM/YYYY">{text}</Moment>);
-    }
-    // ({text? (<Moment>{text}</Moment>) : null})
-  },
-}, {
+},
+// {
+//   title: 'Created',
+//   dataIndex: 'created_at',
+//   key: 'created_at',
+//   width: 150,
+//   render: (text) => {
+//     if(text) {
+//       return (<Moment format="DD/MM/YYYY">{text}</Moment>);
+//     }
+//   },
+// },
+{
   title: 'Action',
   key: 'action',
   render: (text, record) => (
-    <span>
+    <Dropdown trigger={['click']} overlay={
+      <Menu>
+        <Menu.Item key={1} className="gx-px-5">
+          <a href="http://www.alipay.com/">
+            Activate
+          </a>
+        </Menu.Item>
+        <Menu.Item key={2} className="gx-px-5">
+          <a href="http://www.alipay.com/">
+            Delete
+          </a>
+        </Menu.Item>
+      </Menu>
+    }>
       <span className="gx-link ant-dropdown-link">
         Actions <Icon type="down"/>
       </span>
-    </span>
+    </Dropdown>
   ),
 }];
 

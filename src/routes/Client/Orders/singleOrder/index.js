@@ -1,13 +1,17 @@
 /*jshint esversion: 6 */
 import React, {Component} from "react";
+//eslint-disable-nextline
 import {Card, Empty, Icon, Switch, Tabs, Tag, notification} from "antd";
 import {connect} from "react-redux";
 import {Items} from './Items';
 import {NewItemForm} from "./NewItem";
+import {EditItemForm} from "./EditItem";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
 import {getCats} from "../../../../appRedux/actions/Cats";
 import {addItem} from "../../../../appRedux/actions/Items";
+import {editItem} from "../../../../appRedux/actions/Items";
 import {addItemForm} from "../../../../appRedux/actions/Items";
+import {editItemForm} from "../../../../appRedux/actions/Items";
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
@@ -15,7 +19,9 @@ class SingleOrder extends Component {
     state = {
       key: 'tab1',
       noTitleKey: 'app',
+      currentItem: null,
       visible: false,
+      editVisible: false,
     };
 
     onTabChange = (key, type) => {
@@ -35,7 +41,10 @@ class SingleOrder extends Component {
     };
 
     handleCancel = () => {
-      this.setState({ visible: false });
+      this.setState({ 
+        visible: false, 
+        editVisible: false 
+      });
     };
   
     handleCreate = () => {
@@ -50,28 +59,37 @@ class SingleOrder extends Component {
         }
       });
     };
-    handleCancel = () => {
-      console.log('Clicked cancel button');
-      this.setState({
-        visible: false,
+
+    handleEdit = () => {
+      const form = this.formRef.props.form;
+
+      form.validateFields((err, values) => {
+        if (!err) {
+          // console.log('Received values of form: ', values);
+          const {order} = this.props;
+          this.props.addItem(order.client_ref, values);
+          return;
+        }
       });
     };
 
-    status = (status) => {
-      switch(status) {
+    status = (order) => {
+      if(!order) {return;};
+      switch(order.status) {
         case 'inactive':
-          return (<Tag color="#ff6601">{status}</Tag>)
+          return (<><Tag color="#ff6601">{order.status}</Tag></>)
         case 'active':
-            return (<Tag color="#003366">{status}</Tag>)
+            return (<><Tag color="#003366">{order.status}</Tag></>)
         default:
-          return (<span>{status}</span>);
+          return (<><span>{order.status}</span></>);
           // break
       }
     }
 
     extra = () => {
-      const {order} = this.props;
+      const {order, items} = this.props;
       if(!order) {return null};
+      if(!items || items.length < 1) {return null};
       return (
         <Switch checked={order.status === 'active'} disabled={order.status === 'ended'} checkedChildren="Active" unCheckedChildren={order.status} onChange={this.activate} />
       )      
@@ -79,6 +97,13 @@ class SingleOrder extends Component {
 
     showModal = () => {
       this.setState({ visible: true });
+    };
+
+    showEditModal = (currentItem) => {
+      this.setState({ 
+        editVisible: true ,
+        currentItem,
+      });
     };
 
     openNotification = (type) => {
@@ -89,6 +114,7 @@ class SingleOrder extends Component {
     };
   
     render() {
+      const {currentItem} = this.state;
       const {ref} = this.props.match.params;
       const {cats, createSuccess, order, items, loading, itemLoading} = this.props;
       if(createSuccess) {
@@ -118,7 +144,7 @@ class SingleOrder extends Component {
                 }
                 key="1"
               >
-                <Items items={items} visible={items.length < 5} callback={this.showModal} />
+                <Items items={items} visible={items.length < 5} callback={this.showModal} edit={this.showEditModal} />
               </TabPane>
               <TabPane
                 tab={
@@ -149,6 +175,17 @@ class SingleOrder extends Component {
             confirmLoading={itemLoading}
             cats={cats}
           />
+          {currentItem?
+            <EditItemForm
+              wrappedComponentRef={this.saveFormRef}
+              visible={this.state.editVisible}
+              onCancel={this.handleCancel}
+              onCreate={this.handleEdit}
+              confirmLoading={itemLoading}
+              cats={cats}
+              item={this.state.currentItem}
+            /> : 
+          null}
         </Card>
       );
     }
@@ -163,4 +200,4 @@ const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => 
   return {cats, createSuccess, token, items, itemLoading, loading, order};
 };
   
-export default connect(mapStateToProps, {addItem, addItemForm, getCats, getSingleOrder})(SingleOrder);
+export default connect(mapStateToProps, {addItem, addItemForm, editItem, editItemForm, getCats, getSingleOrder})(SingleOrder);
