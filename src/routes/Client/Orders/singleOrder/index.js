@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {Items} from './Items';
 import {NewItemForm} from "./NewItem";
 import {EditItemForm} from "./EditItem";
+import {OrderTimeline} from "./Timeline";
 import {activateOrder} from "../../../../appRedux/actions/Orders";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
 import {getCats} from "../../../../appRedux/actions/Cats";
@@ -129,7 +130,7 @@ class SingleOrder extends Component {
     render() {
       const {currentItem} = this.state;
       const {ref} = this.props.match.params;
-      const {cats, createSuccess, order, items, loading, itemLoading} = this.props;
+      const {activities, cats, createSuccess, order, items, loading, itemLoading} = this.props;
       if(createSuccess) {
         this.openNotification('success');
         this.setState({ visible: false });
@@ -158,12 +159,13 @@ class SingleOrder extends Component {
                 key="1"
               >
                 <Items 
-                  items={items} 
-                  visible={items.length < 5} 
                   callback={this.showModal} 
-                  edit={this.showEditModal} 
                   deleteItem={this.deleteItem} 
+                  edit={this.showEditModal} 
+                  items={items} 
                   loading={itemLoading}
+                  status={order.status}
+                  visible={items? items.length < 5 : false} 
                 />
               </TabPane>
               <TabPane
@@ -175,7 +177,9 @@ class SingleOrder extends Component {
                 }
                 key="2"
               >
-                Tab 2
+                <div class="gx-p-5">
+                  <OrderTimeline activities={activities} />
+                </div>
               </TabPane>
             </Tabs>) :
             (
@@ -214,10 +218,10 @@ class SingleOrder extends Component {
 const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => {
   const {token} = auth;
   const {cats} = catData;
-  const {order, activating} = ordersData;
+  const {order, activating, activities} = ordersData;
   const {createSuccess, items, itemLoading} = itemsData;
   const {loading} = commonData;
-  return {activating, cats, createSuccess, token, items, itemLoading, loading, order};
+  return {activating, activities, cats, createSuccess, token, items, itemLoading, loading, order};
 };
   
 export default connect(mapStateToProps, {

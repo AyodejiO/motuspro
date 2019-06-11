@@ -5,6 +5,7 @@ import {
   LIST_ORDERS_SUCCESS, 
   ALL_ORDERS_DATA, 
   SINGLE_ORDER_DATA, 
+  SINGLE_ORDER_TIMELINE_DATA, 
   ACTIVATE_SINGLE_ORDER, 
   NEW_ORDER_ID,
   FETCH_ACTIVATING_ERROR,
@@ -20,6 +21,7 @@ const INIT_STATE = {
   activatingMsg: '',
   allOrders: [],
   order: null,
+  activities: [],
   newOrder: ''
 };
 
@@ -37,6 +39,12 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         order: action.payload
+      }
+    }
+    case SINGLE_ORDER_TIMELINE_DATA: {
+      return {
+        ...state,
+        activities: action.payload
       }
     }
     case FETCH_ACTIVATING_ERROR: {

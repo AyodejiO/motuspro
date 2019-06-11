@@ -12,6 +12,7 @@ import {
   ACTIVATE_SINGLE_ORDER,
   ALL_ITEMS_DATA,
   SINGLE_ORDER_DATA,
+  SINGLE_ORDER_TIMELINE_DATA,
   NEW_ORDER_ID,
   FETCH_ACTIVATING_START,
   FETCH_ACTIVATING_SUCCESS,
@@ -130,6 +131,7 @@ export const getSingleOrder = (ref, admin=false) => {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: LIST_ORDERS_SUCCESS});
         dispatch({type: SINGLE_ORDER_DATA, payload: data.data});
+        dispatch({type: SINGLE_ORDER_TIMELINE_DATA, payload: data.data.activities});
         dispatch({type: ALL_ITEMS_DATA, payload: data.data.items});
       } else {
         console.log("payload: data.error", data.error);
