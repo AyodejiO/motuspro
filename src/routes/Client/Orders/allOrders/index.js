@@ -17,40 +17,9 @@ import {getOrders} from "../../../../appRedux/actions/Orders";
 import {addOrder} from "../../../../appRedux/actions/Orders";
 import {addOrderForm} from "../../../../appRedux/actions/Orders";
 
-const columns = [{
-  title: 'Reference',
-  dataIndex: 'client_ref',
-  key: 'client_ref',
-  width: 150,
-  render: text => <Link to={`orders/${text}`}><span className="gx-link gx-text-info">{text}</span></Link>,
-}, {
-  title: 'Description',
-  dataIndex: 'order_desc',
-  key: 'order_desc',
-  width: 400,
-}, {
-  title: 'Items',
-  dataIndex: 'items_count',
-  key: 'items_count',
-  // className: "gx-text-center",
-  width: 100
-},{
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
-  width: 130,
-  render: (text, record) => {  
-    switch(text) {
-      case 'inactive':
-        return (<Tag color="#ff6601">{text}</Tag>)
-      case 'active':
-          return (<Tag color="#003366">{text}</Tag>)
-      default:
-        return (<span>{text}</span>);
-        // break
-    }
-  },
-},
+const { Column } = Table;
+
+// const columns = [
 // {
 //   title: 'Created',
 //   dataIndex: 'created_at',
@@ -62,30 +31,7 @@ const columns = [{
 //     }
 //   },
 // },
-{
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <Dropdown trigger={['click']} overlay={
-      <Menu>
-        <Menu.Item key={1} className="gx-px-5">
-          <a href="http://www.alipay.com/">
-            Activate
-          </a>
-        </Menu.Item>
-        <Menu.Item key={2} className="gx-px-5">
-          <a href="http://www.alipay.com/">
-            Delete
-          </a>
-        </Menu.Item>
-      </Menu>
-    }>
-      <span className="gx-link ant-dropdown-link">
-        Actions <Icon type="down"/>
-      </span>
-    </Dropdown>
-  ),
-}];
+// ];
 
 // const expandedRowRender = record => <p>{record.description}</p>;
 const showHeader = true;
@@ -161,7 +107,66 @@ class AllOrders extends Component {
     return (
       <div>
         <Card className="gx-card" title="Orders" extra={this.CreateNew(loading)}>
-          <Table className="gx-table-responsive" {...this.state} loading={loading} rowKey="id" columns={columns} dataSource={allOrders}/>
+          <Table 
+            className="gx-table-responsive" 
+            {...this.state} 
+            loading={loading} 
+            rowKey="id" 
+            dataSource={allOrders}
+          >
+            <Column 
+              title="Reference" 
+              dataIndex="client_ref" 
+              key="client_ref" 
+              width={150} 
+              render={text => <Link to={`orders/${text}`}><span className="gx-link gx-text-info">{text}</span></Link>}
+            />
+            <Column title="Description" dataIndex="order_desc" key="order_desc" width={400} />
+            <Column title="Items" dataIndex="items_count" key="items_count" width={100} />
+            <Column 
+              title="Status" 
+              dataIndex="status" 
+              key="status" 
+              width={130} 
+              render={(text) => {  
+                  switch(text) {
+                    case 'inactive':
+                      return (<Tag color="#ff6601">{text}</Tag>)
+                    case 'active':
+                        return (<Tag color="#003366">{text}</Tag>)
+                    default:
+                      return (<span>{text}</span>);
+                      // break
+                  }
+                }
+              }
+            />
+            <Column 
+              title="Action" 
+              dataIndex="action" 
+              key="action" 
+              render={(text, record) => (
+                <Dropdown trigger={['click']} overlay={
+                  <Menu>
+                    {record.status === 'inactive' && record.items_count > 0? (<Menu.Item key={1} className="gx-px-5">
+                      <a href="http://www.alipay.com/">
+                        Activate {text} 
+                      </a>
+                    </Menu.Item>) : null}
+                    <Menu.Item key={2} className="gx-px-5">
+                      <a href="http://www.alipay.com/">
+                        Delete {text}
+                      </a>
+                    </Menu.Item>
+                  </Menu>
+                }>
+                  <span className="gx-link ant-dropdown-link">
+                    Actions <Icon type="down"/>
+                  </span>
+                </Dropdown>
+              )}
+            />
+          </Table>
         </Card>
         <NewOrderForm
           wrappedComponentRef={this.saveFormRef}

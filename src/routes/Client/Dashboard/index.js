@@ -1,26 +1,18 @@
 /*jshint esversion: 6 */
 
 import React from "react";
+import {connect} from "react-redux";
 import {Col, Row} from "antd";
 
-import TaskList from "components/dashboard/CRM/TaskList";
 import SiteVisit from "components/dashboard/CRM/SiteVisit";
 import RecentActivity from "components/dashboard/CRM/RecentActivity";
-import TicketList from "components/dashboard/CRM/TicketList";
-import TaskByStatus from "components/dashboard/CRM/TaskByStatus";
-import WelComeCard from "components/dashboard/CRM/WelComeCard";
-import Overview from "components/dashboard/CRM/Overview";
-import SiteAudience from "components/dashboard/CRM/SiteAudience";
+import ClientWelComeCard from "components/dashboard/CRM/ClientWelComeCard";
 import Auxiliary from "util/Auxiliary";
-import TotalRevenueCard from "components/dashboard/CRM/TotalRevenueCard";
-import NewCustomers from "components/dashboard/CRM/NewCustomers";
-import GrowthCard from "components/dashboard/CRM/GrowthCard";
 import Widget from "components/Widget/index";
-import CurrencyCalculator from "components/dashboard/Crypto/CurrencyCalculator";
-import IconWithTextCard from "components/dashboard/CRM/IconWithTextCard";
-import {recentActivity, taskList, trafficData} from "./data";
+import IconWithTextCard from "components/Metrics/IconWithTextCard";
+import {recentActivity} from "./data";
 
-const CRM = () => {
+const CRM = ({authUser, loading}) => {
   return (
     <Auxiliary>
       <Row>
@@ -28,67 +20,62 @@ const CRM = () => {
           <div className="gx-card">
             <div className="gx-card-body">
               <Row>
-                <Col xl={6} lg={12} md={12} sm={12} xs={24}>
-                  <WelComeCard/>
+                <Col xl={9} lg={12} md={12} sm={12} xs={24}>
+                  <ClientWelComeCard authUser={authUser} />
                 </Col>
-
-                <Col xl={6} lg={12} md={12} sm={12} xs={24} className="gx-audi-col">
-                  <SiteAudience/>
-                </Col>
-
-                <Col xl={12} lg={24} md={24} sm={24} xs={24} className="gx-visit-col">
+                <Col xl={15} lg={24} md={24} sm={24} xs={24} className="gx-visit-col">
                   <SiteVisit/>
                 </Col>
               </Row>
             </div>
           </div>
         </Col>
-        <Col xl={8} lg={24} md={8} sm={24} xs={24}>
-          <TotalRevenueCard/>
-        </Col>
-        <Col xl={8} lg={12} md={8} sm={24} xs={24}>
-          <NewCustomers/>
-        </Col>
-        <Col xl={8} lg={12} md={8} sm={24} xs={24}>
-          <GrowthCard trafficData={trafficData}/>
+        <Col span={24}>
+          <Row>
+            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+              <IconWithTextCard icon="orders" title="09" subTitle="Orders"/>
+            </Col>
+            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+              <IconWithTextCard icon="tasks" title="687" subTitle="bids"/>
+            </Col>
+            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+              <IconWithTextCard icon="shopping-cart" title="04" subTitle="Items procured"/>
+            </Col>
+            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+              <IconWithTextCard cardColor="white" icon="attachment" title="09" subTitle="Files uploaded"/>
+            </Col>
+          </Row>
         </Col>
         <Col xl={8} lg={24} md={24} sm={24} xs={24} className="gx-order-sm-2">
           <Widget>
             <RecentActivity recentList={recentActivity} shape="circle"/>
           </Widget>
-          <CurrencyCalculator/>
         </Col>
         <Col xl={16} lg={24} md={24} sm={24} xs={24} className="gx-order-sm-1">
-          <Row>
+          {/* <Row>
             <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard cardColor="cyan" icon="diamond" title="09" subTitle="Projects"/>
-            </Col>
-            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard cardColor="orange" icon="tasks" title="687" subTitle="Tasks"/>
+              <IconWithTextCard icon="orders" title="09" subTitle="Orders"/>
             </Col>
             <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard cardColor="teal" icon="team" title="04" subTitle="Teams"/>
+              <IconWithTextCard icon="tasks" title="687" subTitle="bids"/>
             </Col>
             <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard cardColor="red" icon="files" title="09" subTitle="Files"/>
+              <IconWithTextCard icon="team" title="04" subTitle="Teammates"/>
             </Col>
-            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-              <TaskList taskList={taskList}/>
+            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+              <IconWithTextCard cardColor="white" icon="attachment" title="09" subTitle="Files uploaded"/>
             </Col>
-            <Col xl={16} lg={16} md={16} sm={24} xs={24}>
-              <TicketList/>
-            </Col>
-            <Col xl={8} lg={8} md={8} sm={24} xs={24}>
-              <TaskByStatus/>
-            </Col>
-            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-              <Overview/>
-            </Col>
-          </Row>
+          </Row> */}
         </Col>
       </Row>
     </Auxiliary>
   );
 };
 
-export default CRM;
+const mapStateToProps = ({auth, commonData}) => {
+  const {authUser} = auth;
+  const {loading} = commonData;
+  return {authUser, loading};
+};
+  
+export default connect(mapStateToProps, {})(CRM);

@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {Items} from './Items';
 import {NewItemForm} from "./NewItem";
 import {EditItemForm} from "./EditItem";
+import {activateOrder} from "../../../../appRedux/actions/Orders";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
 import {getCats} from "../../../../appRedux/actions/Cats";
 import {addItem} from "../../../../appRedux/actions/Items";
@@ -49,7 +50,6 @@ class SingleOrder extends Component {
   
     handleCreate = () => {
       const form = this.formRef.props.form;
-
       form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
@@ -62,7 +62,6 @@ class SingleOrder extends Component {
 
     handleEdit = () => {
       const form = this.formRef.props.form;
-
       form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
@@ -87,11 +86,18 @@ class SingleOrder extends Component {
     }
 
     extra = () => {
-      const {order, items} = this.props;
+      const {activating, items, order} = this.props;
       if(!order) {return null};
       if(!items || items.length < 1) {return null};
       return (
-        <Switch checked={order.status === 'active'} disabled={order.status === 'ended'} checkedChildren="Active" unCheckedChildren={order.status} onChange={this.activate} />
+        <Switch 
+          checked={order.status === 'active'} 
+          checkedChildren="Active" 
+          disabled={order.status === 'active'} 
+          loading={activating}
+          unCheckedChildren={order.status} 
+          onChange={() => this.props.activateOrder(order.client_ref)} 
+        />
       )      
     }
 
@@ -104,6 +110,13 @@ class SingleOrder extends Component {
         editVisible: true ,
         currentItem,
       });
+    };
+
+    deleteItem = (currentItem) => {
+      console.log(currentItem);
+      // this.setState({ 
+      //   currentItem,
+      // });
     };
 
     openNotification = (type) => {
@@ -144,7 +157,14 @@ class SingleOrder extends Component {
                 }
                 key="1"
               >
-                <Items items={items} visible={items.length < 5} callback={this.showModal} edit={this.showEditModal} />
+                <Items 
+                  items={items} 
+                  visible={items.length < 5} 
+                  callback={this.showModal} 
+                  edit={this.showEditModal} 
+                  deleteItem={this.deleteItem} 
+                  loading={itemLoading}
+                />
               </TabPane>
               <TabPane
                 tab={
@@ -194,10 +214,18 @@ class SingleOrder extends Component {
 const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => {
   const {token} = auth;
   const {cats} = catData;
-  const {order} = ordersData;
+  const {order, activating} = ordersData;
   const {createSuccess, items, itemLoading} = itemsData;
   const {loading} = commonData;
-  return {cats, createSuccess, token, items, itemLoading, loading, order};
+  return {activating, cats, createSuccess, token, items, itemLoading, loading, order};
 };
   
-export default connect(mapStateToProps, {addItem, addItemForm, editItem, editItemForm, getCats, getSingleOrder})(SingleOrder);
+export default connect(mapStateToProps, {
+  activateOrder, 
+  addItem, 
+  addItemForm, 
+  editItem, 
+  editItemForm, 
+  getCats, 
+  getSingleOrder
+})(SingleOrder);

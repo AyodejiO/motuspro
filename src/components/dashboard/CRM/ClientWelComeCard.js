@@ -1,7 +1,7 @@
 import React from "react";
 import {Icon} from "antd";
 
-const WelComeCard = ({authUser}) => {
+const ClientWelComeCard = ({authUser}) => {
 
   return (
     <div className="gx-wel-ema gx-pt-xl-2">
@@ -26,4 +26,4 @@ const WelComeCard = ({authUser}) => {
   );
 };
 
-export default WelComeCard;
+export default ClientWelComeCard;

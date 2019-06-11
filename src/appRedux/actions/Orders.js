@@ -9,9 +9,13 @@ import {
   CREATE_ORDER_SUCCESS,
   LIST_ORDERS_SUCCESS,
   ALL_ORDERS_DATA,
+  ACTIVATE_SINGLE_ORDER,
   ALL_ITEMS_DATA,
   SINGLE_ORDER_DATA,
-  NEW_ORDER_ID
+  NEW_ORDER_ID,
+  FETCH_ACTIVATING_START,
+  FETCH_ACTIVATING_SUCCESS,
+  FETCH_ACTIVATING_ERROR
 } from "../../constants/ActionTypes";
 import axios from 'util/Api';
 
@@ -89,6 +93,27 @@ export const addOrder = ({client_ref, order_desc}) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
+export const activateOrder = (ref) => {
+  // const route = admin? 'admin/orders/' : 'user/orders/';
+  return (dispatch) => {
+    dispatch({type: FETCH_ACTIVATING_START});
+    axios.post('user/orders/'+ref+'/activate', 
+    ).then(({data}) => {
+      if (data) {
+        // console.log(data);
+        dispatch({type: FETCH_ACTIVATING_SUCCESS});
+        dispatch({type: ACTIVATE_SINGLE_ORDER});
+      } else {
+        console.log("payload: data.error", data.error);
+        dispatch({type: FETCH_ACTIVATING_ERROR, payload: "Network Error"});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ACTIVATING_ERROR, payload: error.message});
       console.log("Error****:", error.message);
     });
   };
