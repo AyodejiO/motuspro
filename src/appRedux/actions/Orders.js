@@ -34,6 +34,7 @@ export const getOrders = (admin=false, s=null, c=null) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(route, {
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
       params: {
         s,
         c,
