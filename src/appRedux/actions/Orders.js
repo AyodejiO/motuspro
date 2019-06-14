@@ -28,10 +28,17 @@ export const setInitUrl = (url) => {
 };
 
 
-export const getOrders = () => {
+export const getOrders = (admin=false, s=null, c=null) => {
+  console.log(admin, s, c);
+  const route = admin? 'admin/orders/' : 'user/orders/';
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.get('user/orders', 
+    axios.get(route, {
+      params: {
+        s,
+        c,
+      }
+    }
     ).then(({data}) => {
       if (data.data) {
         dispatch({type: FETCH_SUCCESS});

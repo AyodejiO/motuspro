@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col,  Divider, Row, Table } from 'antd';
+import { Button, Col,  Divider, Icon,  Row, Table } from 'antd';
 import FileIcon, {defaultStyles} from 'react-file-icon';
 import IntlMessages from "../../../../util/IntlMessages";
 const { Column } = Table;
@@ -27,6 +27,7 @@ export const Items = ({callback, deleteItem, edit, items, loading, status, visib
     <Table 
       dataSource={items} 
       loading={loading}
+      title={() => <span className="ant-card-head-title"><Icon type="unordered-list" /> Items</span>}
       rowKey={record => record.id}
       expandedRowRender={record => (
         <Row style={{ margin: 0 }}>
@@ -67,12 +68,12 @@ export const Items = ({callback, deleteItem, edit, items, loading, status, visib
             <span>
               {
                 // eslint-disable-next-line
-                <a href="JavaScript:Void(0);" onClick={() => edit(record)}>Edit {text}</a>
+                <a href="JavaScript:Void(0);" onClick={() => edit(record)}>Edit</a>
               }
               <Divider type="vertical" />
               {
                 // eslint-disable-next-line
-                <a href="JavaScript:Void(0);" onClick={() => deleteItem(record)}>Delete {text}</a>
+                <a href="JavaScript:Void(0);" onClick={() => deleteItem(record)}>Delete</a>
               }
             </span>
           )}

@@ -8,8 +8,7 @@ var routes = {
       link: "/dashboard",
       name: "sidebar.dashboard",
       icon: "icon icon-data-display",
-      component: import('./Admin/Dashboard/index'),
-      roles: ['admin','client','vendor']
+      component: import('./Admin/Dashboard/index')
     },
     {
       type: 1,
@@ -18,17 +17,16 @@ var routes = {
       path: "orders",
       name: "sidebar.orders",
       icon: "icon icon-revenue-new",
-      component: import('./Admin/Dashboard/index'),
-      roles: ['admin','client','vendor'],
+      component: import('./Admin/Orders/index'),
       children: [
         {
           type: 0,
-          key: "orders/pending",
-          link: "/orders/pending",
-          path: "orders/pending",
+          key: "orders",
+          link: "/orders",
+          path: "orders",
           name: "sidebar.orders.pending",
           icon: "icon icon-schedule",
-          component: import('./Admin/Dashboard/index'),
+          component: import('./Admin/Orders/index'),
           roles: ['admin']
         },
         {
@@ -38,7 +36,7 @@ var routes = {
           link: "/orders/closed",
           name: "sidebar.orders.closed",
           icon: "icon icon-check-cricle",
-          component: import('./Admin/Dashboard/index'),
+          component: import('./Admin/Orders/index'),
           roles: ['admin']
         }
       ]
