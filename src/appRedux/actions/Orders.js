@@ -129,7 +129,7 @@ export const activateOrder = (ref) => {
 };
 
 export const getSingleOrder = (ref, admin=false) => {
-  const route = admin? 'admin/orders' : 'user/orders';
+  const route = admin? 'admin/orders/' : 'user/orders/';
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(route+ref, 
