@@ -29,7 +29,7 @@ export const setInitUrl = (url) => {
 
 
 export const getOrders = (admin=false, s=null, c=null) => {
-  console.log(admin, s, c);
+  // console.log(admin, s, c);
   const route = admin? 'admin/orders' : 'user/orders';
   return (dispatch) => {
     dispatch({type: FETCH_START});

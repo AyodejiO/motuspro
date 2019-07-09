@@ -1,21 +1,17 @@
 /*jshint esversion: 6 */
 import React, {Component} from "react";
 //eslint-disable-nextline
-import {Card, Empty, Icon, Switch, Tabs, Tag, notification} from "antd";
+import {Card, Dropdown, Empty, Icon, Menu, Switch, Tag, notification} from "antd";
 import {connect} from "react-redux";
-import {Items} from './Items';
-import {NewItemForm} from "./NewItem";
+import Items from './Items';
 import {EditItemForm} from "./EditItem";
-import {OrderTimeline} from "./Timeline";
+// import {OrderTimeline} from "./Timeline";
 import {activateOrder} from "../../../../appRedux/actions/Orders";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
 import {getCats} from "../../../../appRedux/actions/Cats";
-import {addItem} from "../../../../appRedux/actions/Items";
 import {editItem} from "../../../../appRedux/actions/Items";
-import {addItemForm} from "../../../../appRedux/actions/Items";
 import {editItemForm} from "../../../../appRedux/actions/Items";
 const { Meta } = Card;
-const { TabPane } = Tabs;
 
 class SingleOrder extends Component {
     state = {
@@ -48,18 +44,6 @@ class SingleOrder extends Component {
         editVisible: false 
       });
     };
-  
-    handleCreate = () => {
-      const form = this.formRef.props.form;
-      form.validateFields((err, values) => {
-        if (!err) {
-          // console.log('Received values of form: ', values);
-          const {order} = this.props;
-          this.props.addItem(order.client_ref, values);
-          return;
-        }
-      });
-    };
 
     handleEdit = () => {
       const form = this.formRef.props.form;
@@ -74,17 +58,42 @@ class SingleOrder extends Component {
     };
 
     status = () => {
-      const  {order} = this.props;
+      const {order} = this.props;
+      const menu = (
+        <Menu>
+          <Menu.Item key="0" className="gx-px-2">
+            <a href="#/"><Icon type="file-pdf" /> <span className="gx-ml-2">Generate Quote</span></a>
+          </Menu.Item>
+          <Menu.Item key="0" className="gx-px-2">
+            <a href="#/"><Icon type="file" /> <span className="gx-ml-2">Make Note</span></a>
+          </Menu.Item>
+          {/* <Menu.Divider />
+          <Menu.Item key="2">3rd menu item</Menu.Item> */}
+        </Menu>
+      );
+      let badge = '';
       if(!order) {return;};
       switch(order.status) {
         case 'inactive':
-          return (<><Tag color="#ff6601">{order.status}</Tag></>)
+          badge = (<Tag color="#ff6601">{order.status}</Tag>);
+          break;
         case 'active':
-            return (<><Tag color="#003366">{order.status}</Tag></>)
+          badge = (<Tag color="#003366">{order.status}</Tag>);
+          break;
         default:
-          return (<><span>{order.status}</span></>);
-          // break
+          badge = (<span>{order.status}</span>);
+          break;
       }
+      return (
+        <>
+          {badge}
+          <Dropdown overlay={menu} trigger={['click']}>
+            <a className="ant-dropdown-link" href="#/">
+              More <Icon type="down" />
+            </a>
+          </Dropdown>
+        </>
+      )
     }
 
     extra = () => {
@@ -92,19 +101,26 @@ class SingleOrder extends Component {
       if(!order) {return null};
       if(!items || items.length < 1) {return null};
       return (
-        <Switch 
-          checked={order.status === 'active'} 
-          checkedChildren="Active" 
-          disabled={order.status === 'active'} 
-          loading={activating}
-          unCheckedChildren={order.status} 
-          onChange={() => this.props.activateOrder(order.client_ref)} 
-        />
+        <>
+          <Switch 
+            checked={order.status === 'active'} 
+            checkedChildren="Active" 
+            disabled={order.status === 'active'} 
+            loading={activating}
+            unCheckedChildren={order.status} 
+            onChange={() => this.props.activateOrder(order.client_ref)} 
+          />
+        </>
       )      
     }
 
     showModal = () => {
       this.setState({ visible: true });
+    };
+
+    saveItem = (item, values) => {
+      const {ref} = this.props.match.params;
+      this.props.editItem(ref, item, true, values);
     };
 
     showEditModal = (currentItem) => {
@@ -131,7 +147,7 @@ class SingleOrder extends Component {
     render() {
       const {currentItem} = this.state;
       const {ref} = this.props.match.params;
-      const {activities, cats, createSuccess, order, items, loading, itemLoading} = this.props;
+      const {cats, createSuccess, order, items, loading, itemLoading} = this.props;
       if(createSuccess) {
         this.openNotification('success');
         this.setState({ visible: false });
@@ -152,6 +168,7 @@ class SingleOrder extends Component {
             (
               <Items 
                 callback={this.showModal} 
+                saveItem={this.saveItem} 
                 deleteItem={this.deleteItem} 
                 edit={this.showEditModal} 
                 items={items} 
@@ -169,14 +186,6 @@ class SingleOrder extends Component {
                 } 
               />)
           }
-          <NewItemForm
-            wrappedComponentRef={this.saveFormRef}
-            visible={this.state.visible && items.length < 5}
-            onCancel={this.handleCancel}
-            onCreate={this.handleCreate}
-            confirmLoading={itemLoading}
-            cats={cats}
-          />
           {currentItem?
             <EditItemForm
               wrappedComponentRef={this.saveFormRef}
@@ -204,8 +213,6 @@ const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => 
   
 export default connect(mapStateToProps, {
   activateOrder, 
-  addItem, 
-  addItemForm, 
   editItem, 
   editItemForm, 
   getCats, 

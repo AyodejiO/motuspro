@@ -6,6 +6,7 @@ import {
   FETCH_ITEM_ERROR,
   FETCH_ITEM_START,
   FETCH_ITEM_SUCCESS,
+  EDIT_ITEM_SUCCESS,
   ALL_ITEMS_DATA, 
   SINGLE_ITEM_DATA, 
   NEW_ITEM
@@ -71,6 +72,29 @@ export default (state = INIT_STATE, action) => {
         ...state,
         items: [...state.items, action.payload]
       }
+    }
+
+    case EDIT_ITEM_SUCCESS: {
+      return {
+        ...state,
+        items: [
+          ...state.items.map((item) => {
+            // Find the item with the matching id
+            if(item.id === action.payload.id) {
+              // Return a new object
+              return action.payload
+            }
+            return item;
+          })
+        ]
+      }
+      // return {
+      //   ...state,
+      //   items: [
+      //     ...state.items, 
+      //     [action.payload.id]: action.payload
+      //   ]
+      // }
     }
 
     case SINGLE_ITEM_DATA: {
