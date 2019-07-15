@@ -375,7 +375,7 @@ class Customizer extends Component {
       '@secondary-color': '#fa8c16',
       '@text-color': '#545454',
       '@heading-color': '#535353',
-      '@nav-dark-bg': '#003366',
+      '@nav-dark-bg': '#35506B',
       '@nav-dark-text-color': '#038fdd',
       '@header-text-color': '#262626',
       '@layout-header-background': '#fefefe',

@@ -78,7 +78,7 @@ class SingleOrder extends Component {
           badge = (<Tag color="#ff6601">{order.status}</Tag>);
           break;
         case 'active':
-          badge = (<Tag color="#003366">{order.status}</Tag>);
+          badge = (<Tag color="#35506B">{order.status}</Tag>);
           break;
         default:
           badge = (<span>{order.status}</span>);

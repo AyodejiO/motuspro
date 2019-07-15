@@ -79,7 +79,7 @@ class SingleOrder extends Component {
         case 'inactive':
           return (<><Tag color="#ff6601">{order.status}</Tag></>)
         case 'active':
-            return (<><Tag color="#003366">{order.status}</Tag></>)
+            return (<><Tag color="#35506B">{order.status}</Tag></>)
         default:
           return (<><span>{order.status}</span></>);
           // break

@@ -117,7 +117,7 @@ class AllOrders extends Component {
                     case 'inactive':
                       return (<Tag color="#ff6601">{text}</Tag>)
                     case 'active':
-                        return (<Tag color="#003366">{text}</Tag>)
+                        return (<Tag color="#35506B">{text}</Tag>)
                     default:
                       return (<span>{text}</span>);
                       // break
