@@ -154,7 +154,36 @@ var routes = {
       roles: ['admin','client','vendor']
     }
   ],
-  vendor: []
+  vendor: [
+    {
+      type: 0,
+      key: "dashboard",
+      path: "dashboard",
+      link: "/dashboard",
+      name: "sidebar.dashboard",
+      icon: "icon icon-data-display",
+      component: import('./Vendor/Dashboard/index')
+    },
+    {
+      type: 0,
+      key: "bids",
+      link: "/bids",
+      path: "bids",
+      name: "sidebar.bids",
+      icon: "icon icon-orders",
+      component: import('./Vendor/Bids/index')
+    },
+    {
+      type: 0,
+      key: "profile",
+      path: "profile",
+      link: "/profile",
+      name: "sidebar.profile",
+      icon: "icon icon-profile",
+      component: import('./Profile/index'),
+      roles: ['admin','client','vendor']
+    }
+  ]
 };
 
 // var routes = [

@@ -38,7 +38,7 @@ const showHeader = true;
 const scroll = {y: 440};
 const pagination = {position: 'bottom'};
 
-class AllOrders extends Component {
+class AllBids extends Component {
   state = {
     pagination,
     size: 'middle',
@@ -187,4 +187,4 @@ const mapStateToProps = ({auth, ordersData, commonData}) => {
   return {token, listSuccess, loading, allOrders, createSuccess, newOrder};
 };
 
-export default connect(mapStateToProps, {addOrder, addOrderForm, getOrders})(AllOrders);
+export default connect(mapStateToProps, {addOrder, addOrderForm, getOrders})(AllBids);

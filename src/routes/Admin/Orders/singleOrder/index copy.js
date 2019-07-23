@@ -1,18 +1,17 @@
 /*jshint esversion: 6 */
 import React, {Component} from "react";
 //eslint-disable-nextline
-import {Card, Dropdown, Empty, Icon, Menu, Switch, Tabs, Tag, notification} from "antd";
+import {Card, Dropdown, Empty, Icon, Menu, Switch, Tag, notification} from "antd";
 import {connect} from "react-redux";
 import Items from './Items';
-import {CreateBidForm} from './CreateBid';
-import {OrderTimeline} from "components/Orders/Timeline";
+import {EditItemForm} from "./EditItem";
+// import {OrderTimeline} from "./Timeline";
 import {activateOrder} from "../../../../appRedux/actions/Orders";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
 import {getCats} from "../../../../appRedux/actions/Cats";
 import {editItem} from "../../../../appRedux/actions/Items";
 import {editItemForm} from "../../../../appRedux/actions/Items";
 const { Meta } = Card;
-const { TabPane } = Tabs;
 
 class SingleOrder extends Component {
     state = {
@@ -20,7 +19,7 @@ class SingleOrder extends Component {
       noTitleKey: 'app',
       currentItem: null,
       visible: false,
-      bidVisible: false,
+      editVisible: false,
     };
 
     onTabChange = (key, type) => {
@@ -124,9 +123,9 @@ class SingleOrder extends Component {
       this.props.editItem(ref, item, true, values);
     };
 
-    createBidModal = (currentItem) => {
+    showEditModal = (currentItem) => {
       this.setState({ 
-        bidVisible: true,
+        editVisible: true ,
         currentItem,
       });
     };
@@ -148,7 +147,7 @@ class SingleOrder extends Component {
     render() {
       const {currentItem} = this.state;
       const {ref} = this.props.match.params;
-      const {activities, cats, createSuccess, order, items, loading, itemLoading} = this.props;
+      const {cats, createSuccess, order, items, loading, itemLoading} = this.props;
       if(createSuccess) {
         this.openNotification('success');
         this.setState({ visible: false });
@@ -166,40 +165,18 @@ class SingleOrder extends Component {
             description={order? order.order_desc : ''}
           />
           {order? 
-            (<Tabs defaultActiveKey="1" tabPosition="top" className="gx-mt-5">
-              <TabPane
-                tab={
-                  <span>
-                    <Icon type="unordered-list" />
-                    Items
-                  </span>
-                }
-                key="1"
-              >
-                <Items 
-                  items={items} 
-                  status={order.status}
-                  loading={itemLoading}
-                  callback={this.showModal} 
-                  saveItem={this.saveItem} 
-                  createBid={this.createBidModal} 
-                  visible={items? items.length < 5 : false} 
-                />
-              </TabPane>
-              <TabPane
-                tab={
-                  <span>
-                    <Icon type="fund" />
-                    Timeline
-                  </span>
-                }
-                key="2"
-              >
-                <div className="gx-p-5">
-                  <OrderTimeline activities={activities} />
-                </div>
-              </TabPane>
-            </Tabs>) :
+            (
+              <Items 
+                callback={this.showModal} 
+                saveItem={this.saveItem} 
+                deleteItem={this.deleteItem} 
+                edit={this.showEditModal} 
+                items={items} 
+                loading={itemLoading}
+                status={order.status}
+                visible={items? items.length < 5 : false} 
+              />
+            ) :
             (
               <Empty
                 description={
@@ -210,9 +187,9 @@ class SingleOrder extends Component {
               />)
           }
           {currentItem?
-            <CreateBidForm
+            <EditItemForm
               wrappedComponentRef={this.saveFormRef}
-              visible={this.state.bidVisible}
+              visible={this.state.editVisible}
               onCancel={this.handleCancel}
               onCreate={this.handleEdit}
               confirmLoading={itemLoading}

@@ -40,7 +40,7 @@ const CRM = ({authUser}) => {
                        <AreaChart data={propertiesData}
                                   margin={{top: 0, right: 0, left: 0, bottom: 0}}>
                          <Tooltip/>
-                         <Area dataKey='properties' strokeWidth={0} stackId="2" stroke='#35506B' fill="#35506B"
+                         <Area dataKey='properties' strokeWidth={0} stackId="2" stroke='#003366' fill="#003366"
                                fillOpacity={1}/>
                        </AreaChart>
                      </ResponsiveContainer>}

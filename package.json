@@ -5,7 +5,7 @@
   "homepage": "https://motus.pro/",
   "engines": {
     "node": "10.16.0",
-    "yarn": "1.16.0"
+    "yarn": "1.17.3"
   },
   "dependencies": {
     "@amcharts/amcharts3-react": "^3.1.0",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Input, Icon, Form } from 'antd';
+import { Table, Input, Button, Form } from 'antd';
 import './items.less';
 const EditableContext = React.createContext();
 
@@ -128,7 +128,9 @@ export default class Items extends React.Component {
         width: 150,
         className: 'gx-text-center',
         render: (text, record) => (
-          <a href="#/" onClick={() => this.props.deleteItem(record)}>Create Bid</a>
+          // <a href="#/" onClick={() => this.props.deleteItem(record)}>Create Bid</a>
+          // <a onClick={() => this.props.createBid(record)}>Create Bid</a>
+          <Button className="gx-mb-0" type="link" onClick={() => this.props.createBid(record)}>Create Bid</Button>
         ),
     }];
   }
@@ -174,7 +176,6 @@ export default class Items extends React.Component {
       <div>
         <Table
           rowKey={record => record.id}
-          title={() => <span className="ant-card-head-title"><Icon type="unordered-list" /> Items</span>}
           components={components}
           loading={loading}
           rowClassName={() => 'editable-row'}
