@@ -20,7 +20,7 @@ class UserInfo extends Component {
     return (
       <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={userMenuOptions}
                trigger="click">
-        <Avatar src={authUser.avatar || placeholder}
+        <Avatar src={authUser? authUser.avatar : placeholder}
                 className="gx-avatar gx-pointer" alt=""/>
       </Popover>
     )

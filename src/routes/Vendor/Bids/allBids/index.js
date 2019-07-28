@@ -88,9 +88,10 @@ class AllBids extends Component {
   };
 
   CreateNew = loading => (
-    <Button type="primary" disabled={loading} size="default" icon="add" onClick={this.showModal}>
-      <IntlMessages id="sidebar.orders.new"/>
-    </Button>
+    // <Button type="primary" disabled={loading} size="default" icon="add" onClick={this.showModal}>
+    //   <IntlMessages id="sidebar.orders.new"/>
+    // </Button>
+    <></>
   );
 
   saveFormRef = formRef => {
@@ -98,7 +99,7 @@ class AllBids extends Component {
   };
 
   render() {
-    const {createSuccess, loading, allOrders, newOrder} = this.props
+    const {createSuccess, loading, allOrders, newOrder} = this.props;
     if(createSuccess) {
       this.openNotification('success', newOrder);
       this.props.addOrderForm();
@@ -106,7 +107,7 @@ class AllBids extends Component {
     }
     return (
       <div>
-        <Card className="gx-card" title="Orders" extra={this.CreateNew(loading)}>
+        <Card className="gx-card" title="Bids" extra={this.CreateNew(loading)}>
           <Table 
             className="gx-table-responsive" 
             {...this.state} 

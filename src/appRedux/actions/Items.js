@@ -70,22 +70,23 @@ export const addItem = (ref, {description, size, quantity, category, additional_
   };
 };
 
-export const editItem = (ref, id, admin=false, 
-  {description=null, size=null, quantity=null, category=null, unit_cost=null, additional_details=null, attachment=null}) => {
+export const editItem = (ref, id, 
+  {description=null, size=null, quantity=null, category=null, unit_cost=null, additional_details=null, attachment=null, open=null}, admin=false) => {
   const path = admin? 'admin/orders/' : 'user/orders/';
   const route = path+ref+'/items/'+id;
   return (dispatch) => {
     let data = new FormData();
-    if(size) {data.append('size', size)};
-    if(category) {data.append('category', category)};
-    if(quantity) {data.append('quantity', quantity)};
-    if(unit_cost) {data.append('unit_cost', unit_cost)};
-    if(description) {data.append('description', description)};
-    if(additional_details) {data.append('additional_details', additional_details)};
+    if(size) {data.append('size', size);}
+    if(open !== null) {data.append('open', open);}
+    if(category) {data.append('category', category);}
+    if(quantity) {data.append('quantity', quantity);}
+    if(unit_cost) {data.append('unit_cost', unit_cost);}
+    if(description) {data.append('description', description);}
+    if(additional_details) {data.append('additional_details', additional_details);}
     if(attachment) {
       attachment.map(file => {
         return data.append('attachment[]', file, file.name);
-      })
+      });
     }
 
     const config = {

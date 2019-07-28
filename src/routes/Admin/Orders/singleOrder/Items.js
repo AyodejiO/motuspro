@@ -125,19 +125,31 @@ export default class Items extends React.Component {
     }, {
         title: 'Bids',
         key: 'bid',
-        width: 150,
+        width: 200,
         className: 'gx-text-center',
-        render: (text, record) => (
-          // <a href="#/" onClick={() => this.props.deleteItem(record)}>Create Bid</a>
-          // <a onClick={() => this.props.createBid(record)}>Create Bid</a>
-          <Button className="gx-mb-0" type="link" onClick={() => this.props.createBid(record)}>Create Bid</Button>
-        ),
+        render: (text, record) => {
+          if(record.open) {
+            if(record.bid_id) {
+
+            }
+            return (
+              <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record)}>
+                {`View ${record.bids_count} Bids`}
+              </Button>
+            );
+          }
+          return (
+            <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record.id, {'open': 1})}>
+              Create Bid
+            </Button>
+          );
+        }
     }];
   }
 
   handleSave = row => {
     console.log(row.id);
-    const {saveItem} = this.props;
+    const {updateItem} = this.props;
     // const newData = [...this.state.dataSource];
     // const index = newData.findIndex(item => row.key === item.key);
     // const item = newData[index];
@@ -146,7 +158,7 @@ export default class Items extends React.Component {
     //   ...row,
     // });
     // this.setState({ dataSource: newData });
-    saveItem(row.id, {unit_cost: row.unit_cost})
+    updateItem(row.id, {unit_cost: row.unit_cost})
   };
 
   render() {
