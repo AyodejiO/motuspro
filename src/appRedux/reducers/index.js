@@ -17,7 +17,7 @@ import Vendors from "./Vendors";
 const reducers = combineReducers({
   routing: routerReducer,
   auth: Auth,
-  BidsData: Bids,
+  bidsData: Bids,
   catData: Cats,
   clientData: Clients,
   commonData: Common,

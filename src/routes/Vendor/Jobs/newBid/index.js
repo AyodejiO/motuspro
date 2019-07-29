@@ -1,3 +1,4 @@
+/*jshint esversion: 9 */
 import React from "react";
 import { Modal, Form, Input, InputNumber, Icon, Tooltip } from 'antd';
 import './index.less';
@@ -11,11 +12,11 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
     render() {
       const { visible, onCancel, onCreate, item, confirmLoading, form } = this.props;
       const { getFieldDecorator } = form;
- 
+      
       return (
         <Modal
           visible={visible}
-          title="Place a bid"
+          title={`Place a bid - ${item.description}`}
           okText="Create"
           onCancel={onCancel}
           confirmLoading={confirmLoading}
@@ -33,12 +34,13 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
                 )}
             >
                 {getFieldDecorator('unit_cost', {
-                rules: [{required: true, message: 'Please input a unit cost!', whitespace: true}],
+                rules: [{required: true, message: 'Please input a unit cost!'}],
                 })(
                 <InputNumber 
-                  min={0} step={0.1} 
+                  min={0} step={0.01} 
                   formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  // eslint-disable-next-line
+                  parser={value => value.replace(/\₦\s?|(,*)/g, '')}
                 />
                 )}
             </FormItem>
@@ -52,10 +54,10 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
                 </span>
                 )}
             >
-                {getFieldDecorator('unit_cost', {
-                rules: [{required: true, message: 'Please input a duration!', whitespace: true}],
+                {getFieldDecorator('duration', {
+                rules: [{required: true, message: 'Please input a duration!'}],
                 })(
-                  <InputNumber  min={0} />
+                  <InputNumber min={0} />
                 )}
             </FormItem>
             <FormItem

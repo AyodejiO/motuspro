@@ -1,40 +1,21 @@
 /*jshint esversion: 9 */
 
 import React, {Component} from "react";
-// import {Link} from "react-router-dom";
-import {Link} from "react-router-dom";
+import {Button, Card,Descriptions, List, Tag} from "antd";
 import _ from 'lodash';
 import {connect} from "react-redux";
+import Moment from 'react-moment';
+import 'moment-timezone';
 import FileIcon, {defaultStyles} from 'react-file-icon';
 
 import {NewBidForm} from "../newBid";
-import GridView from "components/Jobs/GridView";
-// eslint-disable-next-line
-// import Moment from 'react-moment';
-import {Button, Card,Descriptions, Dropdown, Icon,List, Table, Tag} from "antd";
+import InfoView from "components/InfoView";
 
-// import NewOrder from "../newOrder";
-import IntlMessages from "../../../../util/IntlMessages";
+// import IntlMessages from "../../../../util/IntlMessages";
 
 import {getItems} from "../../../../appRedux/actions/Items";
+import {addBid} from "../../../../appRedux/actions/Bids";
 
-const { Column } = Table;
-
-// const columns = [
-// {
-//   title: 'Created',
-//   dataIndex: 'created_at',
-//   key: 'created_at',
-//   width: 150,
-//   render: (text) => {
-//     if(text) {
-//       return (<Moment format="DD/MM/YYYY">{text}</Moment>);
-//     }
-//   },
-// },
-// ];
-
-// const expandedRowRender = record => <p>{record.description}</p>;
 const showHeader = true;
 const scroll = {y: 440};
 const pagination = {position: 'bottom'};
@@ -60,6 +41,7 @@ class AllJobs extends Component {
     this.createBid = this.createBid.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleCreateBid = this.handleCreateBid.bind(this);
+    this.saveFormRef = this.saveFormRef.bind(this);
   }
 
   componentDidMount() {
@@ -84,14 +66,14 @@ class AllJobs extends Component {
 
   handleCreateBid(){
     const form = this.formRef.props.form;
+    const {item} = this.state;
     form.validateFields((err, values) => {
       if (!err) {
-        this.props.addOrder(values);
+        this.props.addBid(item.id, values);
+        // console.log('Received values of form: ', values);
+        // this.setState({ visible: false });
         return;
       }
-      // console.log('Received values of form: ', values);
-      // form.resetFields();
-      // this.setState({ visible: false });
     });
   }
 
@@ -107,15 +89,15 @@ class AllJobs extends Component {
   };
 
   render() {
-    const {items, loading} = this.props;
+    const {items, loading, bidLoading} = this.props;
     const {item, visible} = this.state;
-    console.log(items)
     return (
       <div>
         <List
           dataSource={items}
           itemLayout="horizontal"
           grid={{ gutter: 15, column: 3 }}
+          loading={loading}
           renderItem={item => (
             <List.Item>
               <Card className="gx-card"
@@ -126,7 +108,7 @@ class AllJobs extends Component {
                 <div className="gx-mb-2">
                   <div>
                     <Descriptions size={`small`} layout="horizontal" column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}>
-                      <Descriptions.Item label="Size">{item.size}</Descriptions.Item>
+                      <Descriptions.Item label="Size/Type">{item.size}</Descriptions.Item>
                       <Descriptions.Item label="Quantity">{item.quantity}</Descriptions.Item>
                       <Descriptions.Item label="Details">{item.additional_details}</Descriptions.Item>
                     </Descriptions>
@@ -152,32 +134,32 @@ class AllJobs extends Component {
                 <div className="gx-mt-4">
                   <Button type="primary" ghost size="small" onClick={() => this.createBid(item)}>Place Bid</Button>
                 </div>
-                <small className="gx-text-light gx-float-right">Updated <i>{item.updated_at}</i></small>
+                <small className="gx-text-light gx-float-right">
+                  Updated <i><Moment fromNow>{item.updated_at}</Moment></i>
+                </small>
               </Card>
-                {/* <List.Item.Meta
-                  title={<h4>{item.description}</h4>}
-                  description={item.additional_details}
-                /> */}
             </List.Item>
           )}
         />
-        <NewBidForm
+        {item && <NewBidForm
           wrappedComponentRef={this.saveFormRef}
           item={item}
           visible={visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreateBid}
-          confirmLoading={loading}
-        />
+          confirmLoading={bidLoading}
+        />}
+        <InfoView/>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({auth, itemsData, commonData}) => {
+const mapStateToProps = ({bidsData, commonData, itemsData}) => {
   const {listSuccess, items} = itemsData;
+  const {bidLoading} = bidsData;
   const {loading} = commonData;
-  return {listSuccess, loading, items};
+  return {bidLoading, items, listSuccess, loading};
 };
 
-export default connect(mapStateToProps, {getItems})(AllJobs);
+export default connect(mapStateToProps, {addBid, getItems})(AllJobs);

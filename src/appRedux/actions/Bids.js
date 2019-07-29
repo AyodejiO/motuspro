@@ -2,115 +2,55 @@
 
 // eslint-disable-next-line 
 import {
-  INIT_URL,
-  CREATE_ITEM_SUCCESS,
-  EDIT_ITEM_SUCCESS,
-  LIST_ITEMS_SUCCESS,
-  // ALL_ITEMS_DATA,
+  FETCH_ERROR,
+  FETCH_START,
+  FETCH_SUCCESS,
+  CREATE_BID_SUCCESS,
+  EDIT_BID_SUCCESS,
+  LIST_BIDS_SUCCESS,
+  ALL_BIDS_DATA,
   SHOW_MESSAGE,
-  FETCH_ITEM_ERROR,
-  FETCH_ITEM_START,
-  FETCH_ITEM_SUCCESS,
-  SINGLE_ITEM_DATA,
-  NEW_ITEM
+  FETCH_BID_ERROR,
+  FETCH_BID_START,
+  FETCH_BID_SUCCESS,
+  SINGLE_BID_DATA
 } from "../../constants/ActionTypes";
 import axios from 'util/Api';
 
-export const setInitUrl = (url) => {
-  return {
-    type: INIT_URL,
-    payload: url
-  };
-};
-
 export const addItemForm = () => {
   return {
-    type: CREATE_ITEM_SUCCESS,
+    type: CREATE_BID_SUCCESS,
     payload: false
   };
 };
 export const editItemForm = () => {
   return {
-    type: EDIT_ITEM_SUCCESS,
+    type: EDIT_BID_SUCCESS,
     payload: false
   };
 };
 
-export const addItem = (ref, {description, size, quantity, category, additional_details, attachment}) => {
+export const addBid = (item_id, {unit_cost, duration, additional_details}) => {
   return (dispatch) => {
-    let data = new FormData();
-    data.append('size', size);
-    data.append('category', category);
-    data.append('quantity', quantity);
-    data.append('description', description);
-    data.append('additional_details', additional_details);
-    if(attachment) {
-      attachment.map(file => {
-        return data.append('attachment[]', file, file.name);
-      });
-    }
-    const config = {
-      headers: { 'content-type': 'multipart/form-data' }
-    };
-    dispatch({type: FETCH_ITEM_START});
-    axios.post('user/orders/'+ref+'/items', data, config)
+    dispatch({type: FETCH_BID_START});
+    axios.post(`user/bids`, {duration, additional_details, item_id, unit_cost})
     .then(({data}) => {
-      console.log(data.item);
+      console.log(data);
       if (data) {
-        dispatch({type: FETCH_ITEM_SUCCESS});
-        dispatch({type: NEW_ITEM, payload: data.item});
-        dispatch({type: CREATE_ITEM_SUCCESS, payload: true});
+        dispatch({type: FETCH_BID_SUCCESS});
+        dispatch({type: CREATE_BID_SUCCESS, payload: true});
+        dispatch({type: SHOW_MESSAGE, payload: 'Bid submitted successfully'});
       } else {
         console.log("payload: data.error", data.error);
-        dispatch({type: FETCH_ITEM_ERROR, payload: "Network Error"});
+        dispatch({type: FETCH_BID_ERROR, payload: "Network Error"});
       }
     }).catch(function (error) {
-      dispatch({type: FETCH_ITEM_ERROR, payload: error.message});
+      dispatch({type: FETCH_BID_ERROR, payload: error.message});
       console.log("Error****:", error.message);
     });
   };
 };
 
-export const editItem = (ref, id, 
-  {description=null, size=null, quantity=null, category=null, unit_cost=null, additional_details=null, attachment=null, open=null}, admin=false) => {
-  const path = admin? 'admin/orders/' : 'user/orders/';
-  const route = path+ref+'/items/'+id;
-  return (dispatch) => {
-    let data = new FormData();
-    if(size) {data.append('size', size);}
-    if(open !== null) {data.append('open', open);}
-    if(category) {data.append('category', category);}
-    if(quantity) {data.append('quantity', quantity);}
-    if(unit_cost) {data.append('unit_cost', unit_cost);}
-    if(description) {data.append('description', description);}
-    if(additional_details) {data.append('additional_details', additional_details);}
-    if(attachment) {
-      attachment.map(file => {
-        return data.append('attachment[]', file, file.name);
-      });
-    }
-
-    const config = {
-      headers: { 'content-type': 'multipart/form-data' }
-    };
-  
-    dispatch({type: FETCH_ITEM_START});
-    axios.put(route, data, config)
-    .then(({data}) => {
-      if (data) {
-        dispatch({type: FETCH_ITEM_SUCCESS});
-        dispatch({type: EDIT_ITEM_SUCCESS, payload: data.item});
-        dispatch({type: SHOW_MESSAGE, payload: 'Item updated successfully'});
-      } else {
-        console.log("payload: data.error", data.error);
-        dispatch({type: FETCH_ITEM_ERROR, payload: "Network Error"});
-      }
-    }).catch(function (error) {
-      dispatch({type: FETCH_ITEM_ERROR, payload: error.message});
-      console.log("Error****:", error.message);
-    });
-  };
-};
 
 export const getBids = (admin=false, s=null, c=null) => {
   // console.log(admin, s, c);
@@ -127,8 +67,8 @@ export const getBids = (admin=false, s=null, c=null) => {
     ).then(({data}) => {
       if (data.data) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: LIST_ORDERS_SUCCESS});
-        dispatch({type: ALL_ORDERS_DATA, payload: data.data});
+        dispatch({type: LIST_BIDS_SUCCESS});
+        dispatch({type: ALL_BIDS_DATA, payload: data.data});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_ERROR, payload: "Network Error"});
