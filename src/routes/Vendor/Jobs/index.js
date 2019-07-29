@@ -3,16 +3,16 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 
-import AllBids from "./allBids";
-// import NewBid from "./newBid";
-// import SingleBid from "./singleBid";
+import AllJobs from "./allJobs";
+// import NewJob from "./newJob";
+// import SingleJob from "./singleJob";
 
-const Bids = ({match}) => (
+const Jobs = ({match}) => (
   <Switch>
-    <Route exact path={`${match.url}/`} component={AllBids}/>
+    <Route exact path={`${match.url}/`} component={AllJobs}/>
     {/* <Route path={`${match.url}/new`} component={NewBid}/> */}
     {/* <Route path={`${match.url}/:ref`} component={SingleBid}/> */}
   </Switch>
 );
 
-export default Bids;
+export default Jobs;

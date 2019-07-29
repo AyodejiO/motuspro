@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Input, Button, Form } from 'antd';
+import { Divider, Table, InputNumber, Button, Form } from 'antd';
 import './items.less';
 const EditableContext = React.createContext();
 
@@ -50,7 +50,13 @@ class EditableCell extends React.Component {
             },
           ],
           initialValue: record[dataIndex],
-        })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />)}
+        })(<InputNumber 
+          min={0} 
+          ref={node => (this.input = node)} 
+          onPressEnter={this.save} onBlur={this.save} 
+          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          parser={value => value.replace(/\$\s?|(,*)/g, '')}
+        />)}
       </Form.Item>
     ) : (
       <div
@@ -135,6 +141,12 @@ export default class Items extends React.Component {
             return (
               <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record)}>
                 {`View ${record.bids_count} Bids`}
+                {record.bid_id && (
+                  <>
+                    <Divider type="vertical" />
+                    <span>{record.bid_id }</span>
+                  </>
+                )}
               </Button>
             );
           }

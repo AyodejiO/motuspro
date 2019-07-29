@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 
 export * from './Auth';
+export * from './Bids';
 export * from './Cats';
 export * from './Clients';
 export * from './Common';

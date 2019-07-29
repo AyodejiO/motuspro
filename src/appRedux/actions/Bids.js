@@ -2,19 +2,16 @@
 
 // eslint-disable-next-line 
 import {
-  FETCH_ERROR,
-  FETCH_START,
-  FETCH_SUCCESS,
   INIT_URL,
   CREATE_ITEM_SUCCESS,
   EDIT_ITEM_SUCCESS,
   LIST_ITEMS_SUCCESS,
-  ALL_ITEMS_DATA,
+  // ALL_ITEMS_DATA,
   SHOW_MESSAGE,
   FETCH_ITEM_ERROR,
   FETCH_ITEM_START,
   FETCH_ITEM_SUCCESS,
-  // SINGLE_ITEM_DATA,
+  SINGLE_ITEM_DATA,
   NEW_ITEM
 } from "../../constants/ActionTypes";
 import axios from 'util/Api';
@@ -115,7 +112,7 @@ export const editItem = (ref, id,
   };
 };
 
-export const getItems = (admin=false, s=null, c=null) => {
+export const getBids = (admin=false, s=null, c=null) => {
   // console.log(admin, s, c);
   const route = admin? 'admin/items' : 'user/items';
   return (dispatch) => {
@@ -128,10 +125,10 @@ export const getItems = (admin=false, s=null, c=null) => {
       }
     }
     ).then(({data}) => {
-      if (data) {
+      if (data.data) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: LIST_ITEMS_SUCCESS});
-        dispatch({type: ALL_ITEMS_DATA, payload: data.items});
+        dispatch({type: LIST_ORDERS_SUCCESS});
+        dispatch({type: ALL_ORDERS_DATA, payload: data.data});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_ERROR, payload: "Network Error"});

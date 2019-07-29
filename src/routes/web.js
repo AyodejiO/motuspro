@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 var routes = {
   admin: [
     {
@@ -166,12 +166,12 @@ var routes = {
     },
     {
       type: 0,
-      key: "bids",
-      link: "/bids",
-      path: "bids",
-      name: "sidebar.bids",
+      key: "jobs",
+      link: "/jobs",
+      path: "jobs",
+      name: "sidebar.jobs",
       icon: "icon icon-orders",
-      component: import('./Vendor/Bids/index')
+      component: import('./Vendor/Jobs/index')
     },
     {
       type: 0,

@@ -1,9 +1,10 @@
 /*jshint esversion: 9 */
 import React, {Component} from "react";
 //eslint-disable-nextline
-import {Button, Card, Dropdown, Empty, Icon, Menu, Switch, Tabs, Tag, notification} from "antd";
+import {Button, Card, Dropdown, Empty, Icon, Menu, Spin, Switch, Tabs, Tag} from "antd";
 import {connect} from "react-redux";
 import Items from './Items';
+import InfoView from "components/InfoView";
 import {CreateBidForm} from './CreateBid';
 import {OrderNoteForm} from './OrderNote';
 import {OrderTimeline} from "components/Orders/Timeline";
@@ -11,6 +12,7 @@ import {activateOrder} from "../../../../appRedux/actions/Orders";
 import {getSingleOrder} from "../../../../appRedux/actions/Orders";
 import {getCats} from "../../../../appRedux/actions/Cats";
 import {editItem} from "../../../../appRedux/actions/Items";
+import {editOrder} from "../../../../appRedux/actions/Orders";
 import {editItemForm} from "../../../../appRedux/actions/Items";
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -27,7 +29,6 @@ class SingleOrder extends Component {
 
     componentDidMount() {
       const {ref} = this.props.match.params;
-      // console.log(slug);
       this.props.getSingleOrder(ref, true);
       // this.props.getCats();
     }
@@ -53,11 +54,6 @@ class SingleOrder extends Component {
       this.setState({ visible: true });
     };
 
-    updateItem = (item, values) => {
-      const {ref} = this.props.match.params;
-      this.props.editItem(ref, item, values, true);
-    };
-
     orderNoteModal = () => {
       this.setState({ 
         noteVisible: true
@@ -71,25 +67,21 @@ class SingleOrder extends Component {
       // });
     };
 
-    handleEditOrder = () => {
-      const form = this.formRef.props.form;
-      form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          // const {order} = this.props;
-          // this.props.addItem(order.client_ref, values);
-          // return;
-        }
-      });
+    handleEditItem = (item, values) => {
+      const {ref} = this.props.match.params;
+      this.props.editItem(ref, item, values, true);
     };
 
-    handleEditItem = () => {
+    handleEditOrder = () => {
+      const {ref} = this.props.match.params;
       const form = this.formRef.props.form;
+      this.setState({ 
+        noteVisible: false 
+      });
       form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
-          const {order} = this.props;
-          this.props.addItem(order.client_ref, values);
+          this.props.editOrder(ref, values, true);
           return;
         }
       });
@@ -112,6 +104,7 @@ class SingleOrder extends Component {
         </Menu>
       );
       let badge = '';
+      const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />
       if(!order) {return;};
       switch(order.status) {
         case 'inactive':
@@ -126,18 +119,20 @@ class SingleOrder extends Component {
       }
       return (
         <>
-          {badge}
-          <Dropdown overlay={menu} trigger={['click']}>
-            <Button className="gx-mb-0 gx-p-0 ant-dropdown-link" type='link'>More <Icon type="down" /></Button>
-          </Dropdown>
+          <Spin spinning={this.props.orderLoading} indicator={antIcon}>
+            {badge}
+            <Dropdown overlay={menu} trigger={['click']}>
+              <Button className="gx-mb-0 gx-p-0 ant-dropdown-link" type='link'>More <Icon type="down" /></Button>
+            </Dropdown>
+          </Spin>
         </>
       )
     }
 
     extra = () => {
-      const {activating, items, order} = this.props;
+      const {activating, orderItems, order} = this.props;
       if(!order) {return null};
-      if(!items || items.length < 1) {return null};
+      if(!orderItems || orderItems.length < 1) {return null};
       return (
         <>
           <Switch 
@@ -151,23 +146,11 @@ class SingleOrder extends Component {
         </>
       )      
     }
-
-    openNotification = (type) => {
-      notification[type]({
-        message: `Item added`,
-        description: 'Activate this order when you\'re done.'
-      });
-    };
   
     render() {
       const {bidVisible, currentItem, noteVisible} = this.state;
       const {ref} = this.props.match.params;
-      const {activities, cats, createSuccess, order, items, loading, itemLoading} = this.props;
-      if(createSuccess) {
-        this.openNotification('success');
-        this.setState({ visible: false });
-        this.props.addItemForm();
-      }
+      const {activities, cats, order, orderItems, loading, itemLoading, orderLoading} = this.props;
       // console.log(order);
       return (
         <Card 
@@ -192,12 +175,12 @@ class SingleOrder extends Component {
                   key="1"
                 >
                   <Items 
-                    items={items} 
+                    items={orderItems} 
                     status={order.status}
                     loading={itemLoading}
                     callback={this.showModal} 
-                    updateItem={this.updateItem} 
-                    visible={items? items.length < 5 : false} 
+                    updateItem={this.handleEditItem} 
+                    visible={orderItems? orderItems.length < 5 : false} 
                   />
                 </TabPane>
                 <TabPane
@@ -219,7 +202,7 @@ class SingleOrder extends Component {
                 visible={noteVisible}
                 onCancel={this.handleCancel}
                 onCreate={this.handleEditOrder}
-                confirmLoading={loading}
+                confirmLoading={orderLoading}
                 order={order}
               /> 
             </div>) :
@@ -243,6 +226,7 @@ class SingleOrder extends Component {
               item={currentItem}
             /> : 
           null}
+          <InfoView/>
         </Card>
       );
     }
@@ -251,16 +235,17 @@ class SingleOrder extends Component {
 const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => {
   const {token} = auth;
   const {cats} = catData;
-  const {order, activating, activities} = ordersData;
-  const {createSuccess, items, itemLoading} = itemsData;
-  const {loading} = commonData;
-  return {activating, activities, cats, createSuccess, token, items, itemLoading, loading, order};
+  const {order, orderLoading, activities} = ordersData;
+  const {createSuccess, orderItems, itemLoading} = itemsData;
+  const {loading, message} = commonData;
+  return {activities, cats, createSuccess, token, orderItems, itemLoading, loading, message, order, orderLoading};
 };
   
 export default connect(mapStateToProps, {
   activateOrder, 
   editItem, 
   editItemForm, 
+  editOrder,
   getCats, 
   getSingleOrder
 })(SingleOrder);

@@ -48,6 +48,11 @@ export const ALL_VENDORS_DATA = 'ALL_VENDORS_DATA';
 
 //Order Constants
 export const ALL_ORDERS_DATA = 'ALL_ORDERS_DATA';
+export const FETCH_ORDER_START = 'FETCH_ORDER_START';
+export const FETCH_ORDER_STATUS = 'FETCH_ORDER_STATUS';
+export const FETCH_ORDER_SUCCESS = 'FETCH_ORDER_SUCCESS';
+export const FETCH_ORDER_ERROR = 'FETCH_ORDER_ERROR';
+export const EDIT_ORDER_SUCCESS = 'EDIT_ORDER_SUCCESS';
 export const FETCH_ACTIVATING_ERROR = 'FETCH_ACTIVATING_ERROR';
 export const FETCH_ACTIVATING_START = 'FETCH_ACTIVATING_START';
 export const FETCH_ACTIVATING_STATUS = 'FETCH_ACTIVATING_STATUS';
@@ -62,6 +67,7 @@ export const NEW_ORDER_ID = 'NEW_ORDER_ID';
 
 //Items Constants
 export const ALL_ITEMS_DATA = 'ALL_ITEMS_DATA';
+export const ORDER_ITEMS_DATA = 'ORDER_ITEMS_DATA';
 export const CREATE_ITEM = 'CREATE_ITEM';
 export const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS';
 export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS';
@@ -72,6 +78,19 @@ export const FETCH_ITEM_START = 'fetch_item_start';
 export const FETCH_ITEM_STATUS = 'fetch_item_status';
 export const FETCH_ITEM_SUCCESS = 'fetch_item_success';
 export const FETCH_ITEM_ERROR = 'fetch_item_error';
+
+//Bids Constants
+export const ALL_BIDS_DATA = 'ALL_BIDS_DATA';
+export const CREATE_BID = 'CREATE_BID';
+export const CREATE_BID_SUCCESS = 'CREATE_BID_SUCCESS';
+export const EDIT_BID_SUCCESS = 'EDIT_BID_SUCCESS';
+export const SINGLE_BID_DATA = 'SINGLE_BID_DATA';
+export const LIST_BIDS_SUCCESS = 'LIST_BIDS_SUCCESS';
+export const NEW_BID = 'NEW_BID';
+export const FETCH_BID_START = 'FETCH_BID_START';
+export const FETCH_BID_STATUS = 'FETCH_BID_STATUS';
+export const FETCH_BID_SUCCESS = 'FETCH_BID_SUCCESS';
+export const FETCH_BID_ERROR = 'FETCH_BID_ERROR';
 
 //Profile Constants
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';

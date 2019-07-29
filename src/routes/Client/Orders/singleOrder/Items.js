@@ -1,3 +1,4 @@
+/*jshint esversion: 9 */
 import React from "react";
 import { Button, Col,  Divider, Row, Table } from 'antd';
 import FileIcon, {defaultStyles} from 'react-file-icon';

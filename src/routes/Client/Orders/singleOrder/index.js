@@ -87,15 +87,15 @@ class SingleOrder extends Component {
     }
 
     extra = () => {
-      const {activating, items, order} = this.props;
+      const {orderLoading, orderItems, order} = this.props;
       if(!order) {return null};
-      if(!items || items.length < 1) {return null};
+      if(!orderItems || orderItems.length < 1) {return null};
       return (
         <Switch 
           checked={order.status === 'active'} 
           checkedChildren="Active" 
           disabled={order.status === 'active'} 
-          loading={activating}
+          loading={orderLoading}
           unCheckedChildren={order.status} 
           onChange={() => this.props.activateOrder(order.client_ref)} 
         />
@@ -130,7 +130,7 @@ class SingleOrder extends Component {
     render() {
       const {currentItem} = this.state;
       const {ref} = this.props.match.params;
-      const {activities, cats, createSuccess, order, items, loading, itemLoading} = this.props;
+      const {activities, cats, createSuccess, order, orderItems, loading, itemLoading} = this.props;
       if(createSuccess) {
         this.openNotification('success');
         this.setState({ visible: false });
@@ -162,10 +162,10 @@ class SingleOrder extends Component {
                   callback={this.showModal} 
                   deleteItem={this.deleteItem} 
                   edit={this.showEditModal} 
-                  items={items} 
+                  items={orderItems} 
                   loading={itemLoading}
                   status={order.status}
-                  visible={items? items.length < 5 : false} 
+                  visible={orderItems? orderItems.length < 5 : false} 
                 />
               </TabPane>
               <TabPane
@@ -193,7 +193,7 @@ class SingleOrder extends Component {
           }
           <NewItemForm
             wrappedComponentRef={this.saveFormRef}
-            visible={this.state.visible && items.length < 5}
+            visible={this.state.visible && orderItems.length < 5}
             onCancel={this.handleCancel}
             onCreate={this.handleCreate}
             confirmLoading={itemLoading}
@@ -218,10 +218,10 @@ class SingleOrder extends Component {
 const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => {
   const {token} = auth;
   const {cats} = catData;
-  const {order, activating, activities} = ordersData;
-  const {createSuccess, items, itemLoading} = itemsData;
+  const {order, orderLoading, activities} = ordersData;
+  const {createSuccess, orderItems, itemLoading} = itemsData;
   const {loading} = commonData;
-  return {activating, activities, cats, createSuccess, token, items, itemLoading, loading, order};
+  return {orderLoading, activities, cats, createSuccess, token, orderItems, itemLoading, loading, order};
 };
   
 export default connect(mapStateToProps, {

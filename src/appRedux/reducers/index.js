@@ -3,6 +3,7 @@
 import {combineReducers} from "redux";
 import {routerReducer} from "react-router-redux";
 import Auth from "./Auth";
+import Bids from "./Bids";
 import Cats from "./Cats";
 import Clients from "./Clients";
 import Common from "./Common";
@@ -16,6 +17,7 @@ import Vendors from "./Vendors";
 const reducers = combineReducers({
   routing: routerReducer,
   auth: Auth,
+  BidsData: Bids,
   catData: Cats,
   clientData: Clients,
   commonData: Common,

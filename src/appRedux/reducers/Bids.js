@@ -1,4 +1,4 @@
-/*jshint esversion: 9 */
+/*jshint esversion: 6 */
 
 import {
   CREATE_ITEM_SUCCESS, 
@@ -8,7 +8,6 @@ import {
   FETCH_ITEM_SUCCESS,
   EDIT_ITEM_SUCCESS,
   ALL_ITEMS_DATA, 
-  ORDER_ITEMS_DATA,
   SINGLE_ITEM_DATA, 
   NEW_ITEM
 } from "../../constants/ActionTypes";
@@ -17,7 +16,6 @@ const INIT_STATE = {
   createSuccess: false,
   listSuccess: false,
   items: [],
-  orderItems: [],
   item: '',
   itemLoading: false,
   itemMessage: '',
@@ -32,21 +30,14 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         items: action.payload
-      };
-    }
-
-    case ORDER_ITEMS_DATA: {
-      return {
-        ...state,
-        orderItems: action.payload
-      };
+      }
     }
 
     case CREATE_ITEM_SUCCESS: {
       return {
         ...state,
         createSuccess: action.payload
-      };
+      }
     }
 
     case FETCH_ITEM_ERROR: {
@@ -58,7 +49,7 @@ export default (state = INIT_STATE, action) => {
         ...state,
         itemLoading: true,
         itemMessage: ''
-      };
+      }
     }
 
     case FETCH_ITEM_SUCCESS: {
@@ -66,28 +57,28 @@ export default (state = INIT_STATE, action) => {
         ...state,
         itemLoading: false,
         itemMessage: ''
-      };
+      }
     }
 
     case LIST_ITEMS_SUCCESS: {
       return {
         ...state,
         listSuccess: true
-      };
+      }
     }
 
     case NEW_ITEM: {
       return {
         ...state,
-        orderItems: [...state.orderItems, action.payload]
-      };
+        items: [...state.items, action.payload]
+      }
     }
 
     case EDIT_ITEM_SUCCESS: {
       return {
         ...state,
-        orderItems: [
-          ...state.orderItems.map((item) => {
+        items: [
+          ...state.items.map((item) => {
             // Find the item with the matching id
             if(item.id === action.payload.id) {
               // Return a new object
@@ -96,7 +87,7 @@ export default (state = INIT_STATE, action) => {
             return item;
           })
         ]
-      };
+      }
       // return {
       //   ...state,
       //   items: [
@@ -110,7 +101,7 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         item: action.payload
-      };
+      }
     }
 
     default:
