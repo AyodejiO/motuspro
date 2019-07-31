@@ -82,6 +82,8 @@ export const FETCH_ITEM_ERROR = 'fetch_item_error';
 //Bids Constants
 export const ALL_BIDS_DATA = 'ALL_BIDS_DATA';
 export const CREATE_BID = 'CREATE_BID';
+export const CREATE_BID_CANCEL = 'CREATE_BID_CANCEL';
+export const CREATE_BID_MODAL = 'CREATE_BID_MODAL';
 export const CREATE_BID_SUCCESS = 'CREATE_BID_SUCCESS';
 export const EDIT_BID_SUCCESS = 'EDIT_BID_SUCCESS';
 export const SINGLE_BID_DATA = 'SINGLE_BID_DATA';

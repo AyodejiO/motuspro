@@ -10,6 +10,7 @@ import {
   ALL_ITEMS_DATA, 
   ORDER_ITEMS_DATA,
   SINGLE_ITEM_DATA, 
+  CREATE_BID_SUCCESS,
   NEW_ITEM
 } from "../../constants/ActionTypes";
 
@@ -97,13 +98,13 @@ export default (state = INIT_STATE, action) => {
           })
         ]
       };
-      // return {
-      //   ...state,
-      //   items: [
-      //     ...state.items, 
-      //     [action.payload.id]: action.payload
-      //   ]
-      // }
+    }
+
+    case CREATE_BID_SUCCESS: {
+      return {
+        ...state,
+        items: [...state.items.filter(item => item.id !== action.payload)]
+      };
     }
 
     case SINGLE_ITEM_DATA: {

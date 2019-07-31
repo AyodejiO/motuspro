@@ -1,6 +1,8 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {
+  CREATE_BID_CANCEL,
+  CREATE_BID_MODAL,
   CREATE_BID_SUCCESS, 
   LIST_BIDS_SUCCESS, 
   FETCH_BID_ERROR,
@@ -13,7 +15,7 @@ import {
 } from "../../constants/ActionTypes";
 
 const INIT_STATE = {
-  createSuccess: false,
+  visible: false,
   listSuccess: false,
   bids: [],
   bid: '',
@@ -30,14 +32,31 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         bids: action.payload
-      }
+      };
     }
 
     case CREATE_BID_SUCCESS: {
       return {
         ...state,
-        createSuccess: action.payload
-      }
+        item: null,
+        visible: false
+      };
+    }
+
+    case CREATE_BID_CANCEL: {
+      return {
+        ...state,
+        item: null,
+        visible: false
+      };
+    }
+
+    case CREATE_BID_MODAL: {
+      return {
+        ...state,
+        item: action.payload,
+        visible: true
+      };
     }
 
     case FETCH_BID_ERROR: {
@@ -49,7 +68,7 @@ export default (state = INIT_STATE, action) => {
         ...state,
         bidLoading: true,
         bidMessage: ''
-      }
+      };
     }
 
     case FETCH_BID_SUCCESS: {
@@ -57,21 +76,21 @@ export default (state = INIT_STATE, action) => {
         ...state,
         bidLoading: false,
         bidMessage: ''
-      }
+      };
     }
 
     case LIST_BIDS_SUCCESS: {
       return {
         ...state,
         listSuccess: true
-      }
+      };
     }
 
     case NEW_BID: {
       return {
         ...state,
         bids: [...state.bids, action.payload]
-      }
+      };
     }
 
     case EDIT_BID_SUCCESS: {
@@ -87,24 +106,17 @@ export default (state = INIT_STATE, action) => {
             return bid;
           })
         ]
-      }
-      // return {
-      //   ...state,
-      //   bids: [
-      //     ...state.bids, 
-      //     [action.payload.id]: action.payload
-      //   ]
-      // }
+      };
     }
 
     case SINGLE_BID_DATA: {
       return {
         ...state,
         bid: action.payload
-      }
+      };
     }
 
     default:
       return state;
   }
-}
+};

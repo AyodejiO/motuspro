@@ -5,6 +5,8 @@ import {
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
+  CREATE_BID_CANCEL,
+  CREATE_BID_MODAL,
   CREATE_BID_SUCCESS,
   EDIT_BID_SUCCESS,
   LIST_BIDS_SUCCESS,
@@ -30,6 +32,19 @@ export const editItemForm = () => {
   };
 };
 
+export const addBidModal = (item) => {
+  return {
+    type: CREATE_BID_MODAL,
+    payload: item
+  };
+};
+export const cancelBidModal = (item) => {
+  return {
+    type: CREATE_BID_CANCEL,
+    payload: item
+  };
+};
+
 export const addBid = (item_id, {unit_cost, duration, additional_details}) => {
   return (dispatch) => {
     dispatch({type: FETCH_BID_START});
@@ -38,7 +53,7 @@ export const addBid = (item_id, {unit_cost, duration, additional_details}) => {
       console.log(data);
       if (data) {
         dispatch({type: FETCH_BID_SUCCESS});
-        dispatch({type: CREATE_BID_SUCCESS, payload: true});
+        dispatch({type: CREATE_BID_SUCCESS, payload: item_id});
         dispatch({type: SHOW_MESSAGE, payload: 'Bid submitted successfully'});
       } else {
         console.log("payload: data.error", data.error);

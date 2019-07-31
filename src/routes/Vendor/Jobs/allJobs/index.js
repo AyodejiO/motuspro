@@ -14,7 +14,7 @@ import InfoView from "components/InfoView";
 // import IntlMessages from "../../../../util/IntlMessages";
 
 import {getItems} from "../../../../appRedux/actions/Items";
-import {addBid} from "../../../../appRedux/actions/Bids";
+import {addBid, addBidModal, cancelBidModal} from "../../../../appRedux/actions/Bids";
 
 const showHeader = true;
 const scroll = {y: 440};
@@ -66,7 +66,7 @@ class AllJobs extends Component {
 
   handleCreateBid(){
     const form = this.formRef.props.form;
-    const {item} = this.state;
+    const {item} = this.props;
     form.validateFields((err, values) => {
       if (!err) {
         this.props.addBid(item.id, values);
@@ -89,8 +89,8 @@ class AllJobs extends Component {
   };
 
   render() {
-    const {items, loading, bidLoading} = this.props;
-    const {item, visible} = this.state;
+    const {addBidModal, cancelBidModal, bidLoading, item, items, loading, visible} = this.props;
+
     return (
       <div>
         <List
@@ -132,7 +132,8 @@ class AllJobs extends Component {
                   
                 </div>
                 <div className="gx-mt-4">
-                  <Button type="primary" ghost size="small" onClick={() => this.createBid(item)}>Place Bid</Button>
+                  <Button type="primary" ghost size="small" onClick={() => addBidModal(item)}>Skip</Button>
+                  <Button type="primary" size="small" onClick={() => addBidModal(item)}>Place Bid</Button>
                 </div>
                 <small className="gx-text-light gx-float-right">
                   Updated <i><Moment fromNow>{item.updated_at}</Moment></i>
@@ -145,7 +146,7 @@ class AllJobs extends Component {
           wrappedComponentRef={this.saveFormRef}
           item={item}
           visible={visible}
-          onCancel={this.handleCancel}
+          onCancel={cancelBidModal}
           onCreate={this.handleCreateBid}
           confirmLoading={bidLoading}
         />}
@@ -157,9 +158,9 @@ class AllJobs extends Component {
 
 const mapStateToProps = ({bidsData, commonData, itemsData}) => {
   const {listSuccess, items} = itemsData;
-  const {bidLoading} = bidsData;
+  const {bidLoading, item, visible} = bidsData;
   const {loading} = commonData;
-  return {bidLoading, items, listSuccess, loading};
+  return {bidLoading, item, items, listSuccess, loading, visible};
 };
 
-export default connect(mapStateToProps, {addBid, getItems})(AllJobs);
+export default connect(mapStateToProps, {addBid, addBidModal, cancelBidModal, getItems})(AllJobs);
