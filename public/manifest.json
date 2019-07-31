@@ -1,5 +1,11 @@
 {
- "name": "App",
+ "name": "Motus Procurement",
+ "short_name": "MotusPro",
+ "theme_color": "#ff6601",
+ "background_color": "#003366",
+ "display": "fullscreen",
+ "scope": "/",
+ "start_url": "/",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
