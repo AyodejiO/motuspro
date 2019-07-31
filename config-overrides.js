@@ -1,8 +1,6 @@
+/*jshint esversion: 9 */
 const path = require('path');
 const {override,  addLessLoader} = require('customize-cra');
-
-
-
 const overrideProcessEnv = value => config => {
   config.resolve.modules = [
     path.join(__dirname, 'src')
