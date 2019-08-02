@@ -1,15 +1,12 @@
 /*jshint esversion: 9 */
 
 import React, {Component} from "react";
-import {Button, Card,Descriptions, List, Tag} from "antd";
-import _ from 'lodash';
+import { List} from "antd";
 import {connect} from "react-redux";
-import Moment from 'react-moment';
-import 'moment-timezone';
-import FileIcon, {defaultStyles} from 'react-file-icon';
 
 import {NewBidForm} from "../newBid";
 import InfoView from "components/InfoView";
+import GridView from './gridView';
 
 // import IntlMessages from "../../../../util/IntlMessages";
 
@@ -19,10 +16,6 @@ import {addBid, addBidModal, cancelBidModal} from "../../../../appRedux/actions/
 const showHeader = true;
 const scroll = {y: 440};
 const pagination = {position: 'bottom'};
-
-const extension = fname => {
-  return fname.slice((fname.lastIndexOf(".") - 1 >>> 0) + 2);
-};
 
 class AllJobs extends Component {
   constructor(props) {
@@ -100,45 +93,11 @@ class AllJobs extends Component {
           loading={loading}
           renderItem={item => (
             <List.Item>
-              <Card className="gx-card"
-                hoverable 
-                title={item.description}
-                extra={<Tag color="#038fdd">{item.category}</Tag>}
-              >
-                <div className="gx-mb-2">
-                  <div>
-                    <Descriptions size={`small`} layout="horizontal" column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}>
-                      <Descriptions.Item label="Size/Type">{item.size}</Descriptions.Item>
-                      <Descriptions.Item label="Quantity">{item.quantity}</Descriptions.Item>
-                      <Descriptions.Item label="Details">{item.additional_details}</Descriptions.Item>
-                    </Descriptions>
-                  </div>
-                  <div>
-                    {!_.isEmpty(item.files)? 
-                      (<div>
-                        {
-                          item.files.map(file => (
-                            <FileIcon 
-                              size={50} 
-                              key={file.id} 
-                              extension={extension(file.name)} 
-                              {...defaultStyles[extension(file.name)]} />
-                          ))
-                        }
-                      </div>)
-                      : null
-                    }
-                  </div>
-                  
-                </div>
-                <div className="gx-mt-4">
-                  <Button type="primary" ghost size="small" onClick={() => addBidModal(item)}>Skip</Button>
-                  <Button type="primary" size="small" onClick={() => addBidModal(item)}>Place Bid</Button>
-                </div>
-                <small className="gx-text-light gx-float-right">
-                  Updated <i><Moment fromNow>{item.updated_at}</Moment></i>
-                </small>
-              </Card>
+              <GridView 
+                addBid={addBidModal}
+                item={item}
+                skipItem={addBidModal}
+              />
             </List.Item>
           )}
         />

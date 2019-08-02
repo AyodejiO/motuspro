@@ -77,11 +77,10 @@ export default (state = INIT_STATE, action) => {
     case EDIT_BID_SUCCESS: {
       return {
         ...state,
-        bid: null,
         bids: [
           ...state.bids.map((bid) => {
             // Find the bid with the matching id
-            if(bid.id === action.payload) {
+            if(bid.id === action.payload.id) {
               // Return a new object
               return action.payload;
             }
@@ -89,6 +88,7 @@ export default (state = INIT_STATE, action) => {
           })
         ],
         visible: false,
+        bid: null,
       };
     }
 

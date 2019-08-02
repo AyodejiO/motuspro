@@ -1,22 +1,11 @@
-/*jshint esversion: 9 */
-
 import React from 'react';
-// import CircularProgress from "components/CircularProgress/index";
+import CircularProgress from "components/CircularProgress/index";
 import {message} from 'antd';
-// import Auxiliary from "util/Auxiliary";
+import Auxiliary from "util/Auxiliary";
 import {connect} from "react-redux";
 import {hideMessage} from "appRedux/actions/Common";
 
 class InfoView extends React.Component {
-  componentDidUpdate() {
-    const {error, displayMessage} = this.props;
-    if(displayMessage && (displayMessage !== null || displayMessage !== "")) {
-      message.success(displayMessage);
-    }
-    if(error && (error !== null || error !== "")) {
-      message.error(error);
-    }
-  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error || nextProps.message || nextProps.displayMessage) {
       setTimeout(() => {
@@ -26,10 +15,16 @@ class InfoView extends React.Component {
   }
 
   render() {
+    const {error, loading, displayMessage} = this.props;
+
     return (
-      <>
-        
-      </>
+      <Auxiliary>
+        {/* {loading && <div className="gx-loader-view">
+          <CircularProgress/>
+        </div>} */}
+        {displayMessage && message.success(displayMessage)}
+        {error && message.error(error)}
+      </Auxiliary>
     );
   }
 }

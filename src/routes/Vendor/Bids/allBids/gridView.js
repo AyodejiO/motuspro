@@ -3,6 +3,8 @@
 import React, {Component} from "react";
 import {Button, Card,Descriptions, Tag} from "antd";
 import _ from 'lodash';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import FileIcon, {defaultStyles} from 'react-file-icon';
 
 const extension = fname => {
@@ -120,6 +122,9 @@ class GridView extends Component {
           <Button type="primary" ghost size="small" onClick={() => deleteBid(bid)}>Delete</Button>
           <Button type="primary" size="small" onClick={() => editBid(bid)}>Edit</Button>
         </div>
+        <small className="gx-text-light gx-float-right">
+          Bid updated <i><Moment fromNow>{bid.updated_at}</Moment></i>
+        </small>
       </Card>
     );
   }
