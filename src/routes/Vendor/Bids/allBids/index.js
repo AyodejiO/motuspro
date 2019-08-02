@@ -11,7 +11,7 @@ import InfoView from "components/InfoView";
 // import IntlMessages from "../../../../util/IntlMessages";
 
 import {getBids} from "../../../../appRedux/actions/Bids";
-import {addBid, editBidModal, cancelEditBidModal} from "../../../../appRedux/actions/Bids";
+import {editBid, editBidModal, cancelEditBidModal} from "../../../../appRedux/actions/Bids";
 import GridView from './gridView';
 
 const showHeader = true;
@@ -58,10 +58,10 @@ class AllBids extends Component {
 
   handleUpdateBid(){
     const form = this.formRef.props.form;
-    const {item} = this.props;
+    const {bid} = this.props;
     form.validateFields((err, values) => {
       if (!err) {
-        this.props.addBid(item.id, values);
+        this.props.editBid(bid.id, values);
         // console.log('Received values of form: ', values);
         // this.setState({ visible: false });
         return;
@@ -112,4 +112,4 @@ const mapStateToProps = ({bidsData, commonData}) => {
   return {bid, bids, bidLoading, listSuccess, loading, visible};
 };
 
-export default connect(mapStateToProps, {addBid, editBidModal, cancelEditBidModal, getBids})(AllBids);
+export default connect(mapStateToProps, {editBid, editBidModal, cancelEditBidModal, getBids})(AllBids);
