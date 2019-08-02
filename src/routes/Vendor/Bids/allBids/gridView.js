@@ -1,7 +1,7 @@
 /*jshint esversion: 9 */
 
 import React, {Component} from "react";
-import {Button, Card,Descriptions, Tag} from "antd";
+import {Button,Card,Descriptions,Popconfirm,Tag} from "antd";
 import _ from 'lodash';
 import Moment from 'react-moment';
 import 'moment-timezone';
@@ -93,14 +93,30 @@ class GridView extends Component {
 
     this.state = {
       key: 'job',
+      loading: false
     };
 
+    this.confirm = this.confirm.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({
+      loading: false
+    });
   }
 
   onTabChange = (key, type) => {
     this.setState({ [type]: key });
   };
+
+  confirm() {
+    const {bid,deleteBid} = this.props;
+    this.setState({
+      loading: true
+    });
+    deleteBid(bid.id);
+  }
   
   render() {
     const {bid, editBid, deleteBid} = this.props;
@@ -119,7 +135,14 @@ class GridView extends Component {
       >
         {contentList(key, bid)}
         <div className="gx-mt-4">
-          <Button type="primary" ghost size="small" onClick={() => deleteBid(bid)}>Delete</Button>
+          <Popconfirm
+            title="Are you sure you want to delete this bid?"
+            onConfirm={this.confirm}
+            okText="Yes, forever"
+            cancelText="No, wait"
+          >
+            <Button type="primary" ghost size="small">Delete</Button>
+          </Popconfirm>
           <Button type="primary" size="small" onClick={() => editBid(bid)}>Edit</Button>
         </div>
         <small className="gx-text-light gx-float-right">

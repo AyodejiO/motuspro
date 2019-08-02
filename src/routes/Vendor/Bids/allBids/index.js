@@ -1,17 +1,17 @@
 /*jshint esversion: 9 */
 
 import React, {Component} from "react";
-import {List} from "antd";
+import {ConfigProvider, List} from "antd";
 import {connect} from "react-redux";
 import 'moment-timezone';
 
 import {EditBidForm} from "../editBid";
 import InfoView from "components/InfoView";
+import CustomizedEmpty from "components/CustomizedEmpty";
 
 // import IntlMessages from "../../../../util/IntlMessages";
 
-import {getBids} from "../../../../appRedux/actions/Bids";
-import {editBid, editBidModal, cancelEditBidModal} from "../../../../appRedux/actions/Bids";
+import {deleteBid, editBid, editBidModal, cancelEditBidModal, getBids} from "../../../../appRedux/actions/Bids";
 import GridView from './gridView';
 
 const showHeader = true;
@@ -74,32 +74,34 @@ class AllBids extends Component {
   };
 
   render() {
-    const {editBidModal, cancelEditBidModal, bidLoading, bid, bids, loading, visible} = this.props;
+    const {deleteBid, editBidModal, cancelEditBidModal, bidLoading, bid, bids, loading, visible} = this.props;
     return (
       <div>
-        <List
-          dataSource={bids}
-          itemLayout="horizontal"
-          grid={{ gutter: 15, column: 3 }}
-          loading={loading}
-          renderItem={bid => (
-            <List.Item>
-              <GridView
-                bid={bid}
-                editBid={editBidModal}
-                deleteBid={editBidModal}
-              />
-            </List.Item>
-          )}
-        />
-        {bid && <EditBidForm
-          wrappedComponentRef={this.saveFormRef}
-          bid={bid}
-          visible={visible}
-          onCancel={cancelEditBidModal}
-          onSave={this.handleUpdateBid}
-          confirmLoading={bidLoading}
-        />}
+        <ConfigProvider renderEmpty={() => CustomizedEmpty('bids')}>
+          <List
+            dataSource={bids}
+            itemLayout="horizontal"
+            grid={{ gutter: 15, column: 3 }}
+            loading={loading}
+            renderItem={bid => (
+              <List.Item>
+                <GridView
+                  bid={bid}
+                  editBid={editBidModal}
+                  deleteBid={deleteBid}
+                />
+              </List.Item>
+            )}
+          />
+          {bid && <EditBidForm
+            wrappedComponentRef={this.saveFormRef}
+            bid={bid}
+            visible={visible}
+            onCancel={cancelEditBidModal}
+            onSave={this.handleUpdateBid}
+            confirmLoading={bidLoading}
+          />}
+        </ConfigProvider>
         <InfoView/>
       </div>
     );
@@ -112,4 +114,4 @@ const mapStateToProps = ({bidsData, commonData}) => {
   return {bid, bids, bidLoading, listSuccess, loading, visible};
 };
 
-export default connect(mapStateToProps, {editBid, editBidModal, cancelEditBidModal, getBids})(AllBids);
+export default connect(mapStateToProps, {deleteBid, editBid, editBidModal, cancelEditBidModal, getBids})(AllBids);

@@ -1,11 +1,12 @@
 /*jshint esversion: 9 */
 
 import React, {Component} from "react";
-import { List} from "antd";
+import { ConfigProvider, List} from "antd";
 import {connect} from "react-redux";
 
 import {NewBidForm} from "../newBid";
 import InfoView from "components/InfoView";
+import CustomizedEmpty from "components/CustomizedEmpty";
 import GridView from './gridView';
 
 // import IntlMessages from "../../../../util/IntlMessages";
@@ -86,29 +87,31 @@ class AllJobs extends Component {
 
     return (
       <div>
-        <List
-          dataSource={items}
-          itemLayout="horizontal"
-          grid={{ gutter: 15, column: 3 }}
-          loading={loading}
-          renderItem={item => (
-            <List.Item>
-              <GridView 
-                addBid={addBidModal}
-                item={item}
-                skipItem={skipItem}
-              />
-            </List.Item>
-          )}
-        />
-        {item && <NewBidForm
-          wrappedComponentRef={this.saveFormRef}
-          item={item}
-          visible={visible}
-          onCancel={cancelBidModal}
-          onCreate={this.handleCreateBid}
-          confirmLoading={bidLoading}
-        />}
+        <ConfigProvider renderEmpty={() => CustomizedEmpty('jobs')}>
+          <List
+            dataSource={items}
+            itemLayout="horizontal"
+            grid={{ gutter: 15, column: 3 }}
+            loading={loading}
+            renderItem={item => (
+              <List.Item>
+                <GridView 
+                  addBid={addBidModal}
+                  item={item}
+                  skipItem={skipItem}
+                />
+              </List.Item>
+            )}
+          />
+          {item && <NewBidForm
+            wrappedComponentRef={this.saveFormRef}
+            item={item}
+            visible={visible}
+            onCancel={cancelBidModal}
+            onCreate={this.handleCreateBid}
+            confirmLoading={bidLoading}
+          />}
+        </ConfigProvider>
         <InfoView/>
       </div>
     );

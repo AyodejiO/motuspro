@@ -10,6 +10,7 @@ import {
   FETCH_BID_ERROR,
   FETCH_BID_START,
   FETCH_BID_SUCCESS,
+  DELETE_BID_SUCCESS,
   EDIT_BID_SUCCESS,
   ALL_BIDS_DATA, 
   SINGLE_BID_DATA, 
@@ -71,6 +72,13 @@ export default (state = INIT_STATE, action) => {
         ...state,
         bid: null,
         visible: false
+      };
+    }
+
+    case DELETE_BID_SUCCESS: {
+      return {
+        ...state,
+        bids: [...state.bids.filter(bid => bid.id !== action.payload)]
       };
     }
 

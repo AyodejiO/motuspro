@@ -10,6 +10,7 @@ import {
   EDIT_BID_CANCEL,
   EDIT_BID_MODAL,
   CREATE_BID_SUCCESS,
+  DELETE_BID_SUCCESS,
   EDIT_BID_SUCCESS,
   LIST_BIDS_SUCCESS,
   ALL_BIDS_DATA,
@@ -62,11 +63,28 @@ export const addBid = (item_id, {unit_cost, duration, additional_details}) => {
     dispatch({type: FETCH_BID_START});
     axios.post(`user/bids`, {duration, additional_details, item_id, unit_cost})
     .then(({data}) => {
-      console.log(data);
       if (data) {
         dispatch({type: FETCH_BID_SUCCESS});
         dispatch({type: CREATE_BID_SUCCESS, payload: item_id});
         dispatch({type: SHOW_MESSAGE, payload: 'Bid submitted successfully'});
+      } else {
+        console.log("payload: data.error", data.error);
+        dispatch({type: FETCH_BID_ERROR, payload: "Network Error"});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_BID_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
+export const deleteBid = (bid_id) => {
+  return (dispatch) => {
+    axios.delete(`user/bids/${bid_id}`)
+    .then(({data}) => {
+      if (data) {
+        dispatch({type: DELETE_BID_SUCCESS, payload: bid_id});
+        dispatch({type: SHOW_MESSAGE, payload: 'Bid deleted'});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_BID_ERROR, payload: "Network Error"});
