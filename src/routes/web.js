@@ -175,6 +175,35 @@ var routes = {
     },
     {
       type: 0,
+      key: "bids",
+      link: "/bids",
+      path: "bids",
+      name: "sidebar.bids",
+      icon: "icon icon-select",
+      component: import('./Vendor/Bids/index'),
+      children: [
+        {
+          type: 0,
+          key: "bids",
+          link: "/bids",
+          path: "bids",
+          name: "sidebar.bids.pending",
+          icon: "icon icon-schedule",
+          component: import('./Vendor/Bids/index')
+        },
+        {
+          type: 0,
+          key: "bids/closed",
+          path: "bids/closed",
+          link: "/bids/closed",
+          name: "sidebar.bids.closed",
+          icon: "icon icon-check-cricle",
+          component: import('./Vendor/Bids/index')
+        }
+      ]
+    },
+    {
+      type: 0,
       key: "profile",
       path: "profile",
       link: "/profile",

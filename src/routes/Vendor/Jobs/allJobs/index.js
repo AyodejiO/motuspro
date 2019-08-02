@@ -114,15 +114,15 @@ class AllJobs extends Component {
                     </Descriptions>
                   </div>
                   <div>
-                    {!_.isEmpty(item.docs)? 
+                    {!_.isEmpty(item.files)? 
                       (<div>
                         {
-                          item.docs.map(doc => (
+                          item.files.map(file => (
                             <FileIcon 
                               size={50} 
-                              key={doc.id} 
-                              extension={extension(doc.name)} 
-                              {...defaultStyles[extension(doc.name)]} />
+                              key={file.id} 
+                              extension={extension(file.name)} 
+                              {...defaultStyles[extension(file.name)]} />
                           ))
                         }
                       </div>)

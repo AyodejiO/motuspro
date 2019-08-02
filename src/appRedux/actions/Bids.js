@@ -69,7 +69,7 @@ export const addBid = (item_id, {unit_cost, duration, additional_details}) => {
 
 export const getBids = (admin=false, s=null, c=null) => {
   // console.log(admin, s, c);
-  const route = admin? 'admin/items' : 'user/items';
+  const route = admin? 'admin/bids' : 'user/bids';
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(route, {
@@ -80,10 +80,10 @@ export const getBids = (admin=false, s=null, c=null) => {
       }
     }
     ).then(({data}) => {
-      if (data.data) {
+      if (data) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: LIST_BIDS_SUCCESS});
-        dispatch({type: ALL_BIDS_DATA, payload: data.data});
+        dispatch({type: ALL_BIDS_DATA, payload: data.bids});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_ERROR, payload: "Network Error"});
