@@ -1,7 +1,6 @@
 /*jshint esversion: 9 */
 import React from "react";
 import { Modal, Form, Input, InputNumber, Icon, Tooltip } from 'antd';
-import './index.less';
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
