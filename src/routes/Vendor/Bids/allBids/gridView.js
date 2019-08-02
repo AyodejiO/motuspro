@@ -119,7 +119,7 @@ class GridView extends Component {
   }
   
   render() {
-    const {bid, editBid, deleteBid} = this.props;
+    const {bid, editBid} = this.props;
     const {key} = this.state;
 
     return (

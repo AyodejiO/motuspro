@@ -1,6 +1,6 @@
 import React from "react";
 import { Divider, Table, InputNumber, Button, Form } from 'antd';
-import './items.less';
+import './index.less';
 const EditableContext = React.createContext();
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -101,7 +101,7 @@ export default class Items extends React.Component {
       dataIndex: 'description',
       key: 'description',
       width: 200,
-      render: text => <span className="gx-link">{text}</span>,
+      render: text => <span className="">{text}</span>,
     }, {
       title: 'Size',
       dataIndex: 'size',
@@ -141,7 +141,7 @@ export default class Items extends React.Component {
             }
             return (
               <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record)}>
-                {`View ${record.bids_count} Bids`}
+                {`View ${record.bids_count} Bid(s)`}
                 {record.bid_id && (
                   <>
                     <Divider type="vertical" />

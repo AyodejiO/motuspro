@@ -3,17 +3,13 @@ import React, {Component} from "react";
 //eslint-disable-nextline
 import {Button, Card, Dropdown, Empty, Icon, Menu, Spin, Switch, Tabs, Tag} from "antd";
 import {connect} from "react-redux";
-import Items from './Items';
+import Items from './items';
 import InfoView from "components/InfoView";
-import {CreateBidForm} from './CreateBid';
+import Bids from './items/Bids';
 import {OrderNoteForm} from './OrderNote';
 import {OrderTimeline} from "components/Orders/Timeline";
-import {activateOrder} from "../../../../appRedux/actions/Orders";
-import {getSingleOrder} from "../../../../appRedux/actions/Orders";
-import {getCats} from "../../../../appRedux/actions/Cats";
-import {editItem} from "../../../../appRedux/actions/Items";
-import {editOrder} from "../../../../appRedux/actions/Orders";
-import {editItemForm} from "../../../../appRedux/actions/Items";
+import {activateOrder,editOrder,getSingleOrder} from "../../../../appRedux/actions/Orders";
+import {editItem,editItemForm, getItemBids} from "../../../../appRedux/actions/Items";
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
@@ -30,7 +26,6 @@ class SingleOrder extends Component {
     componentDidMount() {
       const {ref} = this.props.match.params;
       this.props.getSingleOrder(ref, true);
-      // this.props.getCats();
     }
 
     onTabChange = (key, type) => {
@@ -60,16 +55,9 @@ class SingleOrder extends Component {
       });
     };
 
-    deleteItem = (currentItem) => {
-      console.log(currentItem);
-      // this.setState({ 
-      //   currentItem,
-      // });
-    };
-
     handleEditItem = (item, values) => {
       const {ref} = this.props.match.params;
-      this.props.editItem(ref, item, values, true);
+      this.props.editItem(item, values, true);
     };
 
     handleEditOrder = () => {
@@ -99,8 +87,6 @@ class SingleOrder extends Component {
               <Icon type="file" /> <span className="gx-ml-2">Make Note</span>
             </Button>
           </Menu.Item>
-          {/* <Menu.Divider />
-          <Menu.Item key="2">3rd menu item</Menu.Item> */}
         </Menu>
       );
       let badge = '';
@@ -150,8 +136,7 @@ class SingleOrder extends Component {
     render() {
       const {bidVisible, currentItem, noteVisible} = this.state;
       const {ref} = this.props.match.params;
-      const {activities, cats, order, orderItems, loading, itemLoading, orderLoading} = this.props;
-      // console.log(order);
+      const {activities, order, orderItems, loading, itemLoading, orderLoading} = this.props;
       return (
         <Card 
           className="gx-card" 
@@ -216,13 +201,12 @@ class SingleOrder extends Component {
               />)
           }
           {currentItem?
-            <CreateBidForm
+            <Bids
               wrappedComponentRef={this.saveFormRef}
               visible={bidVisible}
               onCancel={this.handleCancel}
               onCreate={this.handleEditItem}
               confirmLoading={itemLoading}
-              cats={cats}
               item={currentItem}
             /> : 
           null}
@@ -232,13 +216,11 @@ class SingleOrder extends Component {
     }
   }
 
-const mapStateToProps = ({auth, catData, itemsData, ordersData, commonData}) => {
-  const {token} = auth;
-  const {cats} = catData;
+const mapStateToProps = ({itemsData, ordersData, commonData}) => {
   const {order, orderLoading, activities} = ordersData;
-  const {createSuccess, orderItems, itemLoading} = itemsData;
+  const {createSuccess, getItemBids, orderItems, itemLoading} = itemsData;
   const {loading, message} = commonData;
-  return {activities, cats, createSuccess, token, orderItems, itemLoading, loading, message, order, orderLoading};
+  return {activities, createSuccess, getItemBids, itemLoading, loading, message, order, orderItems, orderLoading};
 };
   
 export default connect(mapStateToProps, {
@@ -246,6 +228,6 @@ export default connect(mapStateToProps, {
   editItem, 
   editItemForm, 
   editOrder,
-  getCats, 
+  getItemBids,
   getSingleOrder
 })(SingleOrder);

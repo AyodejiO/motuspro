@@ -129,6 +129,7 @@ class AllOrders extends Component {
               title="Action" 
               dataIndex="action" 
               key="action" 
+              width={150} 
               render={(text, record) => (
                 <Dropdown trigger={['click']} overlay={
                   <Menu>

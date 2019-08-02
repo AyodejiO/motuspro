@@ -12,9 +12,15 @@ import {
   LIST_ITEMS_SUCCESS,
   ALL_ITEMS_DATA,
   SHOW_MESSAGE,
+  FETCH_BID_ERROR,
+  FETCH_BID_START,
+  FETCH_BID_SUCCESS,
+  ALL_BIDS_DATA,
+  LIST_BIDS_SUCCESS,
   FETCH_ITEM_ERROR,
   FETCH_ITEM_START,
   FETCH_ITEM_SUCCESS,
+  
   // SINGLE_ITEM_DATA,
   NEW_ITEM
 } from "../../constants/ActionTypes";
@@ -43,6 +49,7 @@ export const editItemForm = () => {
 export const addItem = (ref, {description, size, quantity, category, additional_details, attachment}) => {
   return (dispatch) => {
     let data = new FormData();
+    data.append('client_ref', ref);
     data.append('size', size);
     data.append('category', category);
     data.append('quantity', quantity);
@@ -57,9 +64,8 @@ export const addItem = (ref, {description, size, quantity, category, additional_
       headers: { 'content-type': 'multipart/form-data' }
     };
     dispatch({type: FETCH_ITEM_START});
-    axios.post('user/orders/'+ref+'/items', data, config)
+    axios.post('user/items', data, config)
     .then(({data}) => {
-      console.log(data.item);
       if (data) {
         dispatch({type: FETCH_ITEM_SUCCESS});
         dispatch({type: NEW_ITEM, payload: data.item});
@@ -75,10 +81,9 @@ export const addItem = (ref, {description, size, quantity, category, additional_
   };
 };
 
-export const editItem = (ref, id, 
+export const editItem = (id, 
   {description=null, size=null, quantity=null, category=null, unit_cost=null, additional_details=null, attachment=null, open=null}, admin=false) => {
-  const path = admin? 'admin/orders/' : 'user/orders/';
-  const route = path+ref+'/items/'+id;
+  const path = admin? `admin/items/${id}` : `user/items/${id}`;
   return (dispatch) => {
     let data = new FormData();
     if(size) {data.append('size', size);}
@@ -99,7 +104,7 @@ export const editItem = (ref, id,
     };
   
     dispatch({type: FETCH_ITEM_START});
-    axios.put(route, data, config)
+    axios.put(path, data, config)
     .then(({data}) => {
       if (data) {
         dispatch({type: FETCH_ITEM_SUCCESS});
@@ -139,6 +144,28 @@ export const getItems = (admin=false, s=null, c=null) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
+export const getItemBids = (item_id) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_BID_START});
+    axios.get(`admin/items/${item_id}/bids`, {
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+    }
+    ).then(({data}) => {
+      if (data) {
+        dispatch({type: FETCH_BID_SUCCESS});
+        dispatch({type: LIST_BIDS_SUCCESS});
+        dispatch({type: ALL_BIDS_DATA, payload: data.bids});
+      } else {
+        console.log("payload: data.error", data.error);
+        dispatch({type: FETCH_BID_ERROR, payload: "Network Error"});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_BID_ERROR, payload: error.message});
       console.log("Error****:", error.message);
     });
   };
