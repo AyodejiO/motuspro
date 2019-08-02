@@ -9,6 +9,7 @@ import {
   FETCH_ITEM_START,
   FETCH_ITEM_SUCCESS,
   EDIT_ITEM_SUCCESS,
+  SKIP_ITEM_SUCCESS,
   ALL_ITEMS_DATA, 
   ORDER_ITEMS_DATA,
   SINGLE_ITEM_DATA, 
@@ -99,6 +100,13 @@ export default (state = INIT_STATE, action) => {
             return item;
           })
         ]
+      };
+    }
+
+    case SKIP_ITEM_SUCCESS: {
+      return {
+        ...state,
+        items: [...state.items.filter(item => item.id !== action.payload)]
       };
     }
 

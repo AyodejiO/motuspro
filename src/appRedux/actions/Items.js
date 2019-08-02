@@ -8,6 +8,7 @@ import {
   INIT_URL,
   CREATE_ITEM_SUCCESS,
   EDIT_ITEM_SUCCESS,
+  SKIP_ITEM_SUCCESS,
   LIST_ITEMS_SUCCESS,
   ALL_ITEMS_DATA,
   SHOW_MESSAGE,
@@ -138,6 +139,24 @@ export const getItems = (admin=false, s=null, c=null) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
+export const skipItem = (item_id) => {
+  return (dispatch) => {
+    axios.post(`user/items/${item_id}/skip`)
+    .then(({data}) => {
+      if (data) {
+        dispatch({type: SKIP_ITEM_SUCCESS, payload: item_id});
+        dispatch({type: SHOW_MESSAGE, payload: 'Item skipped'});
+      } else {
+        console.log("payload: data.error", data.error);
+        dispatch({type: FETCH_ITEM_ERROR, payload: "Network Error"});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ITEM_ERROR, payload: error.message});
       console.log("Error****:", error.message);
     });
   };

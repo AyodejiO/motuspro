@@ -10,7 +10,7 @@ import GridView from './gridView';
 
 // import IntlMessages from "../../../../util/IntlMessages";
 
-import {getItems} from "../../../../appRedux/actions/Items";
+import {getItems, skipItem} from "../../../../appRedux/actions/Items";
 import {addBid, addBidModal, cancelBidModal} from "../../../../appRedux/actions/Bids";
 
 const showHeader = true;
@@ -82,7 +82,7 @@ class AllJobs extends Component {
   };
 
   render() {
-    const {addBidModal, cancelBidModal, bidLoading, item, items, loading, visible} = this.props;
+    const {addBidModal, cancelBidModal, bidLoading, item, items, loading, skipItem, visible} = this.props;
 
     return (
       <div>
@@ -96,7 +96,7 @@ class AllJobs extends Component {
               <GridView 
                 addBid={addBidModal}
                 item={item}
-                skipItem={addBidModal}
+                skipItem={skipItem}
               />
             </List.Item>
           )}
@@ -122,4 +122,4 @@ const mapStateToProps = ({bidsData, commonData, itemsData}) => {
   return {bidLoading, item, items, listSuccess, loading, visible};
 };
 
-export default connect(mapStateToProps, {addBid, addBidModal, cancelBidModal, getItems})(AllJobs);
+export default connect(mapStateToProps, {addBid, addBidModal, cancelBidModal, getItems, skipItem})(AllJobs);

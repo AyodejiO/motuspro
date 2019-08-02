@@ -1,7 +1,7 @@
 /*jshint esversion: 9 */
 
 import React, {Component} from "react";
-import {Button, Card,Descriptions, Tag} from "antd";
+import {Button, Card,Descriptions, Popconfirm, Tag} from "antd";
 import _ from 'lodash';
 import Moment from 'react-moment';
 import 'moment-timezone';
@@ -14,16 +14,29 @@ const extension = fname => {
 class GridView extends Component {
   constructor(props) {
     super(props);
-
-    this.onTabChange = this.onTabChange.bind(this);
+    this.state = {
+      loading: false
+    };
+    this.confirm = this.confirm.bind(this);
   }
 
-  onTabChange = (key, type) => {
-    this.setState({ [type]: key });
-  };
+  componentWillReceiveProps() {
+    this.setState({
+      loading: false
+    });
+  }
+
+  confirm() {
+    const {item,skipItem} = this.props;
+    this.setState({
+      loading: true
+    });
+    skipItem(item.id);
+  }
   
   render() {
-    const {item, addBid, skipItem} = this.props;
+    const {item, addBid} = this.props;
+    const {loading} = this.state;
 
     return (
       <Card className="gx-card"
@@ -58,7 +71,14 @@ class GridView extends Component {
                   
                 </div>
                 <div className="gx-mt-4">
-                  <Button type="primary" ghost size="small" onClick={() => skipItem(item)}>Skip</Button>
+                  <Popconfirm
+                    title="Are you sure you want to skip this job?"
+                    onConfirm={this.confirm}
+                    okText="Yes, forever"
+                    cancelText="No, wait"
+                  >
+                    <Button type="primary" loading={loading} ghost size="small">Skip</Button>
+                  </Popconfirm>
                   <Button type="primary" size="small" onClick={() => addBid(item)}>Place Bid</Button>
                 </div>
                 <small className="gx-text-light gx-float-right">
