@@ -157,8 +157,8 @@ class AllJobs extends Component {
 }
 
 const mapStateToProps = ({bidsData, commonData, itemsData}) => {
-  const {listSuccess, items} = itemsData;
-  const {bidLoading, item, visible} = bidsData;
+  const {listSuccess, item, items} = itemsData;
+  const {bidLoading, visible} = bidsData;
   const {loading} = commonData;
   return {bidLoading, item, items, listSuccess, loading, visible};
 };

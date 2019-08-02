@@ -1,6 +1,8 @@
 /*jshint esversion: 9 */
 
 import {
+  CREATE_BID_CANCEL,
+  CREATE_BID_MODAL,
   CREATE_ITEM_SUCCESS, 
   LIST_ITEMS_SUCCESS, 
   FETCH_ITEM_ERROR,
@@ -100,9 +102,24 @@ export default (state = INIT_STATE, action) => {
       };
     }
 
+    case CREATE_BID_MODAL: {
+      return {
+        ...state,
+        item: action.payload
+      };
+    }
+
+    case CREATE_BID_CANCEL: {
+      return {
+        ...state,
+        item: null,
+      };
+    }
+
     case CREATE_BID_SUCCESS: {
       return {
         ...state,
+        item: null,
         items: [...state.items.filter(item => item.id !== action.payload)]
       };
     }

@@ -3,6 +3,8 @@
 import {
   CREATE_BID_CANCEL,
   CREATE_BID_MODAL,
+  EDIT_BID_CANCEL,
+  EDIT_BID_MODAL,
   CREATE_BID_SUCCESS, 
   LIST_BIDS_SUCCESS, 
   FETCH_BID_ERROR,
@@ -38,7 +40,6 @@ export default (state = INIT_STATE, action) => {
     case CREATE_BID_SUCCESS: {
       return {
         ...state,
-        item: null,
         visible: false
       };
     }
@@ -46,7 +47,6 @@ export default (state = INIT_STATE, action) => {
     case CREATE_BID_CANCEL: {
       return {
         ...state,
-        item: null,
         visible: false
       };
     }
@@ -54,8 +54,41 @@ export default (state = INIT_STATE, action) => {
     case CREATE_BID_MODAL: {
       return {
         ...state,
-        item: action.payload,
         visible: true
+      };
+    }
+
+    case EDIT_BID_MODAL: {
+      return {
+        ...state,
+        bid: action.payload,
+        visible: true
+      };
+    }
+
+    case EDIT_BID_CANCEL: {
+      return {
+        ...state,
+        bid: null,
+        visible: false
+      };
+    }
+
+    case EDIT_BID_SUCCESS: {
+      return {
+        ...state,
+        bid: null,
+        bids: [
+          ...state.bids.map((bid) => {
+            // Find the bid with the matching id
+            if(bid.id === action.payload) {
+              // Return a new object
+              return action.payload;
+            }
+            return bid;
+          })
+        ],
+        visible: false,
       };
     }
 
@@ -90,22 +123,6 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         bids: [...state.bids, action.payload]
-      };
-    }
-
-    case EDIT_BID_SUCCESS: {
-      return {
-        ...state,
-        bids: [
-          ...state.bids.map((bid) => {
-            // Find the bid with the matching id
-            if(bid.id === action.payload.id) {
-              // Return a new object
-              return action.payload
-            }
-            return bid;
-          })
-        ]
       };
     }
 

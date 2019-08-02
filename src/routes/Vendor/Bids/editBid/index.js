@@ -6,21 +6,38 @@ import './index.less';
 const FormItem = Form.Item;
 const {TextArea} = Input;
 
-export const NewBidForm = Form.create({ name: 'form_in_modal' })(
-  // eslint-disable-next-line
+export const EditBidForm = Form.create({ 
+  name: 'form_in_modal',
+  mapPropsToFields(props) {
+    return {
+      unit_cost: Form.createFormField({
+        ...props.bid,
+        value: props.bid.unit_cost,
+      }),
+      duration: Form.createFormField({
+        ...props.bid,
+        value: props.bid.duration,
+      }),
+      additional_details: Form.createFormField({
+        ...props.bid,
+        value: props.bid.additional_details,
+      }),
+    };
+  }
+ })(
   class extends React.Component {
     render() {
-      const { visible, onCancel, onCreate, item, confirmLoading, form } = this.props;
+      const { visible, onCancel, onSave, bid, confirmLoading, form } = this.props;
       const { getFieldDecorator } = form;
       
       return (
         <Modal
           visible={visible}
-          title={`Place a bid - ${item.description}`}
-          okText="Create"
+          title={`Edit bid - ${bid.item.description}`}
+          okText="Save"
           onCancel={onCancel}
           confirmLoading={confirmLoading}
-          onOk={onCreate}
+          onOk={onSave}
         >
           <Form layout="vertical">
             <FormItem
@@ -47,8 +64,8 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
             <FormItem
                 label={(
                 <span>
-                Duration&nbsp;
-                    <Tooltip title="How long will it take to complete all?">
+                Duration <small>(in days)</small>&nbsp;   
+                <Tooltip title="How long will it take to complete all?">
                     <Icon type="question-circle-o"/>
                 </Tooltip>
                 </span>

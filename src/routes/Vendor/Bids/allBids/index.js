@@ -5,13 +5,13 @@ import {List} from "antd";
 import {connect} from "react-redux";
 import 'moment-timezone';
 
-import {NewBidForm} from "../newBid";
+import {EditBidForm} from "../editBid";
 import InfoView from "components/InfoView";
 
 // import IntlMessages from "../../../../util/IntlMessages";
 
 import {getBids} from "../../../../appRedux/actions/Bids";
-import {addBid, addBidModal, cancelBidModal} from "../../../../appRedux/actions/Bids";
+import {addBid, editBidModal, cancelEditBidModal} from "../../../../appRedux/actions/Bids";
 import GridView from './gridView';
 
 const showHeader = true;
@@ -32,7 +32,7 @@ class AllBids extends Component {
 
     this.createBid = this.createBid.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.handleCreateBid = this.handleCreateBid.bind(this);
+    this.handleUpdateBid = this.handleUpdateBid.bind(this);
     this.saveFormRef = this.saveFormRef.bind(this);
   }
 
@@ -56,7 +56,7 @@ class AllBids extends Component {
     return;
   }
 
-  handleCreateBid(){
+  handleUpdateBid(){
     const form = this.formRef.props.form;
     const {item} = this.props;
     form.validateFields((err, values) => {
@@ -74,7 +74,7 @@ class AllBids extends Component {
   };
 
   render() {
-    const {addBidModal, cancelBidModal, bidLoading, bid, bids, loading, visible} = this.props;
+    const {editBidModal, cancelEditBidModal, bidLoading, bid, bids, loading, visible} = this.props;
     return (
       <div>
         <List
@@ -86,19 +86,18 @@ class AllBids extends Component {
             <List.Item>
               <GridView
                 bid={bid}
-                item={bid.item}
-                editBid={addBidModal}
-                deleteBid={addBidModal}
+                editBid={editBidModal}
+                deleteBid={editBidModal}
               />
             </List.Item>
           )}
         />
-        {bid && <NewBidForm
+        {bid && <EditBidForm
           wrappedComponentRef={this.saveFormRef}
           bid={bid}
           visible={visible}
-          onCancel={cancelBidModal}
-          onCreate={this.handleCreateBid}
+          onCancel={cancelEditBidModal}
+          onSave={this.handleUpdateBid}
           confirmLoading={bidLoading}
         />}
         <InfoView/>
@@ -113,4 +112,4 @@ const mapStateToProps = ({bidsData, commonData}) => {
   return {bid, bids, bidLoading, listSuccess, loading, visible};
 };
 
-export default connect(mapStateToProps, {addBid, addBidModal, cancelBidModal, getBids})(AllBids);
+export default connect(mapStateToProps, {addBid, editBidModal, cancelEditBidModal, getBids})(AllBids);

@@ -174,7 +174,7 @@ var routes = {
       component: import('./Vendor/Jobs/index')
     },
     {
-      type: 0,
+      type: 1,
       key: "bids",
       link: "/bids",
       path: "bids",
@@ -187,7 +187,7 @@ var routes = {
           key: "bids",
           link: "/bids",
           path: "bids",
-          name: "sidebar.bids.pending",
+          name: "sidebar.bids.open",
           icon: "icon icon-schedule",
           component: import('./Vendor/Bids/index')
         },

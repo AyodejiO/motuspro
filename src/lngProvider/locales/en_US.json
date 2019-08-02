@@ -5,7 +5,7 @@
   "sidebar.samplePage": "Sample Page",
   "sidebar.dashboard": "Dashboard",
   "sidebar.bids": "Bids",
-  "sidebar.bids.pending": "Pending",
+  "sidebar.bids.open": "Open",
   "sidebar.bids.closed": "Closed",
   "sidebar.bids.new": "Add new",
   "sidebar.jobs": "Jobs",

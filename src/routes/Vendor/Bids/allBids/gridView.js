@@ -117,8 +117,8 @@ class GridView extends Component {
       >
         {contentList(key, bid)}
         <div className="gx-mt-4">
-          <Button type="primary" ghost size="small" onClick={() => deleteBid(bid.item)}>Delete</Button>
-          <Button type="primary" size="small" onClick={() => editBid(bid.item)}>Edit</Button>
+          <Button type="primary" ghost size="small" onClick={() => deleteBid(bid)}>Delete</Button>
+          <Button type="primary" size="small" onClick={() => editBid(bid)}>Edit</Button>
         </div>
       </Card>
     );
