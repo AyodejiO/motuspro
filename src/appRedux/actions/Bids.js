@@ -12,6 +12,7 @@ import {
   CREATE_BID_SUCCESS,
   DELETE_BID_SUCCESS,
   EDIT_BID_SUCCESS,
+  EDIT_ITEM_SUCCESS,
   LIST_BIDS_SUCCESS,
   ALL_BIDS_DATA,
   SHOW_MESSAGE,
@@ -140,6 +141,25 @@ export const getBids = (admin=false, s=null, c=null) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
+      console.log("Error****:", error.message);
+    });
+  };
+};
+
+export const selectBid = (item_id, bid_id) => {
+  return (dispatch) => {
+    axios.post(`admin/items/${item_id}/bids/${bid_id}/select`)
+    .then(({data}) => {
+      if (data) {
+        dispatch({type: FETCH_BID_SUCCESS});
+        dispatch({type: EDIT_ITEM_SUCCESS, payload: data.item});
+        dispatch({type: SHOW_MESSAGE, payload: 'Bid selected'});
+      } else {
+        console.log("payload: data.error", data.error);
+        dispatch({type: FETCH_BID_ERROR, payload: "Network Error"});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_BID_ERROR, payload: error.message});
       console.log("Error****:", error.message);
     });
   };

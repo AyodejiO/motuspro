@@ -5,20 +5,19 @@ import {Button, Card, Dropdown, Empty, Icon, Menu, Spin, Switch, Tabs, Tag} from
 import {connect} from "react-redux";
 import Items from './items';
 import InfoView from "components/InfoView";
-import Bids from './items/Bids';
+import {Bids} from './items/Bids';
 import {OrderNoteForm} from './OrderNote';
 import {OrderTimeline} from "components/Orders/Timeline";
 import {activateOrder,editOrder,getSingleOrder} from "../../../../appRedux/actions/Orders";
-import {editItem,editItemForm, getItemBids} from "../../../../appRedux/actions/Items";
+import {editItem,editItemForm,getItemBids} from "../../../../appRedux/actions/Items";
+import {selectBid} from "../../../../appRedux/actions/Bids";
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
 class SingleOrder extends Component {
     state = {
       key: 'tab1',
-      noTitleKey: 'app',
       currentItem: null,
-      visible: false,
       bidVisible: false,
       noteVisible: false,
     };
@@ -39,14 +38,17 @@ class SingleOrder extends Component {
 
     handleCancel = () => {
       this.setState({ 
-        visible: false, 
-        editVisible: false,
+        bidVisible: false,
         noteVisible: false 
       });
     };
 
-    showModal = () => {
-      this.setState({ visible: true });
+    showModal = (item) => {
+      this.props.getItemBids(item.id);
+      this.setState({ 
+        currentItem: item,
+        bidVisible: true 
+      });
     };
 
     orderNoteModal = () => {
@@ -55,8 +57,12 @@ class SingleOrder extends Component {
       });
     };
 
-    handleEditItem = (item, values) => {
-      const {ref} = this.props.match.params;
+    handleSelectBid = (bid) => {
+      const {currentItem} = this.state;
+      this.props.selectBid(currentItem.id, bid.id);
+    };
+    
+    handleUpdateItem = (item, values) => {
       this.props.editItem(item, values, true);
     };
 
@@ -136,7 +142,7 @@ class SingleOrder extends Component {
     render() {
       const {bidVisible, currentItem, noteVisible} = this.state;
       const {ref} = this.props.match.params;
-      const {activities, order, orderItems, loading, itemLoading, orderLoading} = this.props;
+      const {activities, bids, bidLoading,  order, orderItems, loading, itemLoading, orderLoading} = this.props;
       return (
         <Card 
           className="gx-card" 
@@ -161,11 +167,9 @@ class SingleOrder extends Component {
                 >
                   <Items 
                     items={orderItems} 
-                    status={order.status}
                     loading={itemLoading}
                     callback={this.showModal} 
-                    updateItem={this.handleEditItem} 
-                    visible={orderItems? orderItems.length < 5 : false} 
+                    updateItem={this.handleUpdateItem} 
                   />
                 </TabPane>
                 <TabPane
@@ -203,11 +207,12 @@ class SingleOrder extends Component {
           {currentItem?
             <Bids
               wrappedComponentRef={this.saveFormRef}
-              visible={bidVisible}
               onCancel={this.handleCancel}
-              onCreate={this.handleEditItem}
-              confirmLoading={itemLoading}
+              visible={bidVisible}
+              selectBid={this.handleSelectBid}
+              loading={bidLoading}
               item={currentItem}
+              bids={bids}
             /> : 
           null}
           <InfoView/>
@@ -216,11 +221,12 @@ class SingleOrder extends Component {
     }
   }
 
-const mapStateToProps = ({itemsData, ordersData, commonData}) => {
+const mapStateToProps = ({bidsData, commonData, itemsData, ordersData}) => {
+  const {bids, bidLoading} = bidsData;
   const {order, orderLoading, activities} = ordersData;
   const {createSuccess, getItemBids, orderItems, itemLoading} = itemsData;
   const {loading, message} = commonData;
-  return {activities, createSuccess, getItemBids, itemLoading, loading, message, order, orderItems, orderLoading};
+  return {activities, bids, bidLoading, createSuccess, getItemBids, itemLoading, loading, message, order, orderItems, orderLoading};
 };
   
 export default connect(mapStateToProps, {
@@ -229,5 +235,6 @@ export default connect(mapStateToProps, {
   editItemForm, 
   editOrder,
   getItemBids,
-  getSingleOrder
+  getSingleOrder,
+  selectBid
 })(SingleOrder);

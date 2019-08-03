@@ -136,18 +136,18 @@ export default class Items extends React.Component {
         className: 'gx-text-center',
         render: (text, record) => {
           if(record.open) {
-            if(record.bid_id) {
+            // if(record.bid_id) {
 
-            }
+            // }
             return (
-              <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record)}>
+              <Button className="gx-mb-0" type="link" onClick={() => this.props.callback(record)}>
                 {`View ${record.bids_count} Bid(s)`}
-                {record.bid_id && (
+                {/* {record.bid_id && (
                   <>
                     <Divider type="vertical" />
                     <span>{record.bid_id }</span>
                   </>
-                )}
+                )} */}
               </Button>
             );
           }
