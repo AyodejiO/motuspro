@@ -185,6 +185,19 @@ class SingleOrder extends Component {
                     <OrderTimeline activities={activities} />
                   </div>
                 </TabPane>
+                <TabPane
+                  tab={
+                    <span>
+                      <Icon type="file-done" />
+                      Quote
+                    </span>
+                  }
+                  key="3"
+                >
+                  <div className="gx-p-5">
+                    <OrderTimeline activities={activities} />
+                  </div>
+                </TabPane>
               </Tabs>
               <OrderNoteForm
                 wrappedComponentRef={this.saveFormRef}
