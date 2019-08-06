@@ -18,6 +18,7 @@ const initialSettings = {
   layoutType: LAYOUT_TYPE_FULL,
   themeType: THEME_TYPE_SEMI_DARK,
   colorSelection: THEME_COLOR_SELECTION_PRESET,
+  updateAvailable: localStorage.getItem("updateAvailable"),
 
   pathname: '',
   width: window.innerWidth,

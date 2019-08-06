@@ -4,7 +4,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import URLSearchParams from 'url-search-params';
 import {Redirect, Route, Switch} from "react-router-dom";
-import {LocaleProvider} from "antd";
+import {LocaleProvider, Result, Button } from "antd";
 import {IntlProvider} from "react-intl";
 
 import AppLocale from "lngProvider";
@@ -14,6 +14,7 @@ import SignIn from "../SignIn";
 import {setInitUrl} from "appRedux/actions/Auth";
 import {onLayoutTypeChange, onNavStyleChange, setThemeType} from "appRedux/actions/Setting";
 import axios from 'util/Api';
+import notifs from '../../assets/images/notifs.svg';
 
 import {
   LAYOUT_TYPE_BOXED,
@@ -75,6 +76,11 @@ class App extends Component {
     }
   };
 
+  reload = () => {
+    localStorage.removeItem("updateAvailable");
+    window.location.reload(true);
+  };
+
   componentWillMount() {
     if (this.props.initURL === '') {
       this.props.setInitUrl(this.props.history.location.pathname);
@@ -104,10 +110,20 @@ class App extends Component {
   }
 
   render() {
-    const {match, location, themeType, layoutType, navStyle, locale, token, initURL} = this.props;
+    const {match, location, themeType, layoutType, navStyle, locale, token, initURL, updateAvailable} = this.props;
     if (themeType === THEME_TYPE_DARK) {
       document.body.classList.add('dark-theme');
     }
+    if(updateAvailable) {
+      return (
+        <Result
+          icon={<img src={notifs} height={150} alt="" />}
+          title="Yikes, we've got new updates!"
+          extra={<Button type="primary" onClick={() => this.reload}>Reload</Button>}
+        />
+      );
+    }
+    
     if (location.pathname === '/') {
       if (token === null) {
         return ( <Redirect to={'/signin'}/> );
@@ -127,12 +143,14 @@ class App extends Component {
         <IntlProvider
           locale={currentAppLocale.locale}
           messages={currentAppLocale.messages}>
-
           <Switch>
             <Route exact path='/signin' component={SignIn}/>
             {/* <Route exact path='/signup' component={SignUp}/> */}
-            <RestrictedRoute path={`${match.url}`} token={token}
-                             component={MainApp}/>
+            <RestrictedRoute 
+              path={`${match.url}`} 
+              token={token}
+              component={MainApp}
+            />
           </Switch>
         </IntlProvider>
       </LocaleProvider>
@@ -141,8 +159,8 @@ class App extends Component {
 }
 
 const mapStateToProps = ({settings, auth}) => {
-  const {locale, navStyle, themeType, layoutType} = settings;
+  const {locale, navStyle, themeType, layoutType, updateAvailable} = settings;
   const {authUser, token, initURL} = auth;
-  return {locale, token, navStyle, themeType, layoutType, authUser, initURL}
+  return {locale, token, navStyle, themeType, layoutType, authUser, initURL, updateAvailable}
 };
 export default connect(mapStateToProps, {setInitUrl, getUser, setThemeType, onNavStyleChange, onLayoutTypeChange})(App);

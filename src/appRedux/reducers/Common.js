@@ -5,7 +5,7 @@ import {FETCH_ERROR, FETCH_START, FETCH_STATUS, FETCH_SUCCESS, HIDE_MESSAGE, SHO
 const INIT_STATE = {
   error: "",
   loading: false,
-  message: ''
+  message: '',
 };
 
 export default (state = INIT_STATE, action) => {
