@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import React from "react";
 import {Scrollbars} from "react-custom-scrollbars";

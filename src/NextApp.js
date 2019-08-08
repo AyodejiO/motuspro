@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import React from "react";
 import {ConnectedRouter} from "react-router-redux";
@@ -10,7 +10,6 @@ import "styles/wieldy.less";
 import configureStore, {history} from "./appRedux/store";
 import App from "./containers/App/index";
 
-
 export const store = configureStore();
 
 const NextApp = () =>
@@ -21,6 +20,5 @@ const NextApp = () =>
       </Switch>
     </ConnectedRouter>
   </Provider>;
-
 
 export default NextApp;

@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import "./index.less";
 import React, {Component} from "react";

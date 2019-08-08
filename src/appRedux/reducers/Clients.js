@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {CREATE_CLIENT_SUCCESS, LIST_CLIENT_SUCCESS, ALL_CLIENTS_DATA} from "../../constants/ActionTypes";
 

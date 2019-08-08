@@ -1,5 +1,5 @@
 
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {
   EDIT_PROFILE_SUCCESS,

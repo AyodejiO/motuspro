@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 import React, {Component} from "react";
 //eslint-disable-nextline
 import {Card, Empty, Icon, Switch, Tabs, Tag, notification} from "antd";

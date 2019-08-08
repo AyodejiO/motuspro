@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {CREATE_CAT_SUCCESS, LIST_CATS_SUCCESS, ALL_CATS_DATA, SINGLE_CAT_DATA, NEW_CAT_ID} from "../../constants/ActionTypes";
 

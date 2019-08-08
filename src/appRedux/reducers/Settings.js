@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {SWITCH_LANGUAGE, TOGGLE_COLLAPSED_NAV, WINDOW_WIDTH} from "constants/ActionTypes";
 import {
@@ -18,7 +18,7 @@ const initialSettings = {
   layoutType: LAYOUT_TYPE_FULL,
   themeType: THEME_TYPE_SEMI_DARK,
   colorSelection: THEME_COLOR_SELECTION_PRESET,
-  updateAvailable: localStorage.getItem("updateAvailable"),
+  updateAvailable: JSON.parse(localStorage.getItem("updateAvailable")),
 
   pathname: '',
   width: window.innerWidth,

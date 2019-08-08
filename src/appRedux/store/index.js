@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {applyMiddleware, compose, createStore} from "redux";
 import reducers from "../reducers/index";
@@ -12,7 +12,7 @@ const routeMiddleware = routerMiddleware(history);
 
 const middlewares = [thunk, routeMiddleware];
 // const middlewares = [thunk, routeMiddleware, requestMiddleware()];
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
 
 export default function configureStore(initialState) {
   const store = createStore(reducers, initialState,

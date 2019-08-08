@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import React, {Component} from "react";
 import {connect} from "react-redux";
@@ -77,6 +77,7 @@ class App extends Component {
   };
 
   reload = () => {
+    console.log("button works")
     localStorage.removeItem("updateAvailable");
     window.location.reload(true);
   };
@@ -119,7 +120,7 @@ class App extends Component {
         <Result
           icon={<img src={notifs} height={150} alt="" />}
           title="Yikes, we've got new updates!"
-          extra={<Button type="primary" onClick={() => this.reload}>Reload</Button>}
+          extra={<Button type="primary" onClick={this.reload}>Reload</Button>}
         />
       );
     }

@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {CREATE_VENDOR_SUCCESS, LIST_VENDOR_SUCCESS, ALL_VENDORS_DATA} from "../../constants/ActionTypes";
 

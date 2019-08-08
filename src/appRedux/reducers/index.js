@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 9 */
 
 import {combineReducers} from "redux";
 import {routerReducer} from "react-router-redux";
