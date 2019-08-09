@@ -12,7 +12,8 @@ const routeMiddleware = routerMiddleware(history);
 
 const middlewares = [thunk, routeMiddleware];
 // const middlewares = [thunk, routeMiddleware, requestMiddleware()];
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default function configureStore(initialState) {
   const store = createStore(reducers, initialState,
