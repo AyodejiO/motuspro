@@ -45,8 +45,8 @@ export const addVendorForm = () => {
     dispatch({type: CREATE_VENDOR_SUCCESS, payload: false});
   };
 };
-
-export const addVendor = ({name, type, admin_name, admin_email, admin_phone}) => {
+ee
+export const addVendor = ({vendor_name, vendor_type, admin_name, admin_email, admin_phone}) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('admin/vendors', {
