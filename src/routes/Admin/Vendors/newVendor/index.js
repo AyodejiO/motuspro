@@ -91,7 +91,7 @@ class NewVendor extends Component {
                   </span>
                   )}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('vendor_name', {
                     rules: [{required: true, message: 'Please input the Vendor name!', whitespace: true}],
                   })(
                     <Input/>
@@ -105,7 +105,7 @@ class NewVendor extends Component {
                     </span>
                   )}
                 >
-                  {getFieldDecorator('type', {
+                  {getFieldDecorator('vendor_type', {
                     rules: [{required: true, message: 'Please input the Vendor name!', whitespace: true}],
                   })(
                     <Select className="gx-mr-3 gx-mb-3" allowClear>

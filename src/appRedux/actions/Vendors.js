@@ -50,7 +50,7 @@ export const addVendor = ({name, type, admin_name, admin_email, admin_phone}) =>
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('admin/vendors', {
-      name, type, admin_name, admin_email, admin_phone
+      vendor_name, vendor_type, admin_name, admin_email, admin_phone
       }
     ).then(({data}) => {
       if (data) {
