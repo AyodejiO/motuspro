@@ -38,9 +38,9 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
                 })(
                 <InputNumber 
                   min={0} step={0.01} 
-                  formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  // formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                   // eslint-disable-next-line
-                  parser={value => value.replace(/\₦\s?|(,*)/g, '')}
+                  // parser={value => value.replace(/\₦\s?|(,*)/g, '')}
                 />
                 )}
             </FormItem>
