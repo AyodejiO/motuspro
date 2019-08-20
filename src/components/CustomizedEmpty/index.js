@@ -9,7 +9,7 @@ const CustomizedEmpty = (resource) => {
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         description={
-          <p>{`No ${resource || 'data'}, yet.`}</p>
+          <span>{`No ${resource || 'data'}, yet.`}</span>
         }
       >
       </Empty>

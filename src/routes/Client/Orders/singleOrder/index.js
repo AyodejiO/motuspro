@@ -177,7 +177,7 @@ class SingleOrder extends Component {
                 }
                 key="2"
               >
-                <div class="gx-p-5">
+                <div className="gx-p-5">
                   <OrderTimeline activities={activities} />
                 </div>
               </TabPane>

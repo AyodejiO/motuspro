@@ -26,10 +26,10 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
             <FormItem
                 label={(
                 <span>
-                Unit Cost&nbsp;
-                    <Tooltip title="How much will one unit cost?">
-                    <Icon type="question-circle-o"/>
-                </Tooltip>
+                  Unit Cost&nbsp;
+                  <Tooltip title="How much will one unit cost?">
+                      <Icon type="question-circle-o"/>
+                  </Tooltip>
                 </span>
                 )}
             >
@@ -73,7 +73,7 @@ export const NewBidForm = Form.create({ name: 'form_in_modal' })(
                 {getFieldDecorator('additional_details', {
                 rules: [],
                 })(
-                <TextArea rows={4} columns={2}/>
+                  <TextArea rows={4} columns={2}/>
                 )}
             </FormItem>
           </Form>
