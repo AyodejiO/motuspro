@@ -27,7 +27,8 @@ body.dark-theme {
 }
 
 .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
-  background-color: lighten(@link-color, 50%) !important;
+  // background-color: lighten(@link-color, 50%) !important;
+  background-color: #f0feff !important;
 }
 
 .dark-theme {
@@ -1286,7 +1287,8 @@ body.dark-theme {
     }
 
     &-dropdown {
-      color: @dark-theme-text-color;
+      // color: @dark-theme-text-color;
+      color: #f0feff !important;
       background-color: darken(@dark-theme-component-background, 5%);
     }
 
@@ -1295,13 +1297,15 @@ body.dark-theme {
 
       &:hover {
         background-color: darken(@dark-theme-component-background, 7%);
+        // background-color: #f0feff !important;
       }
 
       &-selected,
       &-selected:hover,
       &-active {
         background-color: darken(@dark-theme-component-background, 8%);
-        color: @dark-theme-text-color;
+        // color: @dark-theme-text-color;
+        color: #f0feff !important;
       }
     }
 
@@ -1326,6 +1330,7 @@ body.dark-theme {
     &-tree li .ant-select-tree-node-content-wrapper:hover,
     &-tree li .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
       background-color: lighten(@dark-theme-component-background, 5%);
+      color: #f0feff !important;
     }
 
     &-tree-dropdown .ant-select-dropdown-search .ant-select-search__field,
@@ -1333,6 +1338,7 @@ body.dark-theme {
     &-tree-checkbox-indeterminate .ant-select-tree-checkbox-inner {
       border-color: lighten(@dark-theme-component-background, 5%);
       background-color: lighten(@dark-theme-component-background, 5%);
+      color: #f0feff !important;
     }
   }
 
@@ -1402,7 +1408,8 @@ body.dark-theme {
     &-decade-panel-selected-cell .ant-calendar-decade-panel-decade,
     &-decade-panel-selected-cell .ant-calendar-decade-panel-decade:hover {
       background: lighten(@dark-theme-component-background, 25%);
-      color: @dark-theme-text-color;
+      color: #f0feff !important;
+      // color: @dark-theme-text-color;
     }
 
     &-month-panel-month:hover,
@@ -1507,6 +1514,7 @@ body.dark-theme {
 
       &:hover {
         background: lighten(@dark-theme-component-background, 15%);
+        // background-color: #f0feff !important;
       }
     }
 
