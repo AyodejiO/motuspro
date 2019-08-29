@@ -2,6 +2,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import { Button, Modal, Table } from 'antd';
+import NumberFormat from 'react-number-format';
 const { Column } = Table;
 
 export const Bids = ({bids, item, loading, onCancel, selectBid, visible}) => (
@@ -23,8 +24,21 @@ export const Bids = ({bids, item, loading, onCancel, selectBid, visible}) => (
           </span>
         )}
       />
-      <Column title="Unit Cost" dataIndex="unit_cost" key="unit_cost" width={200} />
-      <Column title="Duration" dataIndex="duration" key="duration" width={200} />
+      <Column 
+        title="Unit Cost" 
+        dataIndex="unit_cost" 
+        key="unit_cost" 
+        width={200} 
+        render={(text) =>  <NumberFormat value={text} displayType={'text'} thousandSeparator={true} prefix={'₦'} />}
+        // render={(text) =>  <span>{`₦${text}`}</span>}
+      />
+      <Column 
+        title="Duration" 
+        dataIndex="duration" 
+        key="duration" 
+        width={200} 
+        render={(text, record) => <span>{`${text} ${record.duration_unit}`}</span>}
+      />
       <Column title="Addtional Details" dataIndex="additional_details" key="additional_details" width={300} />
       <Column
         title="Action"

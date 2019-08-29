@@ -1,9 +1,10 @@
 /*jshint esversion: 9 */
 import React from "react";
-import { Modal, Form, Input, InputNumber, Icon, Tooltip } from 'antd';
+import { Modal, Form, Input, InputNumber, Icon, Select, Tooltip } from 'antd';
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
+const {Option} = Select;
 
 export const EditBidForm = Form.create({ 
   name: 'form_in_modal',
@@ -17,6 +18,10 @@ export const EditBidForm = Form.create({
         ...props.bid,
         value: props.bid.duration,
       }),
+      duration_unit: Form.createFormField({
+        ...props.bid,
+        value: props.bid.duration_unit,
+      }),
       additional_details: Form.createFormField({
         ...props.bid,
         value: props.bid.additional_details,
@@ -28,6 +33,16 @@ export const EditBidForm = Form.create({
     render() {
       const { visible, onCancel, onSave, bid, confirmLoading, form } = this.props;
       const { getFieldDecorator } = form;
+      const selectAfterDuration = getFieldDecorator('duration_unit', {
+        initialValue: 'days',
+      })(
+        <Select style={{ width: 120 }}>
+          <Option value="days">day(s)</Option>
+          <Option value="weeks">week(s)</Option>
+          <Option value="months">month(s)</Option>
+          <Option value="years">year(s)</Option>
+        </Select>,
+      );
       
       return (
         <Modal
@@ -73,7 +88,12 @@ export const EditBidForm = Form.create({
                 {getFieldDecorator('duration', {
                 rules: [{required: true, message: 'Please input a duration!'}],
                 })(
-                  <InputNumber min={0} />
+                  // <InputNumber min={0} />
+                  <Input 
+                    type="number"
+                    min={0} 
+                    addonAfter={selectAfterDuration}  
+                  />
                 )}
             </FormItem>
             <FormItem

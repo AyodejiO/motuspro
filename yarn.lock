@@ -10988,6 +10988,13 @@ react-notifications@^1.4.3:
     prop-types "^15.5.10"
     react-transition-group "^1.2.0"
 
+react-number-format@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.2.0.tgz#297efac961504b72cdd3fd0c33442302191c52d8"
+  integrity sha512-LJY0+JUEdQG1Taj6qbL1Cd/8CfBn3X4ohBPGewWNRyRAGyxV/+zP02CQrMkCfPh1iXXx6V3oguJcZWXUwpQ3ow==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-overlays@^0.7.0:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.7.4.tgz#ef2ec652c3444ab8aa014262b18f662068e56d5c"

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import FileIcon, {defaultStyles} from 'react-file-icon';
+import NumberFormat from 'react-number-format';
 
 const extension = fname => {
   return fname.slice((fname.lastIndexOf(".") - 1 >>> 0) + 2);
@@ -28,7 +29,7 @@ const contentList = (key, bid) => {
       return (
         <div className="gx-mb-2">
           <div>
-            <Descriptions size={`small`} layout="horizontal" column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}>
+            <Descriptions size={`small`} layout="horizontal" column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
               <Descriptions.Item label="Size/Type">{bid.item.size}</Descriptions.Item>
               <Descriptions.Item label="Quantity">{bid.item.quantity}</Descriptions.Item>
               <Descriptions.Item label="Details">{bid.item.additional_details}</Descriptions.Item>
@@ -57,9 +58,12 @@ const contentList = (key, bid) => {
       return (
         <div className="gx-mb-2">
           <div>
-            <Descriptions size={`small`} layout="horizontal" column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}>
-              <Descriptions.Item label="Unit Cost">{`₦${bid.unit_cost}`}</Descriptions.Item>
-              <Descriptions.Item label="Duration">{`${bid.duration} days`}</Descriptions.Item>
+            <Descriptions size={`small`} layout="horizontal" column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
+              <Descriptions.Item label="Unit Cost">
+                {/* {`₦${bid.unit_cost}`} */}
+                <NumberFormat value={bid.unit_cost} displayType={'text'} thousandSeparator={true} prefix={'₦'} />
+              </Descriptions.Item>
+              <Descriptions.Item label="Duration">{`${bid.duration} ${bid.duration_unit}`}</Descriptions.Item>
               <Descriptions.Item label="Details">{bid.additional_details}</Descriptions.Item>
             </Descriptions>
           </div>
@@ -146,7 +150,7 @@ class GridView extends Component {
           <Button type="primary" size="small" onClick={() => editBid(bid)}>Edit</Button>
         </div>
         <small className="gx-text-light gx-float-right">
-          Bid updated <i><Moment fromNow>{bid.updated_at}</Moment></i>
+          updated <i><Moment fromNow>{bid.updated_at}</Moment></i>
         </small>
       </Card>
     );

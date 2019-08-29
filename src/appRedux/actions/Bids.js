@@ -59,10 +59,10 @@ export const cancelEditBidModal = () => {
   };
 };
 
-export const addBid = (item_id, {unit_cost, duration, additional_details}) => {
+export const addBid = (item_id, {unit_cost, duration, duration_unit, additional_details}) => {
   return (dispatch) => {
     dispatch({type: FETCH_BID_START});
-    axios.post(`user/bids`, {duration, additional_details, item_id, unit_cost})
+    axios.post(`user/bids`, {duration, duration_unit, additional_details, item_id, unit_cost})
     .then(({data}) => {
       if (data) {
         dispatch({type: FETCH_BID_SUCCESS});
@@ -97,10 +97,10 @@ export const deleteBid = (bid_id) => {
   };
 };
 
-export const editBid = (bid_id, {unit_cost, duration, additional_details}) => {
+export const editBid = (bid_id, {unit_cost, duration, duration_unit, additional_details}) => {
   return (dispatch) => {
     dispatch({type: FETCH_BID_START});
-    axios.put(`user/bids/${bid_id}`, {duration, additional_details, unit_cost})
+    axios.put(`user/bids/${bid_id}`, {duration, duration_unit, additional_details, unit_cost})
     .then(({data}) => {
       if (data) {
         dispatch({type: FETCH_BID_SUCCESS});

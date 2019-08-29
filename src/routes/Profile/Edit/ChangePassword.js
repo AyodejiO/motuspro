@@ -76,7 +76,7 @@ class ChangePassword extends Component {
                 {getFieldDecorator('old_password', {
                   rules: [{required: true, message: 'Please input your old password!', whitespace: true}],
                 })(
-                  <Input type="password"/>
+                  <Input.Password />
                 )}
               </FormItem>
               <FormItem
@@ -90,7 +90,7 @@ class ChangePassword extends Component {
                 {getFieldDecorator('new_password', {
                   rules: [{required: true, message: 'Please input a new password!', whitespace: true}],
                 })(
-                  <Input type="password"/>
+                  <Input.Password />
                 )}
               </FormItem>
               <FormItem
@@ -104,7 +104,7 @@ class ChangePassword extends Component {
                 {getFieldDecorator('confirm_password', {
                   rules: [{required: true, message: 'Please confirm your new password!', whitespace: true}],
                 })(
-                  <Input type="password"/>
+                  <Input.Password />
                 )}
               </FormItem>
               <FormItem {...tailFormItemLayout}>

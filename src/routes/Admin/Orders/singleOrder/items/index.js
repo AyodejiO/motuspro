@@ -55,9 +55,9 @@ class EditableCell extends React.Component {
           min={0} 
           ref={node => (this.input = node)} 
           onPressEnter={this.save} onBlur={this.save} 
-          // formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           // eslint-disable-next-line
-          // parser={value => value.replace(/\₦\s?|(,*)/g, '')}
+          parser={value => value.replace(/\₦\s?|(,*)/g, '')}
         />)}
       </Form.Item>
     ) : (
