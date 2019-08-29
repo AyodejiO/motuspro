@@ -74,7 +74,7 @@ export const addBid = (item_id, {unit_cost, duration, duration_unit, additional_
       }
     }).catch(function (error) {
       dispatch({type: FETCH_BID_ERROR, payload: error.message});
-      console.log("Error****:", error.message);
+      // console.log("Error****:", error.message);
     });
   };
 };
@@ -92,7 +92,7 @@ export const deleteBid = (bid_id) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_BID_ERROR, payload: error.message});
-      console.log("Error****:", error.message);
+      // console.log("Error****:", error.message);
     });
   };
 };
@@ -111,8 +111,9 @@ export const editBid = (bid_id, {unit_cost, duration, duration_unit, additional_
         dispatch({type: FETCH_BID_ERROR, payload: "Network Error"});
       }
     }).catch(function (error) {
-      dispatch({type: FETCH_BID_ERROR, payload: error.message});
-      console.log("Error****:", error.message);
+      dispatch({type: FETCH_BID_ERROR, payload: error.response.data.message});
+      // dispatch({type: SHOW_MESSAGE, payload: error.response.data.message});
+      // console.log("Error****:", error.message);
     });
   };
 };

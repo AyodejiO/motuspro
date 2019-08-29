@@ -1,6 +1,16 @@
 /*jshint esversion: 9 */
 
-import {FETCH_ERROR, FETCH_START, FETCH_STATUS, FETCH_SUCCESS, HIDE_MESSAGE, SHOW_MESSAGE} from '../../constants/ActionTypes';
+import {
+  FETCH_ERROR, 
+  FETCH_START, 
+  FETCH_STATUS, 
+  FETCH_SUCCESS, 
+  HIDE_MESSAGE, 
+  SHOW_MESSAGE,
+  FETCH_BID_ERROR,
+  FETCH_ITEM_ERROR,
+  FETCH_ORDER_ERROR,
+} from '../../constants/ActionTypes';
 
 const INIT_STATE = {
   error: "",
@@ -23,6 +33,15 @@ export default (state = INIT_STATE, action) => {
       return {...state, error: '', message: action.payload, loading: false};
     }
     case FETCH_ERROR: {
+      return {...state, loading: false, error: action.payload, message: ''};
+    }
+    case FETCH_BID_ERROR: {
+      return {...state, loading: false, error: action.payload, message: ''};
+    }
+    case FETCH_ITEM_ERROR: {
+      return {...state, loading: false, error: action.payload, message: ''};
+    }
+    case FETCH_ORDER_ERROR: {
       return {...state, loading: false, error: action.payload, message: ''};
     }
     case HIDE_MESSAGE: {
