@@ -8,7 +8,7 @@ class PdfViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        file: {url: null, headers: { withCredentials: true }},
+        file: {url: null, withCredentials: true },
         numPages: null,
         pageNumber: 1,
     };
