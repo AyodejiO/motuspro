@@ -25,24 +25,6 @@ class Quote extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const {quote} = this.props;
-    if(quote) {
-      this.setState({
-        file: {url: quote.file}
-      })
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {quote} = nextProps;
-    if(quote) {
-      this.setState({
-        file: {url: quote.file}
-      })
-    }
-  }
-
   extra = () => {
     const {createQuote, order, quote, quoteLoading} = this.props;
     return (<>

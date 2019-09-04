@@ -8,9 +8,34 @@ class PdfViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        file: {url: null, headers: { withCredentials: true }},
         numPages: null,
         pageNumber: 1,
     };
+  }
+
+  componentDidMount() {
+    const {file} = this.props;
+    if(file) {
+      this.setState({
+        file: {
+          ...this.state.file,
+          url: file
+        }
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {file} = this.props;
+    if(file) {
+      this.setState({
+        file: {
+          ...this.state.file,
+          url: file
+        }
+      });
+    }
   }
   
   onDocumentLoadSuccess = (document) => {
@@ -34,10 +59,9 @@ class PdfViewer extends Component {
   nextPage = () => this.changePage(1);
 
   render() {
-    const { numPages, pageNumber } = this.state;
-    console.log(numPages)
-    const { file } = this.props;
-
+    const { file, numPages, pageNumber } = this.state;
+    // const { file } = this.props;
+  if(!file.url) return null;
     return (
       <React.Fragment>
         <div className="gx-d-flex gx-justify-content-center gx-w-100">
