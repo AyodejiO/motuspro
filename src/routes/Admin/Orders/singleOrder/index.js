@@ -4,6 +4,7 @@ import React, {Component} from "react";
 import {Button, Card, Dropdown, Empty, Icon, Menu, Spin, Switch, Tabs, Tag} from "antd";
 import {connect} from "react-redux";
 import Items from './items';
+import Quote from './Quote';
 import InfoView from "components/InfoView";
 import {Bids} from './items/Bids';
 import {OrderNoteForm} from './OrderNote';
@@ -191,11 +192,11 @@ class SingleOrder extends Component {
                       <Icon type="file-done" />
                       Quote
                     </span>
-                  }
+                  } 
                   key="3"
                 >
                   <div className="gx-p-5">
-                    <OrderTimeline activities={activities} />
+                    <Quote loading={loading} />
                   </div>
                 </TabPane>
               </Tabs>

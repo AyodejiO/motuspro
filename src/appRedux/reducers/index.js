@@ -10,20 +10,22 @@ import Common from "./Common";
 import Orders from "./Orders";
 import Items from "./Items";
 import Profile from "./Profile";
+import Quotes from "./Quotes";
 import Settings from "./Settings";
 import Users from "./Users";
 import Vendors from "./Vendors";
 
 const reducers = combineReducers({
-  routing: routerReducer,
   auth: Auth,
   bidsData: Bids,
   catData: Cats,
   clientData: Clients,
   commonData: Common,
-  ordersData: Orders,
   itemsData: Items,
+  ordersData: Orders,
   profileData: Profile,
+  quotesData: Quotes,
+  routing: routerReducer,
   settings: Settings,
   userData: Users,
   vendorData: Vendors,

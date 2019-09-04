@@ -1,10 +1,12 @@
 /*jshint esversion: 9 */
 import React, { Component } from 'react';
+import { Pagination } from 'antd';
 import { Document, Page } from 'react-pdf';
 import PropTypes from 'prop-types';
 
 class PdfViewer extends Component {
   constructor(props) {
+    super(props);
     this.state = {
         numPages: null,
         pageNumber: 1,
@@ -23,27 +25,35 @@ class PdfViewer extends Component {
     pageNumber: prevState.pageNumber + offset,
   }));
 
+  handleChangePage = pageNumber => this.setState({
+    pageNumber,
+  });
+
   previousPage = () => this.changePage(-1);
 
   nextPage = () => this.changePage(1);
 
   render() {
     const { numPages, pageNumber } = this.state;
+    console.log(numPages)
     const { file } = this.props;
 
     return (
       <React.Fragment>
-        <Document
-          file={file}
-          onLoadSuccess={this.onDocumentLoadSuccess}
-        >
-          <Page pageNumber={pageNumber} />
-        </Document>
-        <div>
-          <p>
-            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-          </p>
-          <button
+        <div className="gx-d-flex gx-justify-content-center gx-w-100">
+          <div>
+            {/* Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}   */}
+
+            {numPages === null? null : <Pagination
+              simple
+              size="small"
+              current={pageNumber} 
+              total={numPages} 
+              pageSize={1}
+              onChange={this.handleChangePage}
+            />}
+          </div>
+          {/* <button
             type="button"
             disabled={pageNumber <= 1}
             onClick={this.previousPage}
@@ -56,8 +66,20 @@ class PdfViewer extends Component {
             onClick={this.nextPage}
           >
             Next
-          </button>
+          </button> */}
         </div>
+        <br/>
+        <div className="gx-d-flex gx-justify-content-center gx-w-100">
+          <Document
+            // className="gx-w-100"
+            file={file}
+            // renderMode="svg"
+            onLoadSuccess={this.onDocumentLoadSuccess}
+          >
+            <Page pageNumber={pageNumber} />
+          </Document>
+        </div>
+        
       </React.Fragment>
     );
   }

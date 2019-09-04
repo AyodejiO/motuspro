@@ -10,6 +10,7 @@ import {
   FETCH_BID_ERROR,
   FETCH_ITEM_ERROR,
   FETCH_ORDER_ERROR,
+  FETCH_QUOTE_ERROR,
 } from '../../constants/ActionTypes';
 
 const INIT_STATE = {
@@ -42,6 +43,9 @@ export default (state = INIT_STATE, action) => {
       return {...state, loading: false, error: action.payload, message: ''};
     }
     case FETCH_ORDER_ERROR: {
+      return {...state, loading: false, error: action.payload, message: ''};
+    }
+    case FETCH_QUOTE_ERROR: {
       return {...state, loading: false, error: action.payload, message: ''};
     }
     case HIDE_MESSAGE: {

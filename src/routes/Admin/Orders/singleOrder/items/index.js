@@ -100,7 +100,7 @@ export default class Items extends React.Component {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      width: 200,
+      width: 300,
       render: text => <span className="">{text}</span>,
     }, {
       title: 'Size',
@@ -111,7 +111,7 @@ export default class Items extends React.Component {
       title: 'Qty',
       dataIndex: 'quantity',
       key: 'quantity',
-      width: 100,
+      width: 50,
     },{
       title: 'Category',
       dataIndex: 'category',
@@ -121,7 +121,7 @@ export default class Items extends React.Component {
       title: 'Files',
       dataIndex: 'files_count',
       key: 'files_count',
-      width: 100,
+      width: 50,
     },{
       title: 'Unit Cost',
       dataIndex: 'unit_cost',
@@ -132,7 +132,7 @@ export default class Items extends React.Component {
     }, {
         title: 'Bids',
         key: 'bid',
-        width: 200,
+        width: 300,
         className: 'gx-text-center',
         render: (text, record) => {
           if(record.open) {
@@ -151,9 +151,22 @@ export default class Items extends React.Component {
               </Button>
             );
           }
+          else {
+            if(record.bid_id !== null) {
+              return (<>
+                <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record.id, {'open': 1})}>
+                  Open Bid
+                </Button>
+                <Divider type="vertical" />
+                <Button className="gx-mb-0" type="link" onClick={() => this.props.callback(record)}>
+                  {`View ${record.bids_count} Bid(s)`}
+                </Button>
+              </>);
+            }
+          }
           return (
             <Button className="gx-mb-0" type="link" onClick={() => this.props.updateItem(record.id, {'open': 1})}>
-              Create Bid
+              Open Bid
             </Button>
           );
         }

@@ -11,6 +11,7 @@ import {
   ORDER_ITEMS_DATA,
   SINGLE_ORDER_DATA,
   SINGLE_ORDER_TIMELINE_DATA,
+  SINGLE_QUOTE_DATA,
   NEW_ORDER_ID,
   SHOW_MESSAGE,
   FETCH_ORDER_ERROR,
@@ -158,6 +159,7 @@ export const getSingleOrder = (ref, admin=false) => {
         dispatch({type: SINGLE_ORDER_DATA, payload: data.data});
         dispatch({type: SINGLE_ORDER_TIMELINE_DATA, payload: data.data.activities});
         dispatch({type: ORDER_ITEMS_DATA, payload: data.data.items});
+        dispatch({type: SINGLE_QUOTE_DATA, payload: data.data.quote});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_ERROR, payload: "Network Error"});

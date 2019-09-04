@@ -6,6 +6,7 @@ export * from './Cats';
 export * from './Clients';
 export * from './Common';
 export * from './Profile';
+export * from './Quotes';
 export * from './Setting';
 export * from './Users';
 export * from './Vendors';
