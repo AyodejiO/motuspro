@@ -21,6 +21,16 @@ const scroll = {y: 440};
 
 class AllOrders extends Component {
   state = {
+    filter: {
+      client: '',
+      client_ref: '',
+      closed: null,
+      desc: '',
+      motus_ref: '',
+      note: null,
+      status: ['active'],
+      quoted: null
+    },
     size: 'middle',
     showHeader,
     visible: false,
@@ -39,11 +49,13 @@ class AllOrders extends Component {
     this.setState({ visible: false });
   };
 
-  handleCreate = () => {
+  handleFilter = (e) => {
+    e.preventDefault();
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (!err) {
-        this.props.addOrder(values);
+        // this.props.addOrder(values);
+        console.log('Received values of form: ', values);
         return;
       }
       // console.log('Received values of form: ', values);
@@ -84,6 +96,7 @@ class AllOrders extends Component {
 
   render() {
     const {allOrders, createSuccess, loading, meta, newOrder} = this.props
+    const {filter} = this.state;
     // const { getFieldDecorator} = this.props.form;
     if(createSuccess) {
       this.openNotification('success', newOrder);
@@ -105,8 +118,9 @@ class AllOrders extends Component {
       <div>
         <OrderFilterForm
           wrappedComponentRef={this.saveFormRef}
-          onCreate={this.handleCreate}
+          filter={filter}
           loading={loading}
+          handleFilter={this.handleFilter}
         />
         <Card className="gx-card" title="Orders">
           <Table 

@@ -1,10 +1,48 @@
 import React from "react";
-import { Button, Card, Checkbox, Col, Form, Input, Icon, Row, Select, Tooltip } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, Icon, Row, Select } from 'antd';
 import './filter.less';
 
 const { Option } = Select;
 
-export const OrderFilterForm = Form.create({ name: 'order_filter' })(
+export const OrderFilterForm = Form.create({ 
+  name: 'order_filter',
+  mapPropsToFields(props) {
+    return {
+      client: Form.createFormField({
+        ...props.filter,
+        value: props.filter.client,
+      }),
+      client_ref: Form.createFormField({
+        ...props.filter,
+        value: props.filter.client_ref,
+      }),
+      closed: Form.createFormField({
+        ...props.filter,
+        value: props.filter.closed,
+      }),
+      desc: Form.createFormField({
+        ...props.filter,
+        value: props.filter.desc,
+      }),
+      motus_ref: Form.createFormField({
+        ...props.filter,
+        value: props.filter.motus_ref,
+      }),
+      note: Form.createFormField({
+        ...props.filter,
+        value: props.filter.note,
+      }),
+      status: Form.createFormField({
+        ...props.filter,
+        value: props.filter.status,
+      }),
+      quoted: Form.createFormField({
+        ...props.filter,
+        value: props.filter.quoted,
+      }),
+    };
+  }
+})(
   // eslint-disable-next-line
   class extends React.Component {
     state = {
@@ -21,7 +59,7 @@ export const OrderFilterForm = Form.create({ name: 'order_filter' })(
     };
 
     render() {
-      const { onCreate, form } = this.props;
+      const { handleFilter, form, loading } = this.props;
       const { getFieldDecorator } = form;
       const {expand} = this.state;
 
@@ -47,7 +85,7 @@ export const OrderFilterForm = Form.create({ name: 'order_filter' })(
             </Button>
           }
         >
-          {expand && <Form>
+          <Form onSubmit={handleFilter} style={{ display: expand? 'block' : 'none' }}>
             <Row gutter={24}>
               <Col span={6}>
                 <Form.Item
@@ -149,7 +187,7 @@ export const OrderFilterForm = Form.create({ name: 'order_filter' })(
             </Row>
             <Row>
               <Col span={24}>
-                <Button size="small" type="primary" htmlType="submit">
+                <Button size="small" type="primary" loading={loading} htmlType="submit">
                   Search
                 </Button>
                 <Button size="small" onClick={this.handleReset}>
@@ -157,7 +195,7 @@ export const OrderFilterForm = Form.create({ name: 'order_filter' })(
                 </Button>
               </Col>
             </Row>
-          </Form>}
+          </Form>
         </Card>
       );
     }
