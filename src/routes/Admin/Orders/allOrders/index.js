@@ -1,16 +1,14 @@
-/*jshint esversion: 9 */
-
 import React, {Component} from "react";
 // import {Link} from "react-router-dom";
 import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 
-import {NewOrderForm} from "../newOrder";
+import {OrderFilterForm} from "./OrderFilter";
 // eslint-disable-next-line
 // import Moment from 'react-moment';
-import {Button, Card, Dropdown, Icon, Menu, Table, Tag, notification} from "antd";
+import {Button, Card, Table, Tag, notification} from "antd";
 
-// import NewOrder from "../newOrder";
+// import OrderFilter from "../newOrder";
 import IntlMessages from "../../../../util/IntlMessages";
 
 import {getOrders} from "../../../../appRedux/actions/Orders";
@@ -20,20 +18,16 @@ import {addOrderForm} from "../../../../appRedux/actions/Orders";
 const { Column } = Table;
 const showHeader = true;
 const scroll = {y: 440};
-const pagination = {position: 'bottom'};
 
 class AllOrders extends Component {
   state = {
-    pagination,
     size: 'middle',
     showHeader,
     visible: false,
-    rowSelection: {},
     scroll,
   };
 
-  componentDidMount = () =>
-  {
+  componentDidMount = () => {
     this.props.getOrders(true, 'active', false);
   }
 
@@ -64,6 +58,13 @@ class AllOrders extends Component {
     });
   };
 
+  handleChange = () => {
+    console.log('Clicked cancel button');
+    this.setState({
+      visible: false,
+    });
+  };
+
   openNotification = (type, ref) => {
     notification[type]({
       message: `Order ${ref} created`,
@@ -82,21 +83,39 @@ class AllOrders extends Component {
   };
 
   render() {
-    const {createSuccess, loading, allOrders, newOrder} = this.props
+    const {allOrders, createSuccess, loading, meta, newOrder} = this.props
+    // const { getFieldDecorator} = this.props.form;
     if(createSuccess) {
       this.openNotification('success', newOrder);
       this.props.addOrderForm();
       return ( <Redirect to={`/orders/${newOrder}`}/> );
     }
+    let pagination = {
+      current: meta.current_page,
+      defaultPageSize: meta.per_page,
+      hideOnSinglePage: false,
+      pageSizeOptions : ['30', '40'], 
+      position: 'bottom',
+      showSizeChanger : true,
+      showTitle: true,
+      size: 'small',
+      total: meta.total
+    }
     return (
       <div>
-        <Card className="gx-card" title="Active Orders">
+        <OrderFilterForm
+          wrappedComponentRef={this.saveFormRef}
+          onCreate={this.handleCreate}
+          loading={loading}
+        />
+        <Card className="gx-card" title="Orders">
           <Table 
             className="gx-table-responsive" 
+            dataSource={allOrders}
             {...this.state} 
             loading={loading} 
+            pagination={pagination}
             rowKey="id" 
-            dataSource={allOrders}
           >
             <Column 
               title="Reference" 
@@ -106,12 +125,30 @@ class AllOrders extends Component {
               render={text => <Link to={`orders/${text}`}><span className="gx-link gx-text-info">{text}</span></Link>}
             />
             <Column title="Description" dataIndex="order_desc" key="order_desc" width={400} />
-            <Column title="Items" dataIndex="items_count" key="items_count" width={100} />
+            <Column 
+              title="Items" 
+              dataIndex="items_count" 
+              key="items_count" 
+              width={100} 
+              sorter={(a, b) => a.items_count - b.items_count}
+              sortDirections={['descend', 'ascend']}
+            />
             <Column 
               title="Status" 
               dataIndex="status" 
               key="status" 
               width={130} 
+              filters={[
+                {
+                  text: 'active',
+                  value: 'active',
+                },
+                {
+                  text: 'inactive',
+                  value: 'inactive',
+                },
+              ]}
+              onFilter={(value, record) => record.status === value}
               render={(text) => {  
                   switch(text) {
                     case 'inactive':
@@ -126,50 +163,26 @@ class AllOrders extends Component {
               }
             />
             <Column 
-              title="Action" 
-              dataIndex="action" 
-              key="action" 
+              title="Client" 
+              dataIndex="client" 
+              key="client" 
               width={150} 
               render={(text, record) => (
-                <Dropdown trigger={['click']} overlay={
-                  <Menu>
-                    {record.status === 'inactive' && record.items_count > 0? (<Menu.Item key={1} className="gx-px-5">
-                      <a href="http://www.alipay.com/">
-                        Activate {text} 
-                      </a>
-                    </Menu.Item>) : null}
-                    <Menu.Item key={2} className="gx-px-5">
-                      <a href="http://www.alipay.com/">
-                        Delete {text}
-                      </a>
-                    </Menu.Item>
-                  </Menu>
-                }>
-                  <span className="gx-link ant-dropdown-link">
-                    Actions <Icon type="down"/>
-                  </span>
-                </Dropdown>
+                <Link to={`clients`}>{record.client.name}</Link>
               )}
             />
           </Table>
         </Card>
-        <NewOrderForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.state.visible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-          confirmLoading={loading}
-        />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({auth, ordersData, commonData}) => {
+const mapStateToProps = ({auth, commonData, ordersData}) => {
   const {token} = auth;
-  const {listSuccess, createSuccess, allOrders, newOrder} = ordersData;
+  const {allOrders, createSuccess, links, listSuccess, meta, newOrder} = ordersData;
   const {loading} = commonData;
-  return {token, listSuccess, loading, allOrders, createSuccess, newOrder};
+  return {allOrders, createSuccess, links, listSuccess, loading, meta, newOrder, token};
 };
 
 export default connect(mapStateToProps, {addOrder, addOrderForm, getOrders})(AllOrders);

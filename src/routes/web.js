@@ -11,7 +11,7 @@ var routes = {
       component: import('./Admin/Dashboard/index')
     },
     {
-      type: 1,
+      type: 0,
       key: "orders",
       link: "/orders",
       path: "orders",

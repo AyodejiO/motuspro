@@ -1,6 +1,3 @@
-/*jshint esversion: 9 */
-
-// eslint-disable-next-line 
 import {
   FETCH_ERROR,
   FETCH_START,
@@ -35,10 +32,10 @@ export const getOrders = (admin=false, s=null, c=null) => {
       }
     }
     ).then(({data}) => {
-      if (data.data) {
+      if (data) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: LIST_ORDERS_SUCCESS});
-        dispatch({type: ALL_ORDERS_DATA, payload: data.data});
+        dispatch({type: ALL_ORDERS_DATA, payload: data});
       } else {
         console.log("payload: data.error", data.error);
         dispatch({type: FETCH_ERROR, payload: "Network Error"});

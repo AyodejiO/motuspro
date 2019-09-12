@@ -51,7 +51,7 @@ export const NewOrderForm = Form.create({ name: 'form_in_modal' })(
                 {getFieldDecorator('order_desc', {
                 rules: [{required: true, message: 'You must enter a User!', whitespace: true}],
                 })(
-                <TextArea rows={4} columns={2}/>
+                  <TextArea rows={4} columns={2}/>
                 )}
             </FormItem>
           </Form>

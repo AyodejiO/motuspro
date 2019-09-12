@@ -48,6 +48,8 @@ export const ALL_VENDORS_DATA = 'ALL_VENDORS_DATA';
 
 //Order Constants
 export const ALL_ORDERS_DATA = 'ALL_ORDERS_DATA';
+export const ALL_ORDERS_LINKS = 'ALL_ORDERS_LINKS';
+export const ALL_ORDERS_META = 'ALL_ORDERS_META';
 export const FETCH_ORDER_START = 'FETCH_ORDER_START';
 export const FETCH_ORDER_STATUS = 'FETCH_ORDER_STATUS';
 export const FETCH_ORDER_SUCCESS = 'FETCH_ORDER_SUCCESS';
@@ -67,6 +69,8 @@ export const NEW_ORDER_ID = 'NEW_ORDER_ID';
 
 //Items Constants
 export const ALL_ITEMS_DATA = 'ALL_ITEMS_DATA';
+export const ALL_ITEMS_LINKS = 'ALL_ITEMS_LINKS';
+export const ALL_ITEMS_META = 'ALL_ITEMS_META';
 export const ORDER_ITEMS_DATA = 'ORDER_ITEMS_DATA';
 export const CREATE_ITEM = 'CREATE_ITEM';
 export const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS';
@@ -83,6 +87,8 @@ export const FETCH_ITEM_ERROR = 'fetch_item_error';
 
 //Bids Constants
 export const ALL_BIDS_DATA = 'ALL_BIDS_DATA';
+export const ALL_BIDS_LINKS = 'ALL_BIDS_LINKS';
+export const ALL_BIDS_META = 'ALL_BIDS_META';
 export const CREATE_BID = 'CREATE_BID';
 export const CREATE_BID_CANCEL = 'CREATE_BID_CANCEL';
 export const EDIT_BID_CANCEL = 'EDIT_BID_CANCEL';

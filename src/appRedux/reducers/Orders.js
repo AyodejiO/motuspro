@@ -1,5 +1,3 @@
-/*jshint esversion: 9 */
-
 import {
   CREATE_ORDER_SUCCESS, 
   LIST_ORDERS_SUCCESS, 
@@ -19,6 +17,8 @@ const INIT_STATE = {
   editSuccess: false,
   listSuccess: false,
   allOrders: [],
+  links: {},
+  meta: {},
   order: null,
   orderLoading: false,
   orderMessage: '',
@@ -33,7 +33,9 @@ export default (state = INIT_STATE, action) => {
     case ALL_ORDERS_DATA: {
       return {
         ...state,
-        allOrders: action.payload
+        allOrders: action.payload.data,
+        links: action.payload.links,
+        meta: action.payload.meta,
       };
     }
 

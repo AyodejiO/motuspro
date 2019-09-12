@@ -15,6 +15,13 @@
 .ant-avatar {
   position: relative;
 
+  & img {
+    width: 100%;
+    height: auto;
+    object-fit: cover !important;
+    object-position: 50% 50% !important;
+  }
+
   &.@{class-prefix}-size-150 > * {
     line-height: @size-150;
   }
