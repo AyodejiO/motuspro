@@ -22,11 +22,11 @@ const scroll = {y: 440};
 class AllOrders extends Component {
   state = {
     filter: {
-      client: '',
-      client_ref: '',
+      client: null,
+      client_ref: null,
       closed: null,
-      desc: '',
-      motus_ref: '',
+      desc: null,
+      motus_ref: null,
       note: null,
       status: ['active'],
       quoted: null
@@ -38,7 +38,8 @@ class AllOrders extends Component {
   };
 
   componentDidMount = () => {
-    this.props.getOrders(true, 'active', false);
+    const {filter} = this.state;
+    this.props.getOrders(true, filter);
   }
 
   showModal = () => {
@@ -54,13 +55,13 @@ class AllOrders extends Component {
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (!err) {
-        // this.props.addOrder(values);
-        console.log('Received values of form: ', values);
+        this.setState({
+          filter: values
+        })
+        this.props.getOrders(true, values);
+        // console.log('Received values of form: ', values);
         return;
       }
-      // console.log('Received values of form: ', values);
-      // form.resetFields();
-      // this.setState({ visible: false });
     });
   };
   handleCancel = () => {

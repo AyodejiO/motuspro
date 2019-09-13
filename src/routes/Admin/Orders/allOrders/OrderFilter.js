@@ -167,7 +167,7 @@ export const OrderFilterForm = Form.create({
                   {getFieldDecorator('quoted', {
                     valuePropName: 'checked',
                   })(
-                    <Checkbox>
+                    <Checkbox indeterminate>
                       Quoted
                     </Checkbox>,
                   )}

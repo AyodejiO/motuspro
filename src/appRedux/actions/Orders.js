@@ -19,16 +19,18 @@ import {
 } from "../../constants/ActionTypes";
 import axios from 'util/Api';
 
-export const getOrders = (admin=false, s=null, c=null) => {
+
+export const getOrders = (admin=false, values) => {
   // console.log(admin, s, c);
+  const qs = require('qs');
   const route = admin? 'admin/orders' : 'user/orders';
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(route, {
       headers: {'X-Requested-With': 'XMLHttpRequest'},
-      params: {
-        s,
-        c,
+      params: values,
+      paramsSerializer: function(params) {
+          return qs.stringify(params, {arrayFormat: 'comma', skipNulls: true})
       }
     }
     ).then(({data}) => {
