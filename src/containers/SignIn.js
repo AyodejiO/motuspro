@@ -65,7 +65,7 @@ class SignIn extends React.Component {
                   {getFieldDecorator('password', {
                     rules: [{required: true, message: 'Please input your Password!'}],
                   })(
-                    <Input type="password" placeholder="Password"/>
+                    <Input.Password placeholder="Password"/>
                   )}
                 </FormItem>
                 <FormItem className="gx-mb-1">
