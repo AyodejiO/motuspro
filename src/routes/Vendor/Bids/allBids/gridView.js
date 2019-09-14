@@ -27,7 +27,7 @@ const contentList = (key, bid) => {
   switch(key) {
     case 'job':
       return (
-        <div className="gx-mb-2">
+        <div className="gx-mt-2">
           <div>
             <Descriptions size={`small`} layout="horizontal" column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
               <Descriptions.Item label="Size/Type">{bid.item.size}</Descriptions.Item>
@@ -56,7 +56,7 @@ const contentList = (key, bid) => {
       );
     case 'bid':
       return (
-        <div className="gx-mb-2">
+        <div className="gx-mt-2">
           <div>
             <Descriptions size={`small`} layout="horizontal" column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
               <Descriptions.Item label="Unit Cost">
@@ -145,11 +145,11 @@ class GridView extends Component {
             okText="Yes, forever"
             cancelText="No, wait"
           >
-            <Button type="primary" ghost size="small">Delete</Button>
+            <Button type="primary" ghost size="small">Delete Bid</Button>
           </Popconfirm>
-          <Button type="primary" size="small" onClick={() => editBid(bid)}>Edit</Button>
+          <Button type="primary" size="small" onClick={() => editBid(bid)}>Edit Bid</Button>
         </div>
-        <small className="gx-text-light gx-float-right">
+        <small className="gx-text-light gx-p-2 gx-float-right">
           updated <i><Moment fromNow>{bid.updated_at}</Moment></i>
         </small>
       </Card>

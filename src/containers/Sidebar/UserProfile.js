@@ -23,10 +23,18 @@ class UserProfile extends Component {
 
       <div className="gx-flex-row gx-align-items-center gx-mb-4 gx-avatar-row">
         <Popover placement="bottomRight" content={userMenuOptions} trigger="click">
-          <Avatar src={authUser && authUser.avatar? authUser.avatar : placeholder}
-                  className="gx-size-40 gx-pointer gx-mr-3" alt=""/>
-          <span className="gx-avatar-name">{authUser ? authUser.display_name : "Loading"}<i
-            className="icon icon-chevron-down gx-fs-xxs gx-ml-2"/></span>
+          <Avatar 
+            src={authUser && authUser.avatar? authUser.avatar : placeholder}
+            className="gx-size-40 gx-pointer gx-mr-3" alt=""
+          />
+          <span className="gx-avatar-name gx-vertical-align-middle">
+            <span className="gx-d-inline-block">
+              {authUser ? authUser.display_name : "Loading"}
+              <br />
+              <span className="gx-text-white">{authUser ? authUser.role : null}</span>
+            </span>
+            {/* <i className="icon icon-chevron-down gx-fs-xxs gx-ml-2  gx-vertical-align-bottom"/>  */}
+          </span>
         </Popover>
       </div>
 

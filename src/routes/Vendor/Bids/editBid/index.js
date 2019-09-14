@@ -77,7 +77,7 @@ export const EditBidForm = Form.create({
             <FormItem
                 label={(
                 <span>
-                Duration <small>(in days)</small>&nbsp;   
+                Duration&nbsp;   
                 <Tooltip title="How long will it take to complete all?">
                     <Icon type="question-circle-o"/>
                 </Tooltip>
