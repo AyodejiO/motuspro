@@ -76,7 +76,7 @@ export const OrderFilterForm = Form.create({
  
       return (
         <Card
-          className="gx-card"
+          className="gx-card gx-card-no-tb-padding"
           title="Filter"
           // loading={loading}
           extra={

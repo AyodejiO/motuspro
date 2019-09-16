@@ -1,5 +1,4 @@
 /*jshint esversion: 9 */
-
 import React, {Component} from "react";
 import {ConfigProvider, List} from "antd";
 import {connect} from "react-redux";
@@ -14,7 +13,7 @@ import CustomizedEmpty from "components/CustomizedEmpty";
 import {deleteBid, editBid, editBidModal, cancelEditBidModal, getBids} from "../../../../appRedux/actions/Bids";
 import GridView from './gridView';
 
-const showHeader = true;
+const showHeader: boolean = true;
 const scroll = {y: 440};
 const pagination = {position: 'bottom'};
 
