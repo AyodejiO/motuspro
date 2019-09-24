@@ -12,6 +12,7 @@
     "amcharts3": "^3.21.13",
     "antd": "^3.20.7",
     "antd-theme-webpack-plugin": "^1.1.6",
+    "apollo-boost": "^0.4.4",
     "axios": "^0.18.0",
     "draftjs-to-html": "^0.8.4",
     "express": "^4.16.4",

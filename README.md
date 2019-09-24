@@ -1,9 +1,9 @@
-# [Wieldy - React Redux Admin Template based on Ant Framework](https://themeforest.net/item/wieldy-react-redux-admin-template/22277962?s_rank=1 "Wieldy")
-Wieldy is a react redux based admin template. 
+# [MotusPro - MotusGroup procurement app built with React Redux and design based on Ant Framework](https://motus.pro "MotusPro")
+MotusPro package built with React Redux and design based on Ant Framework. 
  
 # Installation
 
-**Note: Wieldy is using [yarn](https://yarnpkg.com/en/docs/install) instead npm**
+**Note: MotusPro is using [yarn](https://yarnpkg.com/en/docs/install) instead npm**
 
 Installing all the dependencies of project, run following command:
 
@@ -31,4 +31,3 @@ it is well documented at [here](http://docs.g-axon.com/wieldy/ "Documentation") 
 We appreciate your collaboration. If you build something which you believe could help others in their project. You can make that as a pull request. But make sure that it should be in a genral uses rather then something which is built for a specific project.
 
 We merge only those features which we find useful for the community.
-# motuspro
